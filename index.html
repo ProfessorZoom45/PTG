@@ -17,7 +17,7 @@
 <meta property="og:description" content="PTG's Running Late Dynasty Companion." />
 <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
 
-<!-- Share image (uses your exact file name) -->
+<!-- Share image (hero cover in repo root) -->
 <meta property="og:image" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png?v=4">
 <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png?v=4">
 <meta property="og:image:alt" content="Running Late Dynasty cover">
@@ -101,6 +101,9 @@ p{margin:.4rem 0 .8rem}
 .img-fluid{max-width:100%;height:auto;border-radius:12px;border:1px solid #2a2a2a;background:#0f0f0f}
 .hidden{display:none!important}
 footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-size:.9rem}
+
+/* NEW: style CPU-controlled team names (red, not bold) */
+.cpu{color:#ff4d4d}
 </style>
 </head>
 <body>
@@ -276,38 +279,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 const USER_TEAMS = ["LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware","Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma","Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech","Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina","Utah","Auburn","Minnesota","SMU","UCLA"];
 
 const OWNER_MAP = {
-  "LSU":"@zo0o_0om",
-  "Clemson":"@selfmadezay.",
-  "Arkansas":"@streetcammo5391",
-  "Michigan":"@grap.12_58536",
-  "Texas":"@i_do_dis_314",
-  "Ohio State":"@shadeeliteyt",
-  "Miami":"@imjusttoolucky",
-  "Delaware":"@sweatsuitsavage9225",
-  "Georgia":"@mikecmd_856",
-  "Arizona State":"@partymaster84",
-  "Florida":"@lakedogg32",
-  "Washington":"@zeeeeeeeee3",
-  "Alabama":"@lejason",
-  "BYU":"@yungdee0354",
-  "Oklahoma":"@illecill",
-  "Florida State":"@allstarcowboy254._84024",
-  "Notre Dame":"@cjjman36",
-  "South Carolina":"@ulost2sway",
-  "Illinois":"@merzqcg",
-  "USC":"@flyguy3x",
-  "Texas Tech":"@zig8875",
-  "Baylor":"@.ruin2.",
-  "Colorado":"@phreshttv",
-  "Texas A&M":"@dabears7712",
-  "Penn State":"@jrob9179",
-  "Tennessee":"@cordfollowing9275",
-  "North Carolina":"@KingDion716",
-  "Utah":"@papishome69",
-  "Auburn":"@slimxxiv",
-  "Minnesota":"@jayhibbs.",
-  "SMU":"@superhb",
-  "UCLA":"@dawgpd_31"
+  "LSU":"@zo0o_0om","Clemson":"@selfmadezay.","Arkansas":"@streetcammo5391","Michigan":"@grap.12_58536","Texas":"@i_do_dis_314","Ohio State":"@shadeeliteyt","Miami":"@imjusttoolucky","Delaware":"@sweatsuitsavage9225","Georgia":"@mikecmd_856","Arizona State":"@partymaster84","Florida":"@lakedogg32","Washington":"@zeeeeeeeee3","Alabama":"@lejason","BYU":"@yungdee0354","Oklahoma":"@illecill","Florida State":"@allstarcowboy254._84024","Notre Dame":"@cjjman36","South Carolina":"@ulost2sway","Illinois":"@merzqcg","USC":"@flyguy3x","Texas Tech":"@zig8875","Baylor":"@.ruin2.","Colorado":"@phreshttv","Texas A&M":"@dabears7712","Penn State":"@jrob9179","Tennessee":"@cordfollowing9275","North Carolina":"@KingDion716","Utah":"@papishome69","Auburn":"@slimxxiv","Minnesota":"@jayhibbs.","SMU":"@superhb","UCLA":"@dawgpd_31"
 };
 
 /* Custom conferences (Dynasty) */
@@ -320,15 +292,7 @@ const TEAM_CONF = {
 
 /* Known rivalries */
 const RIVALRIES = {
-  "Texas|Oklahoma":"Red River",
-  "Michigan|Ohio State":"The Game",
-  "Alabama|Auburn":"Iron Bowl",
-  "USC|Notre Dame":"Intersectional Classic",
-  "Florida State|Miami":"Sunshine Showdown",
-  "Clemson|South Carolina":"Palmetto Bowl",
-  "Georgia|Florida":"Cocktail Party",
-  "Texas A&M|LSU":"Tiger Bowl",
-  "Arkansas|Texas":"Southwest Classic"
+  "Texas|Oklahoma":"Red River","Michigan|Ohio State":"The Game","Alabama|Auburn":"Iron Bowl","USC|Notre Dame":"Intersectional Classic","Florida State|Miami":"Sunshine Showdown","Clemson|South Carolina":"Palmetto Bowl","Georgia|Florida":"Cocktail Party","Texas A&M|LSU":"Tiger Bowl","Arkansas|Texas":"Southwest Classic"
 };
 
 /* Week 1 poll (used for rank badges) */
@@ -375,7 +339,14 @@ function isUser(name){ return USER_TEAMS.includes(name.replace(/^#?\d+\s*/,'').r
 function stripRank(name){ return name.replace(/^#?\d+\s*/,'').replace(/^#\s*/,'').trim(); }
 function getRank(team){ const item = TOP25_W1.find(([,t])=>t===team); return item ? item[0] : null; }
 function decorateTeam(label){ const base = stripRank(label); const r = getRank(base); return r ? "#"+r+" "+base : base; }
-function boldIfUser(label){ const base = stripRank(label); const show = decorateTeam(label); return isUser(base) ? "<strong>"+show+"</strong>" : show; }
+
+/* NEW: return <strong> for user teams, red .cpu span for CPU teams */
+function styleTeam(label){
+  const base = stripRank(label);
+  const show = decorateTeam(label);
+  return isUser(base) ? `<strong>${show}</strong>` : `<span class="cpu">${show}</span>`;
+}
+
 function rivalryLabel(a,b){ const A = stripRank(a), B = stripRank(b); const key = [A,B].sort().join("|"); return RIVALRIES[key] || null; }
 function sameConference(a,b){ const A = stripRank(a), B = stripRank(b); const ca = TEAM_CONF[A], cb = TEAM_CONF[B]; return (ca && cb && ca===cb) ? ca : null; }
 
@@ -469,13 +440,13 @@ function renderPoll(){
   const recMap = buildRecordMap();
   const rows = TOP25_W1.map(([r,team,pts])=>{
     const rec = recMap.get(team)||{w:0,l:0};
-    const name = USER_TEAMS.includes(team) ? "<strong>"+team+"</strong>" : team;
+    const name = USER_TEAMS.includes(team) ? `<strong>${team}</strong>` : `<span class="cpu">${team}</span>`;
     return {rank:r,teamHTML:name,team,w:rec.w,l:rec.l,wl:`${rec.w}-${rec.l}`,pts};
   });
   const ranked = new Set(rows.map(x=>x.team));
   const extras = USER_TEAMS.filter(t=>!ranked.has(t)).sort((a,b)=>a.localeCompare(b)).map(team=>{
     const rec = recMap.get(team)||{w:0,l:0};
-    return {rank:'*',teamHTML:"<strong>"+team+"</strong>",team,w:rec.w,l:rec.l,wl:`${rec.w}-${rec.l}`,pts:'—'};
+    return {rank:'*',teamHTML:`<strong>${team}</strong>`,team,w:rec.w,l:rec.l,wl:`${rec.w}-${rec.l}`,pts:'—'};
   });
   const all = rows.concat(extras);
   const body = document.getElementById('pollBody');
@@ -505,7 +476,7 @@ function renderWeek1(){
   body.innerHTML = keep.map(g=>{
     const userBoth = isUser(g.away) && isUser(g.home);
     const typeCell = userBoth ? '<span class="pill hot">USER vs USER</span>' : g.type;
-    const match = `${boldIfUser(g.away)} @ ${boldIfUser(g.home)}`;
+    const match = `${styleTeam(g.away)} @ ${styleTeam(g.home)}`;
     const notes = [];
     const conf = sameConference(g.away,g.home); if(conf) notes.push(`Conference: ${conf}`);
     const riv = rivalryLabel(g.away,g.home); if(riv) notes.push(`Rivalry: ${riv}`);
@@ -536,4 +507,4 @@ renderWeek1();
 renderOwners();
 </script>
 </body>
-  </html>
+</html>
