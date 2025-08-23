@@ -4,13 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Running Late Dynasty — Week 2</title>
-<meta name="description" content="D1SN hub: Week 1 finals, Top-25 polls, conference tracker (user vs user only), owners, and Week 2 & Week 3 slates." />
+<meta name="description" content="D1SN hub: Week 1 finals, Top-25 polls, Conference Supremacy Tracker (user vs user only), owners, and Week 2 & Week 3 slates." />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="https://professorzoom45.github.io/PTG/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Perfect Timing Gaming">
 <meta property="og:title" content="Running Late Dynasty — Week 2" />
-<meta property="og:description" content="SEC surge after Week 1! New Top-25, user-vs-user conference tracker, and Week 3 slate." />
+<meta property="og:description" content="SEC surge after Week 1! New Top-25, user-vs-user Conference Supremacy Tracker, and Week 3 slate." />
 <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
 <meta property="og:image" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png">
 <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png">
@@ -85,10 +85,10 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
     <a href="https://professorzoom45.github.io/PTG/" class="logo-a" title="Home (index)">D1SN</a>
     <div class="track">
       <div class="row">
-        <span><strong>NEW #1: Alabama</strong> after 21–14 at Ohio State</span>
-        <span><strong>Miami rockets to #2</strong> after 38–26 over Georgia</span>
+        <span><strong>NEW #1: <strong>Alabama</strong></strong> after 21–14 at <strong>Ohio State</strong></span>
+        <span><strong><strong>Miami</strong> rockets to #2</strong> after 38–26 over <strong>Georgia</strong></span>
         <span><strong>Vote GOTW (Week 3) →</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord Poll</a></span>
-        <span><strong>W3 headliners:</strong> #9 LSU @ #13 BYU • #23 Baylor @ #8 Ohio State • #6 UNC @ FSU</span>
+        <span><strong>W3 headliners:</strong> #9 <strong>LSU</strong> @ #13 <strong>BYU</strong> • #23 <strong>Baylor</strong> @ #8 <strong>Ohio State</strong> • #6 <strong>UNC</strong> @ <strong>FSU</strong></span>
       </div>
     </div>
     <a class="cta-btn" href="mailto:changethewrldplz@gmail.com?subject=DM%20D1SN&body=Hey%20D1SN%2C%20" title="Email D1SN directly">DM D1SN</a>
@@ -99,7 +99,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <div class="chips">
   <a class="chip" href="#headline">Headline</a>
   <a class="chip" href="#recap">Week 1 Recap</a>
-  <a class="chip" href="#conf">Conference Tracker</a>
+  <a class="chip" href="#conf">Conference Supremacy Tracker</a>
   <a class="chip" href="#top25">Top-25 Polls</a>
   <a class="chip" href="#week0">Week 0 Finals</a>
   <a class="chip" href="#week1">Week 1 Finals</a>
@@ -120,7 +120,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <section id="headline" class="section">
   <h2>New No. 1: Alabama</h2>
   <div class="card">
-    <p><strong>Alabama</strong> takes over the top spot after a gritty <strong>21–14</strong> win at then-#2 <strong>Ohio State</strong>. With <strong>Georgia</strong> falling at Miami and last year’s contenders shuffling, the Tide’s road dub sets the early tone for the SEC. Next up: a tricky trip to <strong>Utah</strong> in Week 3.</p>
+    <p><strong>Alabama</strong> takes over the top spot after a gritty <strong>21–14</strong> win at then-#2 <strong>Ohio State</strong>. With <strong>Georgia</strong> falling at <strong>Miami</strong> and last year’s contenders shuffling, the Tide’s road dub sets the early tone for the SEC. Next up: a tricky trip to <strong>Utah</strong> in Week 3.</p>
   </div>
 </section>
 
@@ -130,12 +130,17 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   <div class="card" id="recapBody"></div>
 </section>
 
-<!-- Conference Tracker -->
+<!-- Conference Supremacy Tracker -->
 <section id="conf" class="section">
-  <h2>Conference Tracker — UvU Only</h2>
+  <h2>Conference Supremacy Tracker</h2>
   <div class="card">
-    <p class="small">Counts <strong>only</strong> <em>User vs User</em> games from Weeks 0–1. Win% = Wins ÷ (Wins+Losses). Intra-conference UvU adds one win and one loss to the same conference.</p>
+    <!-- Explanatory blurb -->
+    <p id="confAbout" class="small"></p>
+    <!-- Top-4 snapshot -->
+    <p id="confLeaders" class="small" style="margin-bottom:8px"></p>
+    <!-- Deep-dive blurb for #1 conference -->
     <div id="confBlurb" class="small" style="margin-bottom:10px"></div>
+    <!-- Table -->
     <div id="confTableWrap"></div>
   </div>
 </section>
@@ -209,7 +214,6 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
            src="https://professorzoom45.github.io/PTG/week3ug.png"
            alt="Week 3 user-games slate (LSU@BYU, Baylor@Ohio State, UNC@FSU, Alabama@Utah)">
     </a>
-    <p id="wk3Fallback" class="small muted hidden">Trying alternate image name…</p>
   </div>
 </section>
 
@@ -332,6 +336,9 @@ const isUser=t=>USER_TEAMS.includes(t);
 const allResults=()=>WEEK0_RESULTS.concat(WEEK1_RESULTS);
 const currentPollRank = new Map(POLL_NOW.map(([r,t])=>[t,r]));
 
+/* Bold any user-controlled team wherever we render names */
+function fmtTeam(t){ return isUser(t) ? `<strong>${t}</strong>` : t; }
+
 /* Sorting helper for tables */
 function makeSortable(table){
   const ths=[...table.querySelectorAll('thead th')];
@@ -361,7 +368,7 @@ function buildRecordMap(){
   return m;
 }
 
-/* ========== UvU-only Conference Tracker ========== */
+/* ========== UvU-only Conference Supremacy Tracker ========== */
 function getUserVsUserGames(){
   return allResults().filter(g=>isUser(g.away)&&isUser(g.home));
 }
@@ -402,8 +409,7 @@ function computeUvUConferenceStats(){
     });
     const leaderTeam = teams.find(([,r])=>r.w>0 || r.l>0)?.[0] || teams[0][0];
     const leaderRec = d.teams[leaderTeam];
-    const leader = `${leaderTeam} (${leaderRec.w}-${leaderRec.l})`;
-    return {conf,w,l,gp,pct,leader,raw: d};
+    return {conf,w,l,gp,pct,leaderTeam,leaderRec,raw: d};
   }).sort((a,b)=> b.pct-a.pct || b.w-a.w);
 
   return rows;
@@ -411,6 +417,17 @@ function computeUvUConferenceStats(){
 
 function renderConferenceTracker(){
   const rows=computeUvUConferenceStats();
+  // About blurb
+  document.getElementById('confAbout').innerHTML =
+    `<strong>What it measures:</strong> Only <em>User vs User</em> results from Weeks 0–1. <strong>Win%</strong> = Wins ÷ (Wins + Losses). `+
+    `Intra-conference UvU counts as one win and one loss for the same league; cross-conference UvU shifts standings.`;
+
+  // Top-4 snapshot blurb
+  const top4 = rows.slice(0,4).map(r=>`${r.conf} <strong>${r.w}-${r.l}</strong> (${(r.pct*100).toFixed(1)}%)`);
+  document.getElementById('confLeaders').innerHTML =
+    `<strong>Leaders:</strong> ${top4.join(' • ')}`;
+
+  // Table
   const wrap=document.getElementById('confTableWrap');
   const tbl=document.createElement('table');
   tbl.className='table sortable';
@@ -420,16 +437,30 @@ function renderConferenceTracker(){
   const tb=tbl.tBodies[0];
   rows.forEach((r,i)=>{
     tb.insertAdjacentHTML('beforeend',`<tr>
-      <td>${i+1}</td><td>${r.conf}</td><td>${r.w}</td><td>${r.l}</td><td>${(r.pct*100).toFixed(1)}</td><td>${r.leader}</td>
+      <td>${i+1}</td><td>${r.conf}</td><td>${r.w}</td><td>${r.l}</td><td>${(r.pct*100).toFixed(1)}</td>
+      <td>${fmtTeam(r.leaderTeam)} (${r.leaderRec.w}-${r.leaderRec.l})</td>
     </tr>`);
   });
   wrap.innerHTML=''; wrap.appendChild(tbl); makeSortable(tbl);
 
-  // Build blurb: #1 conf + how its #1 team got there (include scores)
+  // Deep-dive: #1 conference path + scores
   const top = rows[0];
   if(top){
     const confName = top.conf;
-    // pick a #1 team in conf using the same order as in computeUvUConferenceStats
+    // All UvU touching this conference
+    const uvus = getUserVsUserGames().filter(g=>{
+      const aC=TEAM_CONF[g.away], hC=TEAM_CONF[g.home];
+      return aC===confName || hC===confName;
+    });
+
+    const lines = uvus.map(g=>{
+      const W = g.a>g.h ? g.away : g.home;
+      const L = g.a>g.h ? g.home : g.away;
+      const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
+      return `${fmtTeam(W)} ${wScore}–${lScore} over ${fmtTeam(L)}`;
+    });
+
+    // Pick the conference’s current top team by UvU tiebreaks
     const teamsOrder = Object.entries(top.raw.teams).sort((a,b)=>{
       const [ta,ra]=a,[tb,rb]=b;
       if(ra.w!==rb.w) return rb.w-ra.w;
@@ -438,53 +469,22 @@ function renderConferenceTracker(){
       return pa-pb;
     });
     const topTeam = teamsOrder[0][0];
-
-    const uvus = getUserVsUserGames().filter(g=>{
-      const aC=TEAM_CONF[g.away], hC=TEAM_CONF[g.home];
-      return aC===confName || hC===confName;
-    });
-
-    const wins = uvus.filter(g=>{
-      const winner = g.a>g.h ? g.away : g.home;
-      return TEAM_CONF[winner]===confName;
-    }).map(g=>{
-      const W = g.a>g.h ? g.away : g.home;
-      const L = g.a>g.h ? g.home : g.away;
-      const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
-      return `${W} ${wScore}–${lScore} over ${L}`;
-    });
-
-    const losses = uvus.filter(g=>{
-      const loser = g.a>g.h ? g.home : g.away;
-      return TEAM_CONF[loser]===confName;
-    }).map(g=>{
-      const W = g.a>g.h ? g.away : g.home;
-      const L = g.a>g.h ? g.home : g.away;
-      const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
-      return `${L} lost ${lScore}–${wScore} to ${W}`;
-    });
-
-    // Specific path for the #1 team
     const topTeamGames = getUserVsUserGames().filter(g=>g.away===topTeam||g.home===topTeam)
       .map(g=>{
         const W = g.a>g.h ? g.away : g.home;
         const L = g.a>g.h ? g.home : g.away;
         const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
-        return {W,L,wScore,lScore};
+        return `${fmtTeam(W)} ${wScore}–${lScore} over ${fmtTeam(L)}`;
       });
 
-    const topTeamLine = topTeamGames.length
-      ? topTeamGames.map(g=>`${g.W} ${g.wScore}–${g.lScore} over ${g.L}`).join('; ')
-      : `${topTeam} (no UvU yet)`;
-
     document.getElementById('confBlurb').innerHTML =
-      `<strong>${confName}</strong> leads the UvU tracker at <strong>${top.w}-${top.l}</strong> (${(top.pct*100).toFixed(1)}%). 
-       Their top team right now: <strong>${topTeam}</strong> — ${topTeamLine}.
-       Recent ${confName} UvU results: <em>${wins.join(' • ')}</em>${losses.length? ' • ' + losses.join(' • ') : ''}.`;
+      `<strong>${confName}</strong> sets the pace at <strong>${top.w}-${top.l}</strong> (${(top.pct*100).toFixed(1)}%). `+
+      `Flag bearer so far: ${topTeamGames.length ? topTeamGames.join('; ') : fmtTeam(topTeam)+' (no UvU yet)'}. `+
+      `Recent ${confName} UvU: <em>${lines.join(' • ')}</em>.`;
   }
 }
 
-/* Top-25 renderer (CPU teams red, correct LW/Δ) */
+/* Top-25 renderer (CPU teams red, user teams bold, correct LW/Δ) */
 function renderPoll(){
   const rec=buildRecordMap();
   const preMap=new Map(POLL_PRE.map(([rk,t])=>[t,rk]));
@@ -506,24 +506,24 @@ function renderPoll(){
 
   const body=document.getElementById('pollBody');
   body.innerHTML=now.map(x=>`<tr>
-    <td>${x.rk}</td><td class="${x.teamCls}">${x.t}</td><td>${x.lw}</td>
+    <td>${x.rk}</td><td class="${x.teamCls}">${fmtTeam(x.t)}</td><td>${x.lw}</td>
     <td class="${x.dCls}">${x.deltaTxt}</td><td>${x.wl}</td><td>${x.pts}</td>
   </tr>`).join('');
 
   const risers = now.filter(x=>x.delta!==null && x.delta>=3).sort((a,b)=>b.delta-a.delta).slice(0,5);
   const fallers = now.filter(x=>x.delta!==null && x.delta<=-3).sort((a,b)=>a.delta-b.delta).slice(0,5);
-  const entrants = now.filter(x=>x.lw==='NR' || x.lw==='—').map(x=>`#${x.rk} ${x.t}`);
-  const dropped = POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${t}`);
+  const entrants = now.filter(x=>x.lw==='NR' || x.lw==='—').map(x=>`#${x.rk} ${fmtTeam(x.t)}`);
+  const dropped = POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${fmtTeam(t)}`);
 
   document.getElementById('movers').innerHTML =
-    `<p><strong>Big risers:</strong> ${risers.map(x=>`#${x.rk} ${x.t} (▲${x.delta})`).join(', ')||'—'}</p>
-     <p><strong>Big fallers:</strong> ${fallers.map(x=>`#${x.rk} ${x.t} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
+    `<p><strong>Big risers:</strong> ${risers.map(x=>`#${x.rk} ${fmtTeam(x.t)} (▲${x.delta})`).join(', ')||'—'}</p>
+     <p><strong>Big fallers:</strong> ${fallers.map(x=>`#${x.rk} ${fmtTeam(x.t)} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
      <p><strong>New entrants:</strong> ${entrants.join(', ')||'—'}</p>
      <p><strong>Dropped out:</strong> ${dropped.join(', ')||'—'}</p>`;
   makeSortable(document.getElementById('pollTable'));
 }
 
-/* ===== Recap (no duplicates) ===== */
+/* ===== Recap (no duplicates; bold user teams) ===== */
 function renderRecap(){
   const uvus = WEEK1_RESULTS.filter(g=>isUser(g.away)&&isUser(g.home));
   const uvuKeys = new Set(uvus.map(g=>`${g.away}@${g.home}`));
@@ -536,15 +536,15 @@ function renderRecap(){
     return `<li><strong>${winner}</strong> def. <strong>${loser}</strong> ${w}–${l}</li>`;
   });
 
-  // Other ranked/user wins: user wins only, excluding UvU so nothing repeats
+  // Other ranked/user wins: winner is user (exclude UvU to prevent repeats)
   const others = WEEK1_RESULTS
     .filter(g=>!uvuKeys.has(`${g.away}@${g.home}`))
-    .filter(g=> isUser(g.a>g.h ? g.away : g.home)) // winner is a user
+    .filter(g=> isUser(g.a>g.h ? g.away : g.home))
     .map(g=>{
       const winner = g.a>g.h ? g.away : g.home;
       const loser  = g.a>g.h ? g.home : g.away;
       const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
-      return `<li>${winner} ${w}–${l} over ${loser}</li>`;
+      return `<li>${fmtTeam(winner)} ${w}–${l} over ${fmtTeam(loser)}</li>`;
     });
 
   document.getElementById('recapBody').innerHTML =
@@ -554,7 +554,7 @@ function renderRecap(){
      <ul>${others.join('')}</ul>`;
 }
 
-/* ===== Week 2 schedule (notes only per rules) ===== */
+/* ===== Week 2 schedule (notes only per rules; bold user teams) ===== */
 function parseMatchup(str){
   const clean=s=>s.replace(/^\s*#\d+\s*/,'').trim();
   let a='',b='', ar=null, br=null;
@@ -564,7 +564,15 @@ function parseMatchup(str){
   else if(str.includes(' vs ')) [a,b]=str.split(' vs ').map(clean);
   else { a=str.trim(); b=''; }
   if(ranks.length){ ar=ranks[0]??null; br=ranks[1]??null; }
-  return {a,b,ar,br};
+  return {a,b,ar,br,raw:str};
+}
+
+function formatMatchup(str){
+  const {a,b,ar,br,raw}=parseMatchup(str);
+  const sep = raw.includes(' @ ')?' @ ':raw.includes(' at ')?' at ':' vs ';
+  const left = `${ar?('#'+ar+' '):''}${fmtTeam(a)}`;
+  const right = b ? `${br?('#'+br+' '):''}${fmtTeam(b)}` : '';
+  return right ? `${left}${sep}${right}` : left;
 }
 
 function noteForMatchup(m){
@@ -592,9 +600,9 @@ function renderWeek(tblId,bodyId,games){
   body.innerHTML=games.map(g=>{
     const awayWin=g.a>g.h, type=(isUser(g.away)&&isUser(g.home))?'User vs User':(isUser(g.away)||isUser(g.home))?'User vs CPU':'CPU vs CPU';
     return `<tr>
-      <td class="${awayWin?'cell-win':'cell-loss'}">${g.away}</td>
+      <td class="${awayWin?'cell-win':'cell-loss'}">${fmtTeam(g.away)}</td>
       <td class="${awayWin?'cell-win':'cell-loss'}">${g.a}</td>
-      <td class="${!awayWin?'cell-win':'cell-loss'}">${g.home}</td>
+      <td class="${!awayWin?'cell-win':'cell-loss'}">${fmtTeam(g.home)}</td>
       <td class="${!awayWin?'cell-win':'cell-loss'}">${g.h}</td>
       <td>${type}</td>
     </tr>`;
@@ -606,18 +614,18 @@ function renderWeek2Schedule(){
   const body=document.getElementById('wk2Body');
   body.innerHTML = WEEK2_SCHEDULE.map(g=>{
     const note = noteForMatchup(g.m);
-    return `<tr><td>${g.m}</td><td>${note}</td></tr>`;
+    return `<tr><td>${formatMatchup(g.m)}</td><td>${note}</td></tr>`;
   }).join('');
   makeSortable(document.getElementById('wk2Table'));
 }
 
-/* Owners table */
+/* Owners table (bold all user teams) */
 function renderOwners(){
   const body=document.getElementById('ownersBody');
   body.innerHTML=USER_TEAMS.slice().sort((a,b)=>a.localeCompare(b)).map(t=>{
     const conf=TEAM_CONF[t]||'Ind';
     const owner=OWNER_MAP[t]||'—';
-    return `<tr><td>${t}</td><td>${owner}</td><td>${conf}</td></tr>`;
+    return `<tr><td>${fmtTeam(t)}</td><td>${owner}</td><td>${conf}</td></tr>`;
   }).join('');
   makeSortable(document.getElementById('ownersTable'));
 }
@@ -631,7 +639,7 @@ renderWeek('wk1Table','wk1Body',WEEK1_RESULTS);
 renderWeek2Schedule();
 renderOwners();
 
-/* Week 3 image fallback: try alternate extension then show message */
+/* Week 3 image: on error silently try the other extension, no user message */
 const wk3=document.getElementById('wk3Img');
 if (wk3){
   wk3.addEventListener('error',()=>{
@@ -641,11 +649,6 @@ if (wk3){
       const altSrc = src.endsWith('.png') ? src.replace('.png','.PNG') : src.replace('.PNG','.png');
       wk3.setAttribute('data-tried-alt','1');
       wk3.src = altSrc;
-      document.getElementById('wk3Fallback')?.classList.remove('hidden');
-      document.getElementById('wk3Fallback').textContent = 'Alternate image name attempted…';
-    }else{
-      document.getElementById('wk3Fallback')?.classList.remove('hidden');
-      document.getElementById('wk3Fallback').textContent = 'Couldn’t load week3ug image.';
     }
   });
 }
