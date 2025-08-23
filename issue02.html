@@ -4,13 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Running Late Dynasty — Week 2</title>
-<meta name="description" content="D1SN hub: Week 1 finals, poll movement, conference tracker, owners, and Week 2 & Week 3 slates." />
+<meta name="description" content="D1SN hub: Week 1 finals, Top-25 polls, conference tracker (user vs user only), owners, and Week 2 & Week 3 slates." />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="https://professorzoom45.github.io/PTG/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Perfect Timing Gaming">
-<meta property="og:title" content="Running Late Dynasty — D1SN" />
-<meta property="og:description" content="SEC surge after Week 1! New Top-25, conference tracker, and Week 3 slate." />
+<meta property="og:title" content="Running Late Dynasty — Week 2" />
+<meta property="og:description" content="SEC surge after Week 1! New Top-25, user-vs-user conference tracker, and Week 3 slate." />
 <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
 <meta property="og:image" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png">
 <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png">
@@ -82,7 +82,6 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <!-- TICKER -->
 <div class="ticker" role="region" aria-label="D1SN headlines">
   <div class="wrap">
-    <!-- UPDATED: D1SN logo now links to index page -->
     <a href="https://professorzoom45.github.io/PTG/" class="logo-a" title="Home (index)">D1SN</a>
     <div class="track">
       <div class="row">
@@ -92,7 +91,6 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
         <span><strong>W3 headliners:</strong> #9 LSU @ #13 BYU • #23 Baylor @ #8 Ohio State • #6 UNC @ FSU</span>
       </div>
     </div>
-    <!-- Fixed DM button on the right -->
     <a class="cta-btn" href="mailto:changethewrldplz@gmail.com?subject=DM%20D1SN&body=Hey%20D1SN%2C%20" title="Email D1SN directly">DM D1SN</a>
   </div>
 </div>
@@ -102,7 +100,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   <a class="chip" href="#headline">Headline</a>
   <a class="chip" href="#recap">Week 1 Recap</a>
   <a class="chip" href="#conf">Conference Tracker</a>
-  <a class="chip" href="#top25">Top-25 + Movement</a>
+  <a class="chip" href="#top25">Top-25 Polls</a>
   <a class="chip" href="#week0">Week 0 Finals</a>
   <a class="chip" href="#week1">Week 1 Finals</a>
   <a class="chip" href="#week2">Week 2 Schedule</a>
@@ -113,7 +111,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 
 <!-- Splash -->
 <section class="splash">
-  <h1>Running Late Dynasty — Issue 2</h1>
+  <h1>Running Late Dynasty — Week 2</h1>
   <img class="splash-hero" alt="Running Late hero art"
        src="https://professorzoom45.github.io/PTG/week2cover.PNG" />
 </section>
@@ -126,7 +124,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   </div>
 </section>
 
-<!-- Week 1 recap (auto from scores) -->
+<!-- Week 1 recap -->
 <section id="recap" class="section">
   <h2>Week 1 — Recap</h2>
   <div class="card" id="recapBody"></div>
@@ -134,16 +132,17 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 
 <!-- Conference Tracker -->
 <section id="conf" class="section">
-  <h2>Conference Tracker — Supremacy Points</h2>
+  <h2>Conference Tracker — UvU Only</h2>
   <div class="card">
-    <p class="small">Scoring: <strong>+2</strong> user win, <strong>−1</strong> user loss. User-vs-user applies both (+2 winner, −1 loser). Only user games counted.</p>
+    <p class="small">Counts <strong>only</strong> <em>User vs User</em> games from Weeks 0–1. Win% = Wins ÷ (Wins+Losses). Intra-conference UvU adds one win and one loss to the same conference.</p>
+    <div id="confBlurb" class="small" style="margin-bottom:10px"></div>
     <div id="confTableWrap"></div>
   </div>
 </section>
 
-<!-- Top 25 (with movement) -->
+<!-- Top-25 -->
 <section id="top25" class="section">
-  <h2>Top-25 (Media) — Movement</h2>
+  <h2>Top-25 Polls</h2>
   <div class="card">
     <table class="table sortable" id="pollTable">
       <thead>
@@ -175,7 +174,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 
 <!-- Week 1 -->
 <section id="week1" class="section">
-  <h2>Week 1 — Final Scores (Users)</h2>
+  <h2>Week 1 — Final Scores</h2>
   <div class="card">
     <table class="table sortable" id="wk1Table">
       <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
@@ -184,17 +183,17 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   </div>
 </section>
 
-<!-- Week 2 SCHEDULE -->
+<!-- Week 2 SCHEDULE (matchup + note) -->
 <section id="week2" class="section">
   <h2>Week 2 — Schedule (ET)</h2>
   <div class="card">
     <table class="table sortable" id="wk2Table">
-      <thead><tr>
-        <th data-type="str">Matchup</th>
-        <th data-type="str">Date</th>
-        <th data-type="str">Time</th>
-        <th data-type="str">Note</th>
-      </tr></thead>
+      <thead>
+        <tr>
+          <th data-type="str">Matchup</th>
+          <th data-type="str">Note</th>
+        </tr>
+      </thead>
       <tbody id="wk2Body"></tbody>
     </table>
   </div>
@@ -205,12 +204,12 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   <h2>Week 3 — User Games Slate</h2>
   <div class="card">
     <p class="small"><strong>Vote for Game of the Week:</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord poll link</a></p>
-    <a href="https://professorzoom45.github.io/PTG/week3ug.PNG" target="_blank" rel="noopener">
+    <a href="https://professorzoom45.github.io/PTG/week3ug.png" target="_blank" rel="noopener">
       <img id="wk3Img" class="img-fluid" loading="lazy"
-           src="https://professorzoom45.github.io/PTG/week3ug.PNG"
+           src="https://professorzoom45.github.io/PTG/week3ug.png"
            alt="Week 3 user-games slate (LSU@BYU, Baylor@Ohio State, UNC@FSU, Alabama@Utah)">
     </a>
-    <p id="wk3Fallback" class="small muted hidden">Can’t load <code>week3ug.PNG</code> from GitHub Pages.</p>
+    <p id="wk3Fallback" class="small muted hidden">Trying alternate image name…</p>
   </div>
 </section>
 
@@ -269,6 +268,12 @@ const POLL_NOW=[
   [21,"Michigan",355],[22,"USC",350],[23,"Baylor",275],[24,"Virginia Tech",265],[25,"Florida",235]
 ];
 
+/* Teams that did not move from Week 1 to Week 2 (lock LW=current, Δ=—) */
+const POLL_STEADY = { "South Carolina": 5, "Oregon": 12 };
+
+/* Optional LW overrides for teams ranked last week but not in preseason */
+const POLL_LW_OVERRIDES={ /* e.g. "Virginia Tech": 24 */ };
+
 /* ===== Scores ===== */
 const WEEK0_RESULTS=[
   {away:"Florida",a:27,home:"Washington",h:42},
@@ -299,33 +304,35 @@ const WEEK1_RESULTS=[
   {away:"Alabama",a:21,home:"Ohio State",h:14}
 ];
 
-/* Week 2 schedule (ET) */
+/* Week 2 schedule (matchups only; notes are computed) */
 const WEEK2_SCHEDULE=[
-  {m:"#22 USC @ #9 LSU", date:"Sat, Sep 12", time:"2:30 PM", note:"Tiger Stadium"},
-  {m:"#11 Georgia @ Illinois", date:"Sat, Sep 12", time:"12:00 PM", note:"Big Ten test"},
-  {m:"Oklahoma @ #21 Michigan", date:"Sat, Sep 12", time:"12:00 PM", note:"Blue opener"},
-  {m:"Wisconsin @ #5 South Carolina", date:"Sat, Sep 12", time:"12:00 PM", note:"Ranked host"},
-  {m:"Kentucky @ #6 North Carolina", date:"Sat, Sep 12", time:"12:00 PM", note:"ACC/SEC"},
-  {m:"#1 Alabama @ California", date:"Sat, Sep 12", time:"3:30 PM", note:"Road trap?"},
-  {m:"#10 Minnesota @ Mississippi State", date:"Sat, Sep 12", time:"3:30 PM", note:"SEC locale"},
-  {m:"Tennessee @ #19 Indiana", date:"Sat, Sep 12", time:"3:30 PM", note:"B1G tilt"},
-  {m:"Nebraska @ #25 Florida", date:"Sat, Sep 12", time:"3:30 PM", note:"The Swamp"},
-  {m:"#8 Ohio State @ #12 Oregon", date:"Sat, Sep 12", time:"10:00 PM", note:"Late window"},
-  {m:"Maryland @ #15 Washington", date:"Sat, Sep 12", time:"11:00 PM", note:"Seattle nightcap"},
-  {m:"Arizona State @ #14 Texas A&M", date:"Sat, Sep 12", time:"7:00 PM", note:"User vs User"},
-  {m:"#18 Arkansas @ Utah", date:"Sat, Sep 12", time:"7:30 PM", note:"User vs User"},
-  {m:"#23 Baylor vs Bowling Green", date:"Sat, Sep 12", time:"1:00 PM", note:"Waco"},
-  {m:"#13 BYU @ Utah State", date:"Sat, Sep 12", time:"3:30 PM", note:"Provo neighbors"},
-  {m:"Florida State @ #4 Texas", date:"Sat, Sep 12", time:"7:30 PM", note:"Austin lights"},
-  {m:"Duke @ #17 Colorado", date:"Sat, Sep 12", time:"2:00 PM", note:"Boulder"},
-  {m:"Michigan State @ #20 SMU", date:"Sat, Sep 12", time:"12:00 PM", note:"Dallas"},
-  {m:"Clemson @ Syracuse", date:"Sat, Sep 12", time:"3:00 PM", note:"JMA Dome"}
+  {m:"#22 USC @ #9 LSU"},
+  {m:"#11 Georgia @ Illinois"},
+  {m:"Oklahoma @ #21 Michigan"},
+  {m:"Wisconsin @ #5 South Carolina"},
+  {m:"Kentucky @ #6 North Carolina"},
+  {m:"#1 Alabama @ California"},
+  {m:"#10 Minnesota @ Mississippi State"},
+  {m:"Tennessee @ #19 Indiana"},
+  {m:"Nebraska @ #25 Florida"},
+  {m:"#8 Ohio State @ #12 Oregon"},
+  {m:"Maryland @ #15 Washington"},
+  {m:"Arizona State @ #14 Texas A&M"},
+  {m:"#18 Arkansas @ Utah"},
+  {m:"#23 Baylor vs Bowling Green"},
+  {m:"#13 BYU @ Utah State"},
+  {m:"Florida State @ #4 Texas"},
+  {m:"Duke @ #17 Colorado"},
+  {m:"Michigan State @ #20 SMU"},
+  {m:"Clemson @ Syracuse"}
 ];
 
 /* ===== Helpers ===== */
 const isUser=t=>USER_TEAMS.includes(t);
 const allResults=()=>WEEK0_RESULTS.concat(WEEK1_RESULTS);
+const currentPollRank = new Map(POLL_NOW.map(([r,t])=>[t,r]));
 
+/* Sorting helper for tables */
 function makeSortable(table){
   const ths=[...table.querySelectorAll('thead th')];
   ths.forEach((th,i)=>{
@@ -344,6 +351,7 @@ function makeSortable(table){
   });
 }
 
+/* Build records (all games) for the poll records column */
 function buildRecordMap(){
   const m=new Map(), add=(t,wl)=>{const r=m.get(t)||{w:0,l:0}; r[wl]++; m.set(t,r);};
   allResults().forEach(g=>{
@@ -353,33 +361,232 @@ function buildRecordMap(){
   return m;
 }
 
-function computeTeamSupremacy(){
-  const pts=new Map(), add=(t,d)=>pts.set(t,(pts.get(t)||0)+d);
-  allResults().forEach(g=>{
-    const aU=isUser(g.away), hU=isUser(g.home);
-    if(!(aU||hU)) return;
-    if(g.a>g.h){ if(aU) add(g.away,+2); if(hU) add(g.home,-1); }
-    else if(g.h>g.a){ if(hU) add(g.home,+2); if(aU) add(g.away,-1); }
-  });
-  return pts;
+/* ========== UvU-only Conference Tracker ========== */
+function getUserVsUserGames(){
+  return allResults().filter(g=>isUser(g.away)&&isUser(g.home));
 }
 
-function computeConferenceRows(){
-  const teamPts=computeTeamSupremacy(), confAgg={};
-  USER_TEAMS.forEach(t=>{ const c=TEAM_CONF[t]||'Ind'; (confAgg[c]||(confAgg[c]={pts:0,w:0,l:0,teams:{}})); confAgg[c].teams[t]=teamPts.get(t)||0; });
-  allResults().forEach(g=>{
-    const aU=isUser(g.away), hU=isUser(g.home); if(!(aU||hU)) return;
-    const aC=TEAM_CONF[g.away]||'Ind', hC=TEAM_CONF[g.home]||'Ind';
-    if(g.a>g.h){ if(aU){confAgg[aC].pts+=2;confAgg[aC].w++;} if(hU){confAgg[hC].pts-=1;confAgg[hC].l++;} }
-    else { if(hU){confAgg[hC].pts+=2;confAgg[hC].w++;} if(aU){confAgg[aC].pts-=1;confAgg[aC].l++;} }
+function computeUvUConferenceStats(){
+  const stats={}; // conf -> {w:0,l:0,gp:0,teams:{team:{w:0,l:0}}}
+  USER_TEAMS.forEach(t=>{
+    const c=TEAM_CONF[t]||'Ind';
+    if(!stats[c]) stats[c]={w:0,l:0,gp:0,teams:{}};
+    stats[c].teams[t]={w:0,l:0};
   });
-  return Object.entries(confAgg).map(([conf,d])=>{
-    const leader=Object.entries(d.teams).sort((a,b)=>b[1]-a[1])[0]||null;
-    return {conf,pts:d.pts,w:d.w,l:d.l,leader:leader?`${leader[0]} (${leader[1]})`:'—'};
-  }).sort((a,b)=>b.pts-a.pts);
+
+  getUserVsUserGames().forEach(g=>{
+    const winner = g.a>g.h ? g.away : g.home;
+    const loser  = g.a>g.h ? g.home : g.away;
+    const wConf = TEAM_CONF[winner]||'Ind';
+    const lConf = TEAM_CONF[loser]||'Ind';
+    // conference tallies
+    stats[wConf].w++; stats[wConf].gp++;
+    stats[lConf].l++; stats[lConf].gp++;
+    // team tallies
+    stats[wConf].teams[winner].w++;
+    stats[lConf].teams[loser].l++;
+  });
+
+  // Build rows with % and leader(s)
+  const rows = Object.entries(stats).map(([conf,d])=>{
+    const gp=d.gp, w=d.w, l=d.l, pct = gp ? (w/(w+l)) : 0;
+    // pick best team in conf: wins desc, losses asc, then poll rank asc
+    const teams = Object.entries(d.teams);
+    teams.sort((a,b)=>{
+      const [ta,ra]=a,[tb,rb]=b;
+      const wa=ra.w, la=ra.l, wb=rb.w, lb=rb.l;
+      if(wa!==wb) return wb-wa;
+      if(la!==lb) return la-lb;
+      const pa=currentPollRank.get(ta)||99, pb=currentPollRank.get(tb)||99;
+      return pa-pb;
+    });
+    const leaderTeam = teams.find(([,r])=>r.w>0 || r.l>0)?.[0] || teams[0][0];
+    const leaderRec = d.teams[leaderTeam];
+    const leader = `${leaderTeam} (${leaderRec.w}-${leaderRec.l})`;
+    return {conf,w,l,gp,pct,leader,raw: d};
+  }).sort((a,b)=> b.pct-a.pct || b.w-a.w);
+
+  return rows;
 }
 
-/* ===== Renderers ===== */
+function renderConferenceTracker(){
+  const rows=computeUvUConferenceStats();
+  const wrap=document.getElementById('confTableWrap');
+  const tbl=document.createElement('table');
+  tbl.className='table sortable';
+  tbl.innerHTML=`<thead>
+    <tr><th data-type="num">Place</th><th data-type="str">Conference</th><th data-type="num">W</th><th data-type="num">L</th><th data-type="num">Win%</th><th data-type="str">Leader</th></tr>
+  </thead><tbody></tbody>`;
+  const tb=tbl.tBodies[0];
+  rows.forEach((r,i)=>{
+    tb.insertAdjacentHTML('beforeend',`<tr>
+      <td>${i+1}</td><td>${r.conf}</td><td>${r.w}</td><td>${r.l}</td><td>${(r.pct*100).toFixed(1)}</td><td>${r.leader}</td>
+    </tr>`);
+  });
+  wrap.innerHTML=''; wrap.appendChild(tbl); makeSortable(tbl);
+
+  // Build blurb: #1 conf + how its #1 team got there (include scores)
+  const top = rows[0];
+  if(top){
+    const confName = top.conf;
+    // pick a #1 team in conf using the same order as in computeUvUConferenceStats
+    const teamsOrder = Object.entries(top.raw.teams).sort((a,b)=>{
+      const [ta,ra]=a,[tb,rb]=b;
+      if(ra.w!==rb.w) return rb.w-ra.w;
+      if(ra.l!==rb.l) return ra.l-rb.l;
+      const pa=currentPollRank.get(ta)||99, pb=currentPollRank.get(tb)||99;
+      return pa-pb;
+    });
+    const topTeam = teamsOrder[0][0];
+
+    const uvus = getUserVsUserGames().filter(g=>{
+      const aC=TEAM_CONF[g.away], hC=TEAM_CONF[g.home];
+      return aC===confName || hC===confName;
+    });
+
+    const wins = uvus.filter(g=>{
+      const winner = g.a>g.h ? g.away : g.home;
+      return TEAM_CONF[winner]===confName;
+    }).map(g=>{
+      const W = g.a>g.h ? g.away : g.home;
+      const L = g.a>g.h ? g.home : g.away;
+      const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
+      return `${W} ${wScore}–${lScore} over ${L}`;
+    });
+
+    const losses = uvus.filter(g=>{
+      const loser = g.a>g.h ? g.home : g.away;
+      return TEAM_CONF[loser]===confName;
+    }).map(g=>{
+      const W = g.a>g.h ? g.away : g.home;
+      const L = g.a>g.h ? g.home : g.away;
+      const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
+      return `${L} lost ${lScore}–${wScore} to ${W}`;
+    });
+
+    // Specific path for the #1 team
+    const topTeamGames = getUserVsUserGames().filter(g=>g.away===topTeam||g.home===topTeam)
+      .map(g=>{
+        const W = g.a>g.h ? g.away : g.home;
+        const L = g.a>g.h ? g.home : g.away;
+        const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
+        return {W,L,wScore,lScore};
+      });
+
+    const topTeamLine = topTeamGames.length
+      ? topTeamGames.map(g=>`${g.W} ${g.wScore}–${g.lScore} over ${g.L}`).join('; ')
+      : `${topTeam} (no UvU yet)`;
+
+    document.getElementById('confBlurb').innerHTML =
+      `<strong>${confName}</strong> leads the UvU tracker at <strong>${top.w}-${top.l}</strong> (${(top.pct*100).toFixed(1)}%). 
+       Their top team right now: <strong>${topTeam}</strong> — ${topTeamLine}.
+       Recent ${confName} UvU results: <em>${wins.join(' • ')}</em>${losses.length? ' • ' + losses.join(' • ') : ''}.`;
+  }
+}
+
+/* Top-25 renderer (CPU teams red, correct LW/Δ) */
+function renderPoll(){
+  const rec=buildRecordMap();
+  const preMap=new Map(POLL_PRE.map(([rk,t])=>[t,rk]));
+  const now=POLL_NOW.map(([rk,t,pts])=>{
+    if (t in POLL_STEADY) {
+      const wl=rec.get(t)||{w:0,l:0};
+      return {rk,t,pts,lw:POLL_STEADY[t],delta:0,wl:`${wl.w||0}-${wl.l||0}`,teamCls: (!isUser(t)?'cpu':''),dCls:'delta-none',deltaTxt:'—'};
+    }
+    const lwOverride = POLL_LW_OVERRIDES[t];
+    const lw = (typeof lwOverride==='number') ? lwOverride : (preMap.has(t) ? preMap.get(t) : '—');
+    const base = (typeof lw==='number') ? lw : null;
+    const delta = (base!==null) ? (base - rk) : null;
+    const wl=rec.get(t)||{w:0,l:0};
+    const teamCls = !isUser(t) ? 'cpu' : '';
+    const dCls = delta===null? 'delta-none' : delta>0? 'delta-up' : delta<0? 'delta-down':'delta-none';
+    const deltaTxt = delta===null? 'NR' : (delta===0? '—' : (delta>0? `▲ ${delta}` : `▼ ${Math.abs(delta)}`));
+    return {rk,t,pts,lw,delta,wl:`${wl.w||0}-${wl.l||0}`,teamCls,dCls,deltaTxt};
+  });
+
+  const body=document.getElementById('pollBody');
+  body.innerHTML=now.map(x=>`<tr>
+    <td>${x.rk}</td><td class="${x.teamCls}">${x.t}</td><td>${x.lw}</td>
+    <td class="${x.dCls}">${x.deltaTxt}</td><td>${x.wl}</td><td>${x.pts}</td>
+  </tr>`).join('');
+
+  const risers = now.filter(x=>x.delta!==null && x.delta>=3).sort((a,b)=>b.delta-a.delta).slice(0,5);
+  const fallers = now.filter(x=>x.delta!==null && x.delta<=-3).sort((a,b)=>a.delta-b.delta).slice(0,5);
+  const entrants = now.filter(x=>x.lw==='NR' || x.lw==='—').map(x=>`#${x.rk} ${x.t}`);
+  const dropped = POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${t}`);
+
+  document.getElementById('movers').innerHTML =
+    `<p><strong>Big risers:</strong> ${risers.map(x=>`#${x.rk} ${x.t} (▲${x.delta})`).join(', ')||'—'}</p>
+     <p><strong>Big fallers:</strong> ${fallers.map(x=>`#${x.rk} ${x.t} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
+     <p><strong>New entrants:</strong> ${entrants.join(', ')||'—'}</p>
+     <p><strong>Dropped out:</strong> ${dropped.join(', ')||'—'}</p>`;
+  makeSortable(document.getElementById('pollTable'));
+}
+
+/* ===== Recap (no duplicates) ===== */
+function renderRecap(){
+  const uvus = WEEK1_RESULTS.filter(g=>isUser(g.away)&&isUser(g.home));
+  const uvuKeys = new Set(uvus.map(g=>`${g.away}@${g.home}`));
+
+  // UvU highlights
+  const uvuLines = uvus.map(g=>{
+    const winner = g.a>g.h ? g.away : g.home;
+    const loser  = g.a>g.h ? g.home : g.away;
+    const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
+    return `<li><strong>${winner}</strong> def. <strong>${loser}</strong> ${w}–${l}</li>`;
+  });
+
+  // Other ranked/user wins: user wins only, excluding UvU so nothing repeats
+  const others = WEEK1_RESULTS
+    .filter(g=>!uvuKeys.has(`${g.away}@${g.home}`))
+    .filter(g=> isUser(g.a>g.h ? g.away : g.home)) // winner is a user
+    .map(g=>{
+      const winner = g.a>g.h ? g.away : g.home;
+      const loser  = g.a>g.h ? g.home : g.away;
+      const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
+      return `<li>${winner} ${w}–${l} over ${loser}</li>`;
+    });
+
+  document.getElementById('recapBody').innerHTML =
+    `<p><strong>User vs User highlights:</strong></p>
+     <ul>${uvuLines.join('')}</ul>
+     <p><strong>Other ranked/user wins:</strong></p>
+     <ul>${others.join('')}</ul>`;
+}
+
+/* ===== Week 2 schedule (notes only per rules) ===== */
+function parseMatchup(str){
+  const clean=s=>s.replace(/^\s*#\d+\s*/,'').trim();
+  let a='',b='', ar=null, br=null;
+  const rxRank=/#(\d+)/g; const ranks=[...str.matchAll(rxRank)].map(m=>+m[1]);
+  if(str.includes(' @ ')) [a,b]=str.split(' @ ').map(clean);
+  else if(str.includes(' at ')) [a,b]=str.split(' at ').map(clean);
+  else if(str.includes(' vs ')) [a,b]=str.split(' vs ').map(clean);
+  else { a=str.trim(); b=''; }
+  if(ranks.length){ ar=ranks[0]??null; br=ranks[1]??null; }
+  return {a,b,ar,br};
+}
+
+function noteForMatchup(m){
+  const {a,b,ar,br}=parseMatchup(m);
+  const aUser=isUser(a), bUser=isUser(b);
+  if(aUser ^ bUser) return 'User vs CPU';
+  const notes=[];
+  if(aUser && bUser) notes.push('User vs User');
+  const aC=TEAM_CONF[a], bC=TEAM_CONF[b];
+  if(aC && bC){
+    if(aC===bC) notes.push(`${aC} game`);
+    else notes.push(`Cross-Conference: ${aC} vs ${bC}`);
+  }
+  if(ar && br){
+    const top=Math.min(ar,br);
+    if(top<=5) notes.push('Top-5 matchup');
+    else if(top<=10) notes.push('Top-10 matchup');
+    else if(top<=25) notes.push('Top-25 matchup');
+  }
+  return notes.join(', ') || '—';
+}
+
 function renderWeek(tblId,bodyId,games){
   const body=document.getElementById(bodyId);
   body.innerHTML=games.map(g=>{
@@ -397,85 +604,14 @@ function renderWeek(tblId,bodyId,games){
 
 function renderWeek2Schedule(){
   const body=document.getElementById('wk2Body');
-  body.innerHTML = WEEK2_SCHEDULE.map(g=>`<tr>
-    <td>${g.m}</td><td>${g.date}</td><td>${g.time}</td><td>${g.note||''}</td>
-  </tr>`).join('');
+  body.innerHTML = WEEK2_SCHEDULE.map(g=>{
+    const note = noteForMatchup(g.m);
+    return `<tr><td>${g.m}</td><td>${note}</td></tr>`;
+  }).join('');
   makeSortable(document.getElementById('wk2Table'));
 }
 
-function renderConferenceTracker(){
-  const rows=computeConferenceRows();
-  const wrap=document.getElementById('confTableWrap');
-  const tbl=document.createElement('table'); tbl.className='table sortable'; tbl.innerHTML=`<thead><tr><th data-type="num">Place</th><th data-type="str">Conference</th><th data-type="str">Leader</th><th data-type="num">Pts</th><th data-type="num">W</th><th data-type="num">L</th></tr></thead><tbody></tbody>`;
-  const tb=tbl.tBodies[0]; rows.forEach((r,i)=>tb.insertAdjacentHTML('beforeend',`<tr><td>${i+1}</td><td>${r.conf}</td><td>${r.leader}</td><td>${r.pts}</td><td>${r.w}</td><td>${r.l}</td></tr>`));
-  wrap.innerHTML=''; wrap.appendChild(tbl); makeSortable(tbl);
-}
-
-function renderPoll(){
-  const rec=buildRecordMap();
-  const preMap=new Map(POLL_PRE.map(([rk,t])=>[t,rk]));
-  const now=POLL_NOW.map(([rk,t,pts])=>{
-    const hadLW = preMap.has(t);
-    const lw = hadLW ? preMap.get(t) : 'NR';
-    const delta = hadLW ? (preMap.get(t) - rk) : null; // positive = moved up
-    const wl=rec.get(t)||{w:0,l:0};
-    const teamCls = !isUser(t) ? 'cpu' : ''; // red if CPU controlled
-    const dCls = delta===null? 'delta-none' : delta>0? 'delta-up' : delta<0? 'delta-down':'delta-none';
-    const deltaTxt = delta===null? 'NR' : (delta===0? '—' : (delta>0? `▲ ${delta}` : `▼ ${Math.abs(delta)}`));
-    return {rk,t,pts,lw,delta,wl:`${wl.w||0}-${wl.l||0}`,teamCls,dCls,deltaTxt};
-  });
-
-  const body=document.getElementById('pollBody');
-  body.innerHTML=now.map(x=>`<tr>
-    <td>${x.rk}</td>
-    <td class="${x.teamCls}">${x.t}</td>
-    <td>${x.lw}</td>
-    <td class="${x.dCls}">${x.deltaTxt}</td>
-    <td>${x.wl}</td>
-    <td>${x.pts}</td>
-  </tr>`).join('');
-
-  const risers = now.filter(x=>x.delta!==null && x.delta>=3).sort((a,b)=>b.delta-a.delta).slice(0,5);
-  const fallers = now.filter(x=>x.delta!==null && x.delta<=-3).sort((a,b)=>a.delta-b.delta).slice(0,5);
-  const entrants = now.filter(x=>x.lw==='NR').map(x=>`#${x.rk} ${x.t}`);
-  const dropped = POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${t}`);
-
-  document.getElementById('movers').innerHTML =
-    `<p><strong>Big risers:</strong> ${risers.map(x=>`#${x.rk} ${x.t} (▲${x.delta})`).join(', ')||'—'}</p>
-     <p><strong>Big fallers:</strong> ${fallers.map(x=>`#${x.rk} ${x.t} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
-     <p><strong>New entrants:</strong> ${entrants.join(', ')||'—'}</p>
-     <p><strong>Dropped out:</strong> ${dropped.join(', ')||'—'}</p>`;
-
-  makeSortable(document.getElementById('pollTable'));
-}
-
-function renderRecap(){
-  const uvus = WEEK1_RESULTS.filter(g=>isUser(g.away)&&isUser(g.home));
-  const lines = uvus.map(g=>{
-    const winner = g.a>g.h ? g.away : g.home;
-    const loser  = g.a>g.h ? g.home : g.away;
-    const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
-    return `<li><strong>${winner}</strong> def. <strong>${loser}</strong> ${w}–${l}</li>`;
-  });
-
-  const rankedWins = WEEK1_RESULTS.filter(g=>{
-    const teams = POLL_NOW.map(x=>x[1]);
-    const winner = g.a>g.h ? g.away : g.home;
-    return teams.includes(winner);
-  }).map(g=>{
-    const winner = g.a>g.h ? g.away : g.home;
-    const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
-    const loser  = g.a>g.h ? g.home : g.away;
-    return `<li>${winner} ${w}–${l} over ${loser}</li>`;
-  });
-
-  document.getElementById('recapBody').innerHTML =
-    `<p><strong>User vs User highlights:</strong></p>
-     <ul>${lines.join('')}</ul>
-     <p><strong>Other ranked/user wins:</strong></p>
-     <ul>${rankedWins.join('')}</ul>`;
-}
-
+/* Owners table */
 function renderOwners(){
   const body=document.getElementById('ownersBody');
   body.innerHTML=USER_TEAMS.slice().sort((a,b)=>a.localeCompare(b)).map(t=>{
@@ -495,8 +631,24 @@ renderWeek('wk1Table','wk1Body',WEEK1_RESULTS);
 renderWeek2Schedule();
 renderOwners();
 
-/* Week 3 image fallback message */
-const wk3=document.getElementById('wk3Img'); if(wk3){wk3.addEventListener('error',()=>{document.getElementById('wk3Fallback')?.classList.remove('hidden');});}
+/* Week 3 image fallback: try alternate extension then show message */
+const wk3=document.getElementById('wk3Img');
+if (wk3){
+  wk3.addEventListener('error',()=>{
+    const tried = wk3.getAttribute('data-tried-alt');
+    if(!tried){
+      const src=wk3.getAttribute('src');
+      const altSrc = src.endsWith('.png') ? src.replace('.png','.PNG') : src.replace('.PNG','.png');
+      wk3.setAttribute('data-tried-alt','1');
+      wk3.src = altSrc;
+      document.getElementById('wk3Fallback')?.classList.remove('hidden');
+      document.getElementById('wk3Fallback').textContent = 'Alternate image name attempted…';
+    }else{
+      document.getElementById('wk3Fallback')?.classList.remove('hidden');
+      document.getElementById('wk3Fallback').textContent = 'Couldn’t load week3ug image.';
+    }
+  });
+}
 </script>
 </body>
 </html>
