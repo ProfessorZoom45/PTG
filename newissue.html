@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Running Late Dynasty — Week 2</title>
+<meta name="description" content="D1SN hub: Week 1 finals, poll movement, conference tracker, owners, and Week 2 & Week 3 slates." />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="https://professorzoom45.github.io/PTG/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Perfect Timing Gaming">
+<meta property="og:title" content="Running Late Dynasty — D1SN" />
+<meta property="og:description" content="SEC surge after Week 1! New Top-25, conference tracker, and Week 3 slate." />
+<meta property="og:url" content="https://professorzoom45.github.io/PTG/">
+<meta property="og:image" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png">
+<meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png">
+
+<style>
+:root{
+  --bg:#0b0b0b;--card:#141414;--line:#232323;--text:#e6e6e6;--muted:#a6a6a6;
+  --gold:#d5b15b;--accent:#f2d675;
+  --up:#16c784;--down:#ff5c5c;--no:#9aa3ad;--cpu:#ff6b6b;
+  --win-bg:#143a29;--win-fg:#bff8d7;--loss-bg:#3f2629;--loss-fg:#ffd0d0;
+  --chip:#121212;--chip-b:#2a2a2a;
+  --btn-a:#1a1a1a;--btn-b:#262626;--btn-glow:#f2d67566
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--gold);text-decoration:none}
+a:focus-visible,.chip:focus-visible,.cta-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+h1,h2{margin:0 0 .6rem}
+p{margin:.4rem 0 .8rem}
+.small{font-size:.92rem;color:#b0b0b0}
+.muted{color:var(--muted)}
+.pill{border:1px solid #2a2a2a;padding:4px 10px;border-radius:999px;font-size:.85rem;color:#ddd}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px;scroll-margin-top:72px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+
+/* Chips */
+.chips{max-width:1100px;margin:10px auto 6px;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--chip);border:1px solid var(--chip-b);color:#eaeaea;font-weight:600}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Ticker */
+.ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
+.ticker .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008}
+.ticker .track{overflow:hidden;flex:1}
+.ticker .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 30s linear infinite}
+.ticker:hover .row{animation-play-state:paused}
+.ticker .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
+.ticker .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+@keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+.cta-btn{margin-left:8px;border:1px solid #3c3c3c;padding:8px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+.cta-btn:hover{filter:brightness(1.08);box-shadow:0 0 0 2px #000 inset,0 0 22px var(--btn-glow)}
+
+/* Splash */
+.splash{min-height:46vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:var(--accent);position:relative}
+.splash h1{font-size:clamp(2rem,4.8vw,3rem)}
+.splash-hero{width:min(100%,1100px);max-width:92vw;height:auto;margin:.75rem auto 0;border-radius:16px;border:1px solid #2a2a2a;box-shadow:0 10px 40px #000a}
+
+/* Tables */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
+.sortable th{user-select:none;cursor:pointer}
+.sortable th[aria-sort="ascending"],.sortable th[aria-sort="descending"]{color:var(--accent)}
+.cell-win{background:var(--win-bg);color:var(--win-fg);border-radius:6px;padding:3px 8px}
+.cell-loss{background:var(--loss-bg);color:var(--loss-fg);border-radius:6px;padding:3px 8px}
+.delta-up{color:var(--up);font-weight:700}
+.delta-down{color:var(--down);font-weight:700}
+.delta-none{color:var(--no)}
+.cpu{color:var(--cpu);font-weight:700}
+
+/* Media */
+.img-fluid{max-width:100%;height:auto;border-radius:12px;border:1px solid #2a2a2a;background:#0f0f0f}
+.hidden{display:none!important}
+footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker" role="region" aria-label="D1SN headlines">
+  <div class="wrap">
+    <!-- UPDATED: D1SN logo now links to index page -->
+    <a href="https://professorzoom45.github.io/PTG/" class="logo-a" title="Home (index)">D1SN</a>
+    <div class="track">
+      <div class="row">
+        <span><strong>NEW #1: Alabama</strong> after 21–14 at Ohio State</span>
+        <span><strong>Miami rockets to #2</strong> after 38–26 over Georgia</span>
+        <span><strong>Vote GOTW (Week 3) →</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord Poll</a></span>
+        <span><strong>W3 headliners:</strong> #9 LSU @ #13 BYU • #23 Baylor @ #8 Ohio State • #6 UNC @ FSU</span>
+      </div>
+    </div>
+    <!-- Fixed DM button on the right -->
+    <a class="cta-btn" href="mailto:changethewrldplz@gmail.com?subject=DM%20D1SN&body=Hey%20D1SN%2C%20" title="Email D1SN directly">DM D1SN</a>
+  </div>
+</div>
+
+<!-- Chips -->
+<div class="chips">
+  <a class="chip" href="#headline">Headline</a>
+  <a class="chip" href="#recap">Week 1 Recap</a>
+  <a class="chip" href="#conf">Conference Tracker</a>
+  <a class="chip" href="#top25">Top-25 + Movement</a>
+  <a class="chip" href="#week0">Week 0 Finals</a>
+  <a class="chip" href="#week1">Week 1 Finals</a>
+  <a class="chip" href="#week2">Week 2 Schedule</a>
+  <a class="chip" href="#week3">Week 3 Slate</a>
+  <a class="chip" href="#owners">Owners</a>
+  <a class="chip" href="#mail">Mailbag</a>
+</div>
+
+<!-- Splash -->
+<section class="splash">
+  <h1>Running Late Dynasty — Issue 2</h1>
+  <img class="splash-hero" alt="Running Late hero art"
+       src="https://professorzoom45.github.io/PTG/6696738D-711D-479A-9F95-596F3C61B936.png" />
+</section>
+
+<!-- Headline blurb -->
+<section id="headline" class="section">
+  <h2>New No. 1: Alabama</h2>
+  <div class="card">
+    <p><strong>Alabama</strong> takes over the top spot after a gritty <strong>21–14</strong> win at then-#2 <strong>Ohio State</strong>. With <strong>Georgia</strong> falling at Miami and last year’s contenders shuffling, the Tide’s road dub sets the early tone for the SEC. Next up: a tricky trip to <strong>Utah</strong> in Week 3.</p>
+  </div>
+</section>
+
+<!-- Week 1 recap (auto from scores) -->
+<section id="recap" class="section">
+  <h2>Week 1 — Recap</h2>
+  <div class="card" id="recapBody"></div>
+</section>
+
+<!-- Conference Tracker -->
+<section id="conf" class="section">
+  <h2>Conference Tracker — Supremacy Points</h2>
+  <div class="card">
+    <p class="small">Scoring: <strong>+2</strong> user win, <strong>−1</strong> user loss. User-vs-user applies both (+2 winner, −1 loser). Only user games counted.</p>
+    <div id="confTableWrap"></div>
+  </div>
+</section>
+
+<!-- Top 25 (with movement) -->
+<section id="top25" class="section">
+  <h2>Top-25 (Media) — Movement</h2>
+  <div class="card">
+    <table class="table sortable" id="pollTable">
+      <thead>
+        <tr>
+          <th data-type="num">#</th>
+          <th data-type="str">Team</th>
+          <th data-type="num">LW</th>
+          <th data-type="str">Δ</th>
+          <th data-type="rec">Record</th>
+          <th data-type="num">Pts</th>
+        </tr>
+      </thead>
+      <tbody id="pollBody"></tbody>
+    </table>
+    <div id="movers" class="small" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<!-- Week 0 -->
+<section id="week0" class="section">
+  <h2>Week 0 — Final Scores</h2>
+  <div class="card">
+    <table class="table sortable" id="wk0Table">
+      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
+      <tbody id="wk0Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 1 -->
+<section id="week1" class="section">
+  <h2>Week 1 — Final Scores (Users)</h2>
+  <div class="card">
+    <table class="table sortable" id="wk1Table">
+      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
+      <tbody id="wk1Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 2 SCHEDULE -->
+<section id="week2" class="section">
+  <h2>Week 2 — Schedule (ET)</h2>
+  <div class="card">
+    <table class="table sortable" id="wk2Table">
+      <thead><tr>
+        <th data-type="str">Matchup</th>
+        <th data-type="str">Date</th>
+        <th data-type="str">Time</th>
+        <th data-type="str">Note</th>
+      </tr></thead>
+      <tbody id="wk2Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 3 SLATE -->
+<section id="week3" class="section">
+  <h2>Week 3 — User Games Slate</h2>
+  <div class="card">
+    <p class="small"><strong>Vote for Game of the Week:</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord poll link</a></p>
+    <a href="https://professorzoom45.github.io/PTG/week3ug.PNG" target="_blank" rel="noopener">
+      <img id="wk3Img" class="img-fluid" loading="lazy"
+           src="https://professorzoom45.github.io/PTG/week3ug.PNG"
+           alt="Week 3 user-games slate (LSU@BYU, Baylor@Ohio State, UNC@FSU, Alabama@Utah)">
+    </a>
+    <p id="wk3Fallback" class="small muted hidden">Can’t load <code>week3ug.PNG</code> from GitHub Pages.</p>
+  </div>
+</section>
+
+<!-- Owners -->
+<section id="owners" class="section">
+  <h2>Owners Directory (32)</h2>
+  <div class="card">
+    <table class="table sortable" id="ownersTable">
+      <thead><tr><th data-type="str">Team</th><th data-type="str">Owner (Discord)</th><th data-type="str">Conf</th></tr></thead>
+      <tbody id="ownersBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Mailbag -->
+<section id="mail" class="section">
+  <h2>Mailbag & Submissions</h2>
+  <div class="card">
+    <p>Email <a href="mailto:changethewrldplz@gmail.com">changethewrldplz@gmail.com</a>, post in <a href="https://discord.com/channels/1382826467683205180/1382826468622467133" target="_blank" rel="noopener">Discord #general</a>, or click <a href="mailto:changethewrldplz@gmail.com">DM D1SN</a>.</p>
+    <p class="muted">Submit top stat lines, highlights, or chaos moments; we’ll post them after verification.</p>
+  </div>
+</section>
+
+<footer>© D1SN — Running Late Dynasty. Tip: press <kbd>Enter</kbd> on a table header to sort.</footer>
+
+<script>
+/* ===== User teams & owners ===== */
+const USER_TEAMS=["LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware","Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma","Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech","Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina","Utah","Auburn","Minnesota","SMU","UCLA"];
+
+const OWNER_MAP={
+  "LSU":"@zo0o_0om","Clemson":"@selfmadezay.","Arkansas":"@streetcammo5391","Michigan":"@grap.12_58536",
+  "Texas":"@i_do_dis_314","Ohio State":"@shadeeliteyt","Miami":"@imjusttoolucky","Delaware":"@sweatsuitsavage9225",
+  "Georgia":"@mikecmd_856","Arizona State":"@partymaster84","Florida":"@lakedogg32","Washington":"@zeeeeeeeee3",
+  "Alabama":"@lejason","BYU":"@yungdee0354","Oklahoma":"@illecill","Florida State":"@allstarcowboy254._84024",
+  "Notre Dame":"@cjjman36","South Carolina":"@ulost2sway","Illinois":"@merzqcg","USC":"@flyguy3x",
+  "Texas Tech":"@zig8875","Baylor":"@.ruin2.","Colorado":"@phreshttv","Texas A&M":"@dabears7712",
+  "Penn State":"@jrob9179","Tennessee":"@cordfollowing9275","North Carolina":"@KingDion716","Utah":"@papishome69",
+  "Auburn":"@slimxxiv","Minnesota":"@jayhibbs.","SMU":"@superhb","UCLA":"@dawgpd_31"
+};
+
+const TEAM_CONF={
+  "Georgia":"SEC","Alabama":"SEC","LSU":"SEC","Texas":"SEC","Oklahoma":"SEC","Florida":"SEC","Tennessee":"SEC","Texas A&M":"SEC","South Carolina":"SEC","Arkansas":"SEC","Auburn":"SEC","Baylor":"SEC",
+  "Ohio State":"Big Ten","Michigan":"Big Ten","Penn State":"Big Ten","USC":"Big Ten","UCLA":"Big Ten","Washington":"Big Ten","Minnesota":"Big Ten","Illinois":"Big Ten",
+  "Clemson":"ACC","Florida State":"ACC","Miami":"ACC","North Carolina":"ACC","SMU":"ACC","Notre Dame":"ACC",
+  "Colorado":"Big 12","Texas Tech":"Big 12","Utah":"Big 12","Arizona State":"Big 12","BYU":"Big 12","Delaware":"Big 12"
+};
+
+/* ===== Polls ===== */
+const POLL_PRE=[[1,"Georgia"],[2,"Ohio State"],[3,"Notre Dame"],[4,"Texas"],[5,"Alabama"],[6,"North Carolina"],[7,"Miami"],[8,"Penn State"],[9,"LSU"],[10,"Clemson"],[11,"Minnesota"],[12,"USC"],[13,"Texas Tech"],[14,"Florida State"],[15,"Oklahoma"],[16,"Florida"],[17,"Washington"],[18,"Baylor"],[19,"Tennessee"],[20,"Texas A&M"],[21,"Colorado"],[22,"Arkansas"],[23,"BYU"],[24,"Utah"],[25,"Illinois"]];
+
+const POLL_NOW=[
+  [1,"Alabama",1600],[2,"Miami",1522],[3,"Notre Dame",1393],[4,"Texas",1331],[5,"South Carolina",1270],
+  [6,"North Carolina",1151],[7,"Penn State",1080],[8,"Ohio State",1055],[9,"LSU",991],[10,"Minnesota",918],
+  [11,"Georgia",871],[12,"Oregon",867],[13,"BYU",780],[14,"Texas A&M",732],[15,"Washington",686],
+  [16,"Texas Tech",641],[17,"Colorado",576],[18,"Arkansas",555],[19,"Indiana",413],[20,"SMU",399],
+  [21,"Michigan",355],[22,"USC",350],[23,"Baylor",275],[24,"Virginia Tech",265],[25,"Florida",235]
+];
+
+/* ===== Scores ===== */
+const WEEK0_RESULTS=[
+  {away:"Florida",a:27,home:"Washington",h:42},
+  {away:"USC",a:7,home:"Texas",h:40},
+  {away:"Ohio",a:3,home:"Ohio State",h:28},
+  {away:"Illinois",a:0,home:"Texas Tech",h:28},
+  {away:"Temple",a:20,home:"Penn State",h:57},
+  {away:"Iowa",a:7,home:"Alabama",h:42},
+  {away:"Indiana",a:24,home:"LSU",h:26},
+  {away:"UCLA",a:10,home:"California",h:14},
+  {away:"Michigan",a:20,home:"Houston",h:0},
+  {away:"Utah",a:56,home:"Utah State",h:31},
+  {away:"SMU",a:14,home:"Baylor",h:37},
+  {away:"BYU",a:21,home:"Clemson",h:17},
+  {away:"Miami",a:63,home:"Central Michigan",h:3}
+];
+
+const WEEK1_RESULTS=[
+  {away:"Clemson",a:14,home:"LSU",h:31},
+  {away:"Texas A&M",a:38,home:"Missouri State",h:3},
+  {away:"Texas",a:48,home:"Texas State",h:3},
+  {away:"California",a:44,home:"Tennessee",h:47},
+  {away:"Arizona State",a:7,home:"South Carolina",h:20},
+  {away:"Marshall",a:3,home:"Penn State",h:70},
+  {away:"Michigan",a:35,home:"NC State",h:20},
+  {away:"Georgia",a:26,home:"Miami",h:38},
+  {away:"Florida State",a:38,home:"Ole Miss",h:24},
+  {away:"Alabama",a:21,home:"Ohio State",h:14}
+];
+
+/* Week 2 schedule (ET) */
+const WEEK2_SCHEDULE=[
+  {m:"#22 USC @ #9 LSU", date:"Sat, Sep 12", time:"2:30 PM", note:"Tiger Stadium"},
+  {m:"#11 Georgia @ Illinois", date:"Sat, Sep 12", time:"12:00 PM", note:"Big Ten test"},
+  {m:"Oklahoma @ #21 Michigan", date:"Sat, Sep 12", time:"12:00 PM", note:"Blue opener"},
+  {m:"Wisconsin @ #5 South Carolina", date:"Sat, Sep 12", time:"12:00 PM", note:"Ranked host"},
+  {m:"Kentucky @ #6 North Carolina", date:"Sat, Sep 12", time:"12:00 PM", note:"ACC/SEC"},
+  {m:"#1 Alabama @ California", date:"Sat, Sep 12", time:"3:30 PM", note:"Road trap?"},
+  {m:"#10 Minnesota @ Mississippi State", date:"Sat, Sep 12", time:"3:30 PM", note:"SEC locale"},
+  {m:"Tennessee @ #19 Indiana", date:"Sat, Sep 12", time:"3:30 PM", note:"B1G tilt"},
+  {m:"Nebraska @ #25 Florida", date:"Sat, Sep 12", time:"3:30 PM", note:"The Swamp"},
+  {m:"#8 Ohio State @ #12 Oregon", date:"Sat, Sep 12", time:"10:00 PM", note:"Late window"},
+  {m:"Maryland @ #15 Washington", date:"Sat, Sep 12", time:"11:00 PM", note:"Seattle nightcap"},
+  {m:"Arizona State @ #14 Texas A&M", date:"Sat, Sep 12", time:"7:00 PM", note:"User vs User"},
+  {m:"#18 Arkansas @ Utah", date:"Sat, Sep 12", time:"7:30 PM", note:"User vs User"},
+  {m:"#23 Baylor vs Bowling Green", date:"Sat, Sep 12", time:"1:00 PM", note:"Waco"},
+  {m:"#13 BYU @ Utah State", date:"Sat, Sep 12", time:"3:30 PM", note:"Provo neighbors"},
+  {m:"Florida State @ #4 Texas", date:"Sat, Sep 12", time:"7:30 PM", note:"Austin lights"},
+  {m:"Duke @ #17 Colorado", date:"Sat, Sep 12", time:"2:00 PM", note:"Boulder"},
+  {m:"Michigan State @ #20 SMU", date:"Sat, Sep 12", time:"12:00 PM", note:"Dallas"},
+  {m:"Clemson @ Syracuse", date:"Sat, Sep 12", time:"3:00 PM", note:"JMA Dome"}
+];
+
+/* ===== Helpers ===== */
+const isUser=t=>USER_TEAMS.includes(t);
+const allResults=()=>WEEK0_RESULTS.concat(WEEK1_RESULTS);
+
+function makeSortable(table){
+  const ths=[...table.querySelectorAll('thead th')];
+  ths.forEach((th,i)=>{
+    th.setAttribute('aria-sort','none'); th.tabIndex=0;
+    th.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); th.click(); }});
+    th.addEventListener('click',()=>{
+      const type=th.dataset.type||'str',tbody=table.tBodies[0],rows=[...tbody.rows];
+      const dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
+      ths.forEach(x=>x.setAttribute('aria-sort','none')); th.setAttribute('aria-sort',dir);
+      const parse=td=>{const v=td.textContent.trim(); if(type==='num') return +v.replace(/[^0-9.-]/g,'')||0;
+        if(type==='rec'){const m=v.match(/(\d+)\s*-\s*(\d+)/); return m?(+m[1]*100-+m[2]):0;}
+        return v.toLowerCase();};
+      rows.sort((a,b)=>{const A=parse(a.cells[i]),B=parse(b.cells[i]); return (A<B? -1: A>B? 1: 0)*(dir==='ascending'?1:-1);});
+      rows.forEach(r=>tbody.appendChild(r));
+    });
+  });
+}
+
+function buildRecordMap(){
+  const m=new Map(), add=(t,wl)=>{const r=m.get(t)||{w:0,l:0}; r[wl]++; m.set(t,r);};
+  allResults().forEach(g=>{
+    const w=g.a>g.h?g.away:g.home, l=g.a>g.h?g.home:g.away;
+    if(w) add(w,'w'); if(l) add(l,'l');
+  });
+  return m;
+}
+
+function computeTeamSupremacy(){
+  const pts=new Map(), add=(t,d)=>pts.set(t,(pts.get(t)||0)+d);
+  allResults().forEach(g=>{
+    const aU=isUser(g.away), hU=isUser(g.home);
+    if(!(aU||hU)) return;
+    if(g.a>g.h){ if(aU) add(g.away,+2); if(hU) add(g.home,-1); }
+    else if(g.h>g.a){ if(hU) add(g.home,+2); if(aU) add(g.away,-1); }
+  });
+  return pts;
+}
+
+function computeConferenceRows(){
+  const teamPts=computeTeamSupremacy(), confAgg={};
+  USER_TEAMS.forEach(t=>{ const c=TEAM_CONF[t]||'Ind'; (confAgg[c]||(confAgg[c]={pts:0,w:0,l:0,teams:{}})); confAgg[c].teams[t]=teamPts.get(t)||0; });
+  allResults().forEach(g=>{
+    const aU=isUser(g.away), hU=isUser(g.home); if(!(aU||hU)) return;
+    const aC=TEAM_CONF[g.away]||'Ind', hC=TEAM_CONF[g.home]||'Ind';
+    if(g.a>g.h){ if(aU){confAgg[aC].pts+=2;confAgg[aC].w++;} if(hU){confAgg[hC].pts-=1;confAgg[hC].l++;} }
+    else { if(hU){confAgg[hC].pts+=2;confAgg[hC].w++;} if(aU){confAgg[aC].pts-=1;confAgg[aC].l++;} }
+  });
+  return Object.entries(confAgg).map(([conf,d])=>{
+    const leader=Object.entries(d.teams).sort((a,b)=>b[1]-a[1])[0]||null;
+    return {conf,pts:d.pts,w:d.w,l:d.l,leader:leader?`${leader[0]} (${leader[1]})`:'—'};
+  }).sort((a,b)=>b.pts-a.pts);
+}
+
+/* ===== Renderers ===== */
+function renderWeek(tblId,bodyId,games){
+  const body=document.getElementById(bodyId);
+  body.innerHTML=games.map(g=>{
+    const awayWin=g.a>g.h, type=(isUser(g.away)&&isUser(g.home))?'User vs User':(isUser(g.away)||isUser(g.home))?'User vs CPU':'CPU vs CPU';
+    return `<tr>
+      <td class="${awayWin?'cell-win':'cell-loss'}">${g.away}</td>
+      <td class="${awayWin?'cell-win':'cell-loss'}">${g.a}</td>
+      <td class="${!awayWin?'cell-win':'cell-loss'}">${g.home}</td>
+      <td class="${!awayWin?'cell-win':'cell-loss'}">${g.h}</td>
+      <td>${type}</td>
+    </tr>`;
+  }).join('');
+  makeSortable(document.getElementById(tblId));
+}
+
+function renderWeek2Schedule(){
+  const body=document.getElementById('wk2Body');
+  body.innerHTML = WEEK2_SCHEDULE.map(g=>`<tr>
+    <td>${g.m}</td><td>${g.date}</td><td>${g.time}</td><td>${g.note||''}</td>
+  </tr>`).join('');
+  makeSortable(document.getElementById('wk2Table'));
+}
+
+function renderConferenceTracker(){
+  const rows=computeConferenceRows();
+  const wrap=document.getElementById('confTableWrap');
+  const tbl=document.createElement('table'); tbl.className='table sortable'; tbl.innerHTML=`<thead><tr><th data-type="num">Place</th><th data-type="str">Conference</th><th data-type="str">Leader</th><th data-type="num">Pts</th><th data-type="num">W</th><th data-type="num">L</th></tr></thead><tbody></tbody>`;
+  const tb=tbl.tBodies[0]; rows.forEach((r,i)=>tb.insertAdjacentHTML('beforeend',`<tr><td>${i+1}</td><td>${r.conf}</td><td>${r.leader}</td><td>${r.pts}</td><td>${r.w}</td><td>${r.l}</td></tr>`));
+  wrap.innerHTML=''; wrap.appendChild(tbl); makeSortable(tbl);
+}
+
+function renderPoll(){
+  const rec=buildRecordMap();
+  const preMap=new Map(POLL_PRE.map(([rk,t])=>[t,rk]));
+  const now=POLL_NOW.map(([rk,t,pts])=>{
+    const hadLW = preMap.has(t);
+    const lw = hadLW ? preMap.get(t) : 'NR';
+    const delta = hadLW ? (preMap.get(t) - rk) : null; // positive = moved up
+    const wl=rec.get(t)||{w:0,l:0};
+    const teamCls = !isUser(t) ? 'cpu' : ''; // red if CPU controlled
+    const dCls = delta===null? 'delta-none' : delta>0? 'delta-up' : delta<0? 'delta-down':'delta-none';
+    const deltaTxt = delta===null? 'NR' : (delta===0? '—' : (delta>0? `▲ ${delta}` : `▼ ${Math.abs(delta)}`));
+    return {rk,t,pts,lw,delta,wl:`${wl.w||0}-${wl.l||0}`,teamCls,dCls,deltaTxt};
+  });
+
+  const body=document.getElementById('pollBody');
+  body.innerHTML=now.map(x=>`<tr>
+    <td>${x.rk}</td>
+    <td class="${x.teamCls}">${x.t}</td>
+    <td>${x.lw}</td>
+    <td class="${x.dCls}">${x.deltaTxt}</td>
+    <td>${x.wl}</td>
+    <td>${x.pts}</td>
+  </tr>`).join('');
+
+  const risers = now.filter(x=>x.delta!==null && x.delta>=3).sort((a,b)=>b.delta-a.delta).slice(0,5);
+  const fallers = now.filter(x=>x.delta!==null && x.delta<=-3).sort((a,b)=>a.delta-b.delta).slice(0,5);
+  const entrants = now.filter(x=>x.lw==='NR').map(x=>`#${x.rk} ${x.t}`);
+  const dropped = POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${t}`);
+
+  document.getElementById('movers').innerHTML =
+    `<p><strong>Big risers:</strong> ${risers.map(x=>`#${x.rk} ${x.t} (▲${x.delta})`).join(', ')||'—'}</p>
+     <p><strong>Big fallers:</strong> ${fallers.map(x=>`#${x.rk} ${x.t} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
+     <p><strong>New entrants:</strong> ${entrants.join(', ')||'—'}</p>
+     <p><strong>Dropped out:</strong> ${dropped.join(', ')||'—'}</p>`;
+
+  makeSortable(document.getElementById('pollTable'));
+}
+
+function renderRecap(){
+  const uvus = WEEK1_RESULTS.filter(g=>isUser(g.away)&&isUser(g.home));
+  const lines = uvus.map(g=>{
+    const winner = g.a>g.h ? g.away : g.home;
+    const loser  = g.a>g.h ? g.home : g.away;
+    const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
+    return `<li><strong>${winner}</strong> def. <strong>${loser}</strong> ${w}–${l}</li>`;
+  });
+
+  const rankedWins = WEEK1_RESULTS.filter(g=>{
+    const teams = POLL_NOW.map(x=>x[1]);
+    const winner = g.a>g.h ? g.away : g.home;
+    return teams.includes(winner);
+  }).map(g=>{
+    const winner = g.a>g.h ? g.away : g.home;
+    const w = Math.max(g.a,g.h), l = Math.min(g.a,g.h);
+    const loser  = g.a>g.h ? g.home : g.away;
+    return `<li>${winner} ${w}–${l} over ${loser}</li>`;
+  });
+
+  document.getElementById('recapBody').innerHTML =
+    `<p><strong>User vs User highlights:</strong></p>
+     <ul>${lines.join('')}</ul>
+     <p><strong>Other ranked/user wins:</strong></p>
+     <ul>${rankedWins.join('')}</ul>`;
+}
+
+function renderOwners(){
+  const body=document.getElementById('ownersBody');
+  body.innerHTML=USER_TEAMS.slice().sort((a,b)=>a.localeCompare(b)).map(t=>{
+    const conf=TEAM_CONF[t]||'Ind';
+    const owner=OWNER_MAP[t]||'—';
+    return `<tr><td>${t}</td><td>${owner}</td><td>${conf}</td></tr>`;
+  }).join('');
+  makeSortable(document.getElementById('ownersTable'));
+}
+
+/* ===== Boot ===== */
+renderRecap();
+renderConferenceTracker();
+renderPoll();
+renderWeek('wk0Table','wk0Body',WEEK0_RESULTS);
+renderWeek('wk1Table','wk1Body',WEEK1_RESULTS);
+renderWeek2Schedule();
+renderOwners();
+
+/* Week 3 image fallback message */
+const wk3=document.getElementById('wk3Img'); if(wk3){wk3.addEventListener('error',()=>{document.getElementById('wk3Fallback')?.classList.remove('hidden');});}
+</script>
+</body>
+</html>
