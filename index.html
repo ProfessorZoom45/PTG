@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Running Late Dynasty</title>
-  <meta name="description" content="Running Late Dynasty — splash with ticker, quick links, and 9s auto-redirect to the newest issue." />
+  <meta name="description" content="Running Late Dynasty — splash with ticker, quick links (Issues + Team Pages), and 9s auto-redirect to the newest issue." />
   <meta name="color-scheme" content="dark" />
 
   <!-- Canonical -->
@@ -16,14 +16,15 @@
   <meta property="og:title" content="Running Late Dynasty — D1SN">
   <meta property="og:description" content="SEC surge after Week 1! New Top-25, conference tracker, and Week 3 slate.">
   <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
-  <!-- IMPORTANT: GitHub Pages is case-sensitive -->
-  <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.PNG">
-  <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.PNG">
+  <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.png">
+  <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#d5b15b">
 
-  <!-- Warm the next page -->
+  <!-- Warm next pages -->
   <link rel="prefetch" href="issue02.html" as="document" />
+  <link rel="prefetch" href="teamhub.html" as="document" />
+  <link rel="preload" as="image" href="Oh.png" />
 
   <style>
     :root{
@@ -55,20 +56,20 @@
     .splash-hero{width:min(100%,1100px);max-width:92vw;height:auto;margin:.75rem auto;border-radius:16px;border:1px solid #2a2a2a;box-shadow:0 10px 40px #000a}
     .note{max-width:1100px;margin:8px auto 0;color:var(--muted)}
     .cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
-    .cta-btn,.stay-btn{border:1px solid #3c3c3c;padding:10px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
-    .stay-btn{border:1px solid var(--chip-b);background:#101010;color:#eaeaea}
+    .cta-btn{border:1px solid #3c3c3c;padding:10px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+    .stay-btn{border:1px solid var(--chip-b);background:#101010;border-radius:12px;padding:10px 14px;color:#eaeaea;font-weight:800}
     .count{font-variant-numeric:tabular-nums}
   </style>
 </head>
 <body>
 
-  <!-- Ticker -->
+  <!-- Ticker (auto-synced from issue02.html with a fallback list) -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
-      <a href="index.html" class="logo-a" title="Home">D1SN</a>
+      <a href="#top" class="logo-a" title="Home">D1SN</a>
       <div class="track" aria-live="polite">
         <div class="row" id="tickerRow">
-          <!-- Fallback headlines -->
+          <!-- Fallback headlines (replaced if issue02.html is reachable) -->
           <span><strong>NEW #1: Alabama</strong> after 21–14 at Ohio State</span>
           <span><strong>Miami rockets to #2</strong> after 38–26 over Georgia</span>
           <span><strong>Vote GOTW (Week 3) →</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord Poll</a></span>
@@ -87,57 +88,22 @@
   <!-- Splash -->
   <section class="splash" aria-label="cover">
     <h1>Running Late Dynasty</h1>
-    <img class="splash-hero" src="Oh.PNG" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
+    <img class="splash-hero" src="Oh.png" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
     <p class="note">
       Auto-redirecting to <strong>Issue 02</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
     </p>
     <div class="cta-row">
       <a class="cta-btn" href="issue01.html" title="Open Issue 01 (Week 1)">Issue 01</a>
       <a class="cta-btn" id="readNow" href="issue02.html" title="Open Issue 02 (Newest)">Issue 02</a>
-      <button class="stay-btn" id="stayBtn" type="button" title="Snooze the auto-redirect">Stay Here</button>
-      <button class="stay-btn" id="resumeBtn" type="button" style="display:none" title="Turn the auto-redirect back on">Resume Auto</button>
+      <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
+      <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
     </div>
   </section>
 
   <script>
     // ---------- Config ----------
-    const ISSUE_HREF   = 'issue02.html';
-    const STAY_KEY     = 'rl_splash_stay';
-    const STAY_TTL_MS  = 6 * 60 * 60 * 1000; // 6 hours (edit if you want)
-
-    // Helpers to manage a time-limited "stay" value
-    const now = () => Date.now();
-    function setStaySnooze(hours = STAY_TTL_MS) {
-      localStorage.setItem(STAY_KEY, String(now() + hours));
-    }
-    function clearStay() {
-      localStorage.removeItem(STAY_KEY);
-    }
-    function isSnoozed() {
-      const raw = localStorage.getItem(STAY_KEY);
-
-      // Legacy cleanup: earlier versions saved a literal "1" (permanent).
-      if (raw === '1') { clearStay(); return false; }
-
-      const until = Number(raw);
-      if (!Number.isFinite(until)) return false;
-      if (now() < until) return true;  // still snoozed
-      clearStay();                      // expired — clean up
-      return false;
-    }
-
-    // ---------- Optional URL switches ----------
-    (function urlSwitches(){
-      const qs = new URLSearchParams(location.search);
-
-      // Force-snooze with ?stay=1 (uses the same TTL window)
-      if (qs.get('stay') === '1') setStaySnooze();
-
-      // Hard reset with ?reset=1
-      if (qs.get('reset') === '1') clearStay();
-
-      // Optional override: ?t=5 changes countdown seconds
-    })();
+    const ISSUE_HREF = 'issue02.html';
+    const STAY_KEY   = 'rl_splash_stay';
 
     // ---------- Headlines auto-sync from issue02.html ----------
     (async function syncHeadlines(){
@@ -159,25 +125,33 @@
       }
     })();
 
-    // ---------- Countdown (9s by default; override with ?t=5) ----------
+    // ---------- Countdown (9s by default; override with ?t=5; persist stay with ?stay=1 or button) ----------
     (function countdown(){
       const qs = new URLSearchParams(location.search);
       const tParam = parseInt(qs.get('t') || '', 10);
       let t = Number.isFinite(tParam) ? Math.max(0, tParam) : 9;
 
-      const countEl  = document.getElementById('count');
-      const stayBtn  = document.getElementById('stayBtn');
-      const resumeBtn= document.getElementById('resumeBtn');
-      const readNow  = document.getElementById('readNow');
+      if (qs.get('stay') === '1') localStorage.setItem(STAY_KEY, '1');
 
-      let canceled = false;
+      const stayed  = localStorage.getItem(STAY_KEY) === '1';
+      const countEl = document.getElementById('count');
+      const stayBtn = document.getElementById('stayBtn');
+      const readNow = document.getElementById('readNow');
 
-      function startTimer(){
-        canceled = false;
-        tick();
-      }
+      let canceled = stayed;
+      if (stayed) countEl.textContent = '—';
 
-      function tick(){
+      stayBtn.addEventListener('click', () => {
+        canceled = true;
+        localStorage.setItem(STAY_KEY, '1');
+        countEl.textContent = '—';
+      });
+
+      readNow.addEventListener('click', () => {
+        canceled = true; // prevent duplicate navigation if user clicks
+      });
+
+      const tick = () => {
         if (canceled) return;
         countEl.textContent = t;
         if (t <= 0) {
@@ -186,33 +160,8 @@
           t -= 1;
           setTimeout(tick, 1000);
         }
-      }
-
-      // Apply snooze state on load
-      if (isSnoozed()) {
-        canceled = true;
-        countEl.textContent = '—';
-        resumeBtn.style.display = 'inline-block';
-      } else {
-        startTimer();
-      }
-
-      // Click handlers
-      stayBtn.addEventListener('click', () => {
-        setStaySnooze();          // set time-limited snooze
-        canceled = true;          // stop current countdown
-        countEl.textContent = '—';
-        resumeBtn.style.display = 'inline-block';
-      });
-
-      resumeBtn.addEventListener('click', () => {
-        clearStay();              // remove snooze
-        resumeBtn.style.display = 'none';
-        t = Number.isFinite(tParam) ? Math.max(0, tParam) : 9; // reset seconds
-        startTimer();             // resume countdown immediately
-      });
-
-      readNow.addEventListener('click', () => { canceled = true; });
+      };
+      if (!canceled) setTimeout(tick, 1000);
     })();
 
     // ---------- Hero image fallback note ----------
