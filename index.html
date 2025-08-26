@@ -16,15 +16,20 @@
   <meta property="og:title" content="Running Late Dynasty — D1SN">
   <meta property="og:description" content="SEC surge after Week 1! New Top-25, conference tracker, and Week 3 slate.">
   <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
-  <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.png">
-  <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.png">
+  <meta property="og:image" content="assets/og-splash.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#d5b15b">
+
+  <!-- Icons / PWA -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="assets/site.webmanifest">
 
   <!-- Warm next pages -->
   <link rel="prefetch" href="issue02.html" as="document" />
   <link rel="prefetch" href="teamhub.html" as="document" />
-  <link rel="preload" as="image" href="Oh.png" />
+  <link rel="preload" as="image" href="assets/splash-hero.png" />
 
   <style>
     :root{
@@ -63,23 +68,18 @@
 </head>
 <body>
 
-  <!-- Ticker (auto-synced from issue02.html with a fallback list) -->
+  <!-- Ticker (Week 2 finals only) -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
       <a href="#top" class="logo-a" title="Home">D1SN</a>
       <div class="track" aria-live="polite">
         <div class="row" id="tickerRow">
-          <!-- Fallback headlines (replaced if issue02.html is reachable) -->
-          <span><strong>NEW #1: Alabama</strong> after 21–14 at Ohio State</span>
-          <span><strong>Miami rockets to #2</strong> after 38–26 over Georgia</span>
-          <span><strong>Vote GOTW (Week 3) →</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord Poll</a></span>
-          <span><strong>W3 headliners:</strong> #9 LSU @ #13 BYU • #23 Baylor @ #8 Ohio State • #6 UNC @ FSU</span>
+          <span><strong>WEEK 2 — FINAL:</strong> Utah 42–33 over #18 Arkansas (Salt Lake City)</span>
+          <span><strong>Submit Week 2 scores</strong> & clips to Team Pages → <a href="teamhub.html">teamhub</a></span>
 
           <!-- Mirror for seamless scroll -->
-          <span aria-hidden="true"><strong>NEW #1: Alabama</strong> after 21–14 at Ohio State</span>
-          <span aria-hidden="true"><strong>Miami rockets to #2</strong> after 38–26 over Georgia</span>
-          <span aria-hidden="true"><strong>Vote GOTW (Week 3) →</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord Poll</a></span>
-          <span aria-hidden="true"><strong>W3 headliners:</strong> #9 LSU @ #13 BYU • #23 Baylor @ #8 Ohio State • #6 UNC @ FSU</span>
+          <span aria-hidden="true"><strong>WEEK 2 — FINAL:</strong> Utah 42–33 over #18 Arkansas (Salt Lake City)</span>
+          <span aria-hidden="true"><strong>Submit Week 2 scores</strong> & clips to Team Pages → <a href="teamhub.html">teamhub</a></span>
         </div>
       </div>
     </div>
@@ -88,13 +88,14 @@
   <!-- Splash -->
   <section class="splash" aria-label="cover">
     <h1>Running Late Dynasty</h1>
-    <img class="splash-hero" src="Oh.png" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
+    <img class="splash-hero" src="assets/splash-hero.png" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
     <p class="note">
       Auto-redirecting to <strong>Issue 02</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
     </p>
     <div class="cta-row">
       <a class="cta-btn" href="issue01.html" title="Open Issue 01 (Week 1)">Issue 01</a>
       <a class="cta-btn" id="readNow" href="issue02.html" title="Open Issue 02 (Newest)">Issue 02</a>
+      <a class="cta-btn" href="issue03.html" title="Open Issue 03 (root)">Issue 03</a>
       <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
       <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
     </div>
@@ -102,11 +103,13 @@
 
   <script>
     // ---------- Config ----------
-    const ISSUE_HREF = 'issue02.html';
-    const STAY_KEY   = 'rl_splash_stay';
+    const ISSUE_HREF   = 'issue02.html';
+    const STAY_KEY     = 'rl_splash_stay';
+    const SYNC_TICKER  = false; // keep your custom Week 2 headlines
 
-    // ---------- Headlines auto-sync from issue02.html ----------
+    // ---------- (Optional) Headlines auto-sync from issue02.html ----------
     (async function syncHeadlines(){
+      if(!SYNC_TICKER) return; // leave Week 2 ticker in place
       try{
         const res = await fetch(ISSUE_HREF, {cache: 'no-store'});
         if(!res.ok) throw new Error('fetch failed');
@@ -121,7 +124,7 @@
           ).join('');
         }
       }catch(e){
-        // Keep fallback headlines if anything fails
+        // Keep local headlines if anything fails
       }
     })();
 
