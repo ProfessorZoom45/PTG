@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Running Late Dynasty</title>
-  <meta name="description" content="Running Late Dynasty — splash with ticker, quick links (Issues + Team Pages), and 9s auto-redirect to the newest issue." />
+  <title>Running Late Dynasty — Splash</title>
+  <meta name="description" content="Running Late Dynasty — splash with ticker, quick links, and auto-redirect to the newest issue." />
   <meta name="color-scheme" content="dark" />
 
   <!-- Canonical -->
@@ -14,22 +14,21 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Perfect Timing Gaming">
   <meta property="og:title" content="Running Late Dynasty — D1SN">
-  <meta property="og:description" content="SEC surge after Week 1! New Top-25, conference tracker, and Week 3 slate.">
+  <meta property="og:description" content="Week 3 in-progress finals, quick links, and auto-redirect to the latest issue.">
   <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
-  <meta property="og:image" content="assets/og-splash.png">
+  <!-- Always point share art to Oh.png in the root -->
+  <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.png">
+  <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#d5b15b">
 
-  <!-- Icons / PWA -->
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="assets/favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="manifest" href="assets/site.webmanifest">
-
   <!-- Warm next pages -->
-  <link rel="prefetch" href="issue02.html" as="document" />
+  <link rel="prefetch" href="issue03.html" as="document" />
+  <link rel="prefetch" href="issue04.html" as="document" />
   <link rel="prefetch" href="teamhub.html" as="document" />
-  <link rel="preload" as="image" href="assets/splash-hero.png" />
+  <link rel="prefetch" href="confbatt.html" as="document" />
+  <link rel="prefetch" href="boost.html" as="document" />
+  <link rel="preload" as="image" href="Oh.png" />
 
   <style>
     :root{
@@ -60,7 +59,8 @@
     .splash h1{margin:0 0 8px;font-size:clamp(1.6rem,4.8vw,2.4rem);letter-spacing:.4px}
     .splash-hero{width:min(100%,1100px);max-width:92vw;height:auto;margin:.75rem auto;border-radius:16px;border:1px solid #2a2a2a;box-shadow:0 10px 40px #000a}
     .note{max-width:1100px;margin:8px auto 0;color:var(--muted)}
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+    .cta-rows{display:grid;gap:10px;margin-top:10px}
+    .row-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
     .cta-btn{border:1px solid #3c3c3c;padding:10px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
     .stay-btn{border:1px solid var(--chip-b);background:#101010;border-radius:12px;padding:10px 14px;color:#eaeaea;font-weight:800}
     .count{font-variant-numeric:tabular-nums}
@@ -68,18 +68,19 @@
 </head>
 <body>
 
-  <!-- Ticker (Week 2 finals only) -->
+  <!-- Ticker: Week 3 user-vs-user FINALS -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
       <a href="#top" class="logo-a" title="Home">D1SN</a>
       <div class="track" aria-live="polite">
         <div class="row" id="tickerRow">
-          <span><strong>WEEK 2 — FINAL:</strong> Utah 42–33 over #18 Arkansas (Salt Lake City)</span>
-          <span><strong>Submit Week 2 scores</strong> & clips to Team Pages → <a href="teamhub.html">teamhub</a></span>
+          <!-- Live W3 finals (UVU only) -->
+          <span><strong>W3 FINAL:</strong> Utah 31–21 vs #1 Alabama — Salt Lake City shakes the poll</span>
+          <span><strong>W3 FINAL:</strong> #8 LSU 28–21 at #11 BYU — Tigers take Provo</span>
 
           <!-- Mirror for seamless scroll -->
-          <span aria-hidden="true"><strong>WEEK 2 — FINAL:</strong> Utah 42–33 over #18 Arkansas (Salt Lake City)</span>
-          <span aria-hidden="true"><strong>Submit Week 2 scores</strong> & clips to Team Pages → <a href="teamhub.html">teamhub</a></span>
+          <span aria-hidden="true"><strong>W3 FINAL:</strong> Utah 31–21 vs #1 Alabama — Salt Lake City shakes the poll</span>
+          <span aria-hidden="true"><strong>W3 FINAL:</strong> #8 LSU 28–21 at #11 BYU — Tigers take Provo</span>
         </div>
       </div>
     </div>
@@ -88,47 +89,70 @@
   <!-- Splash -->
   <section class="splash" aria-label="cover">
     <h1>Running Late Dynasty</h1>
-    <img class="splash-hero" src="assets/splash-hero.png" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
+
+    <!-- Hero image: ALWAYS link to Oh.png in the root -->
+    <a href="Oh.png" target="_blank" title="Open cover (Oh.png)">
+      <img class="splash-hero" src="Oh.png" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
+    </a>
+
     <p class="note">
-      Auto-redirecting to <strong>Issue 02</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
+      Auto-redirecting to <strong>latest issue</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
     </p>
-    <div class="cta-row">
-      <a class="cta-btn" href="issue01.html" title="Open Issue 01 (Week 1)">Issue 01</a>
-      <a class="cta-btn" id="readNow" href="issue02.html" title="Open Issue 02 (Newest)">Issue 02</a>
-      <a class="cta-btn" href="issue03.html" title="Open Issue 03 (root)">Issue 03</a>
-      <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
-      <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
+
+    <!-- Buttons (3 rows as requested) -->
+    <div class="cta-rows">
+      <!-- Row 1: Issue 01–04 -->
+      <div class="row-btns">
+        <a class="cta-btn" href="issue01.html" title="Open Issue 01">Issue 01</a>
+        <a class="cta-btn" href="issue02.html" title="Open Issue 02">Issue 02</a>
+        <a class="cta-btn" href="issue03.html" title="Open Issue 03">Issue 03</a>
+        <a class="cta-btn" href="issue04.html" title="Open Issue 04">Issue 04</a>
+      </div>
+
+      <!-- Row 2: Team Pages – Stay Here – Conference Battle -->
+      <div class="row-btns">
+        <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
+        <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
+        <a class="cta-btn" href="confbatt.html" title="Conference Battle">Conference Battle</a>
+      </div>
+
+      <!-- Row 3: Dynasty Boost -->
+      <div class="row-btns">
+        <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
+        <a class="cta-btn" id="readNow" href="issue03.html" title="Open Latest Issue (detected)">Open Latest Issue</a>
+      </div>
     </div>
   </section>
 
   <script>
-    // ---------- Config ----------
-    const ISSUE_HREF   = 'issue02.html';
-    const STAY_KEY     = 'rl_splash_stay';
-    const SYNC_TICKER  = false; // keep your custom Week 2 headlines
+    // ---------- Settings ----------
+    const STAY_KEY = 'rl_splash_stay';
+    const DEFAULT_LATEST = 'issue03.html';     // Fallback if detection fails
+    const MAX_ISSUE_SCAN = 12;                 // Scan issue01 → issue12
 
-    // ---------- (Optional) Headlines auto-sync from issue02.html ----------
-    (async function syncHeadlines(){
-      if(!SYNC_TICKER) return; // leave Week 2 ticker in place
-      try{
-        const res = await fetch(ISSUE_HREF, {cache: 'no-store'});
-        if(!res.ok) throw new Error('fetch failed');
-        const html = await res.text();
-        const doc  = new DOMParser().parseFromString(html, 'text/html');
-        const nodes = Array.from(doc.querySelectorAll('.ticker .row > *'));
-        if(nodes.length){
-          const items = nodes.slice(0, 8).map(el => el.outerHTML);
-          const row   = document.getElementById('tickerRow');
-          row.innerHTML = items.concat(
-            items.map(x => x.replace(/aria-hidden="true"/,' aria-hidden="true"'))
-          ).join('');
-        }
-      }catch(e){
-        // Keep local headlines if anything fails
+    // Find the highest existing issueNN.html (up to MAX_ISSUE_SCAN)
+    async function detectLatestIssue(){
+      let lastOk = null;
+      for(let i = 1; i <= MAX_ISSUE_SCAN; i++){
+        const n = String(i).padStart(2,'0');
+        const href = `issue${n}.html`;
+        try{
+          const res = await fetch(href + '?chk=' + Date.now(), {cache:'no-store'});
+          if(res.ok) lastOk = href; else break;
+        }catch(_e){ break; }
       }
+      return lastOk || DEFAULT_LATEST;
+    }
+
+    // Update "Open Latest Issue" button + countdown target
+    let LATEST_HREF = DEFAULT_LATEST;
+    (async () => {
+      LATEST_HREF = await detectLatestIssue();
+      const readNow = document.getElementById('readNow');
+      if(readNow) readNow.href = LATEST_HREF;
     })();
 
-    // ---------- Countdown (9s by default; override with ?t=5; persist stay with ?stay=1 or button) ----------
+    // ---------- Countdown (9s default; ?t= for override; ?stay=1 persists staying) ----------
     (function countdown(){
       const qs = new URLSearchParams(location.search);
       const tParam = parseInt(qs.get('t') || '', 10);
@@ -150,15 +174,15 @@
         countEl.textContent = '—';
       });
 
-      readNow.addEventListener('click', () => {
-        canceled = true; // prevent duplicate navigation if user clicks
-      });
+      readNow.addEventListener('click', () => { canceled = true; });
 
-      const tick = () => {
+      const tick = async () => {
         if (canceled) return;
         countEl.textContent = t;
         if (t <= 0) {
-          location.href = ISSUE_HREF;
+          // Ensure we use the detected latest issue if ready
+          const target = LATEST_HREF || DEFAULT_LATEST;
+          location.href = target;
         } else {
           t -= 1;
           setTimeout(tick, 1000);
@@ -174,7 +198,7 @@
       hero.addEventListener('error', ()=>{
         const note = document.createElement('div');
         note.className = 'note';
-        note.textContent = '(Hero image unavailable)';
+        note.textContent = '(Hero image unavailable — expected Oh.png in the repo root)';
         hero.replaceWith(note);
       });
     })();
