@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Running Late Dynasty — Splash</title>
+  <title>Running Late Dynasty</title>
   <meta name="description" content="Running Late Dynasty — splash with ticker, quick links, and auto-redirect to the newest issue." />
   <meta name="color-scheme" content="dark" />
 
@@ -14,13 +14,19 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Perfect Timing Gaming">
   <meta property="og:title" content="Running Late Dynasty — D1SN">
-  <meta property="og:description" content="Week 3 in-progress finals, quick links, and auto-redirect to the latest issue.">
+  <meta property="og:description" content="Week 3 finals, quick links, and auto-redirect to the latest issue.">
   <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
-  <!-- Always point share art to Oh.png in the root -->
-  <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.png">
-  <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.png">
+  <!-- Always point share art to Oh.PNG in the root -->
+  <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.PNG">
+  <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.PNG">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#d5b15b">
+
+  <!-- Icons / PWA -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.PNG">
+  <link rel="manifest" href="assets/site.webmanifest">
 
   <!-- Warm next pages -->
   <link rel="prefetch" href="issue03.html" as="document" />
@@ -28,7 +34,7 @@
   <link rel="prefetch" href="teamhub.html" as="document" />
   <link rel="prefetch" href="confbatt.html" as="document" />
   <link rel="prefetch" href="boost.html" as="document" />
-  <link rel="preload" as="image" href="Oh.png" />
+  <link rel="preload" as="image" href="Oh.PNG" />
 
   <style>
     :root{
@@ -90,16 +96,16 @@
   <section class="splash" aria-label="cover">
     <h1>Running Late Dynasty</h1>
 
-    <!-- Hero image: ALWAYS link to Oh.png in the root -->
-    <a href="Oh.png" target="_blank" title="Open cover (Oh.png)">
-      <img class="splash-hero" src="Oh.png" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
+    <!-- Hero image: ALWAYS link to Oh.PNG in the root -->
+    <a href="Oh.PNG" target="_blank" title="Open cover (Oh.PNG)">
+      <img class="splash-hero" src="Oh.PNG" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
     </a>
 
     <p class="note">
       Auto-redirecting to <strong>latest issue</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
     </p>
 
-    <!-- Buttons (3 rows as requested) -->
+    <!-- Buttons (3 rows) -->
     <div class="cta-rows">
       <!-- Row 1: Issue 01–04 -->
       <div class="row-btns">
@@ -180,7 +186,6 @@
         if (canceled) return;
         countEl.textContent = t;
         if (t <= 0) {
-          // Ensure we use the detected latest issue if ready
           const target = LATEST_HREF || DEFAULT_LATEST;
           location.href = target;
         } else {
@@ -198,10 +203,11 @@
       hero.addEventListener('error', ()=>{
         const note = document.createElement('div');
         note.className = 'note';
-        note.textContent = '(Hero image unavailable — expected Oh.png in the repo root)';
+        note.textContent = '(Hero image unavailable — expected Oh.PNG in the repo root)';
         hero.replaceWith(note);
       });
     })();
   </script>
 </body>
-</html>
+  </html>
+  
