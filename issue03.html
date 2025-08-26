@@ -4,13 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Running Late Dynasty — Week 3</title>
-<meta name="description" content="D1SN hub: Power Index (users only), Top-25 (users + CPU), Week 3 Schedule (users only), Week 4 Slate, GOTW, Week 2 upsets, Conference tracker, and Week 0–2 finals." />
+<meta name="description" content="D1SN hub: Power Index (Users Only), Week 3 Top-25 (Coaches, after Week 2), Week 2 Finals, Week 3 In-Progress (Users Only), Week 4 Slate + GOTW vote, Upsets, Conference Tracker." />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="https://professorzoom45.github.io/PTG/">
+
+<!-- Social -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Perfect Timing Gaming">
 <meta property="og:title" content="Running Late Dynasty — Week 3" />
-<meta property="og:description" content="Power Index, full Top-25, Week 3 UvU/UvCPU schedule, Week 4 slate, GOTW vote, and more." />
+<meta property="og:description" content="Power Index (Users Only), Week 3 Top-25 (after Week 2), Week 2 Finals, Week 3 In-Progress (UvU/UvCPU), Week 4 Slate + GOTW vote, Upsets & more." />
 <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
 <meta property="og:image" content="https://professorzoom45.github.io/PTG/week3cover.png">
 <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/week3cover.png">
@@ -74,7 +76,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 
 /* Badges + medals */
 .badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
-.badge-uvU{border-color:#5151a3}
+.badge-uvu{border-color:#5151a3}
 .badge-upset{border-color:#774040;color:#ffd0d0}
 .gold{color:var(--gold);font-weight:900}
 .silver{color:var(--silver);font-weight:900}
@@ -85,15 +87,13 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 </head>
 <body>
 
-<!-- TICKER -->
-<div class="ticker" role="region" aria-label="D1SN headlines">
+<!-- Ticker -->
+<div class="ticker" role="region" aria-label="D1SN Headlines">
   <div class="wrap">
-    <a href="https://professorzoom45.github.io/PTG/" class="logo-a" title="Home (index)">D1SN</a>
-    <div class="track">
-      <div class="row" id="tickerRow"></div>
-    </div>
-    <a class="cta-btn" href="teams.html" title="Schools & Coaches (team pages)">Team Pages</a>
-    <a class="cta-btn" href="mailto:changethewrldplz@gmail.com?subject=DM%20D1SN&body=Hey%20D1SN%2C%20" title="Email D1SN directly">DM D1SN</a>
+    <a href="https://professorzoom45.github.io/PTG/" class="logo-a" title="Home (Index)">D1SN</a>
+    <div class="track"><div class="row" id="tickerRow"></div></div>
+    <a class="cta-btn" href="teams.html" title="Schools & Coaches (Team Pages)">Team Pages</a>
+    <a class="cta-btn" href="mailto:changethewrldplz@gmail.com?subject=DM%20D1SN&body=Hey%20D1SN%2C%20" title="Email D1SN Directly">DM D1SN</a>
   </div>
 </div>
 
@@ -101,16 +101,15 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <div class="chips">
   <a class="chip" href="#headline">Headline</a>
   <a class="chip" href="#power">Power Index</a>
-  <a class="chip" href="#top25">Top-25 Polls</a>
-  <a class="chip" href="#week3">Week 3 — Schedule</a>
+  <a class="chip" href="#top25">Top-25 (Week 3 — Coaches)</a>
+  <a class="chip" href="#week2">Week 2 — Finals</a>
+  <a class="chip" href="#week3ip">Week 3 — In Progress</a>
+  <a class="chip" href="#week4">Week 4 — Slate</a>
   <a class="chip" href="#gotw">Game of the Week</a>
   <a class="chip" href="#upsets">Upset Alert</a>
   <a class="chip" href="#conf">Conference Supremacy Tracker</a>
-  <a class="chip" href="#week0">Week 0 — Final Scores</a>
-  <a class="chip" href="#week1">Week 1 — Final Scores</a>
-  <a class="chip" href="#week2">Week 2 — Final Scores</a>
-  <a class="chip" href="#week4">Week 4 — Slate</a>
-  <a class="chip" href="teams.html" title="Schools & Coaches directory (links to all 32 team pages)">Schools & Coaches</a>
+  <a class="chip" href="previous-schedules.html" title="Opens the archive (Weeks 0–2)">Previous Schedules</a>
+  <a class="chip" href="teams.html" title="Schools & Coaches Directory (Links To All 32 Team Pages)">Schools & Coaches</a>
   <a class="chip" href="#owners">Owners</a>
   <a class="chip" href="#mail">Mailbag</a>
 </div>
@@ -118,55 +117,41 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <!-- Splash -->
 <section class="splash">
   <h1>Running Late Dynasty — Week 3</h1>
-  <img id="splashHero" class="splash-hero" alt="Running Late hero art"
+  <img id="splashHero" class="splash-hero" alt="Week 3 Cover"
        src="https://professorzoom45.github.io/PTG/week3cover.png" />
 </section>
 
-<!-- Headline blurb (placeholder) -->
+<!-- Headline -->
 <section id="headline" class="section">
-  <h2>Headline — Coming Soon</h2>
+  <h2>GOTW Shockwave: <strong>LSU</strong> drops <strong>USC</strong>, 42–13</h2>
   <div class="card">
-    <p class="muted">Add your Week 3 lead here (big win, major injury, chaos headline, etc.).</p>
+    <p><strong>Death Valley</strong> roared and the Tigers answered. In our Game of the Week, <strong>LSU</strong> buried <strong>USC</strong> under a relentless 42–13 avalanche, scoring in every quarter and holding the Trojans to a single TD after halftime. It’s the signature win of the young season and a tone-setter for the user slate headed into Week 3.</p>
+    <p class="small muted">Heads up: the Power Index below ranks only user teams; the Top-25 shows the single Week 3 (Coaches) poll as of the end of Week 2. User teams are bolded everywhere.</p>
   </div>
 </section>
 
-<!-- Power Index (USERS ONLY, medal top 3) -->
+<!-- Power Index -->
 <section id="power" class="section">
   <h2>Power Index</h2>
   <div class="card">
-    <p class="small">User-only list (32 teams). Ratings based on Elo (base 1500) with modest margin boost, computed from Weeks 0–1 games recorded below. CPU teams are excluded from this table. <span class="small">#1 gold, #2 silver, #3 bronze.</span></p>
+    <p class="small">User-only list (32 teams). Elo base 1500 with margin factor; CPU teams are excluded. Medals: <span class="gold">#1 Gold</span>, <span class="silver">#2 Silver</span>, <span class="bronze">#3 Bronze</span>.</p>
     <table class="table sortable" id="powerTable">
       <thead>
-        <tr>
-          <th data-type="num">#</th>
-          <th data-type="str">Team</th>
-          <th data-type="num">Rating</th>
-          <th data-type="rec">Record</th>
-        </tr>
+        <tr><th data-type="num">#</th><th data-type="str">Team</th><th data-type="num">Rating</th><th data-type="rec">Record</th></tr>
       </thead>
       <tbody id="powerBody"></tbody>
     </table>
   </div>
 </section>
 
-<!-- Top-25 (ALL teams; #1 overall gold) -->
+<!-- Top-25 -->
 <section id="top25" class="section">
-  <h2>Top-25 Polls</h2>
+  <h2>Top-25 (Week 3 — Coaches)</h2>
   <div class="card">
-    <p class="small" id="pollHow">
-      Poll shows <strong>all teams</strong> (users + CPU). User teams are bolded wherever they appear. The <em>#1 overall</em> is highlighted in <span class="gold">gold</span>.
-      Movers are relative to preseason (or overrides when provided).
-    </p>
+    <p class="small">One poll only: Week 3 Coaches poll (standings after Week 2). User teams bolded anywhere they appear. <em>#1 overall</em> is highlighted in <span class="gold">gold</span>.</p>
     <table class="table sortable" id="pollTable">
       <thead>
-        <tr>
-          <th data-type="num">#</th>
-          <th data-type="str">Team</th>
-          <th data-type="num">LW</th>
-          <th data-type="str">Δ</th>
-          <th data-type="rec">Record</th>
-          <th data-type="num">Pts</th>
-        </tr>
+        <tr><th data-type="num">#</th><th data-type="str">Team</th><th data-type="num">LW</th><th data-type="str">Δ</th><th data-type="rec">Record</th><th data-type="num">Pts</th></tr>
       </thead>
       <tbody id="pollBody"></tbody>
     </table>
@@ -174,31 +159,37 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   </div>
 </section>
 
-<!-- Week 3 — Schedule (only UvU & UvCPU) -->
-<section id="week3" class="section">
-  <h2>Week 3 — Schedule (Users only)</h2>
+<!-- Week 2 -->
+<section id="week2" class="section">
+  <h2>Week 2 — Final Scores</h2>
   <div class="card">
-    <table class="table sortable" id="wk3Table">
-      <thead>
-        <tr>
-          <th data-type="str">Matchup</th>
-          <th data-type="str">Type</th>
-        </tr>
-      </thead>
-      <tbody id="wk3Body"><tr><td colspan="2" class="small muted">Paste the full Week 3 slate in the code; this table auto-filters to User vs User and User vs CPU games.</td></tr></tbody>
+    <table class="table sortable" id="wk2Table">
+      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
+      <tbody id="wk2Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 3 — In Progress (Users Only: UvU & UvCPU) -->
+<section id="week3ip" class="section">
+  <h2>Week 3 — In Progress (Users Only)</h2>
+  <div class="card">
+    <table class="table sortable" id="wk3ipTable">
+      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
+      <tbody id="wk3ipBody"></tbody>
     </table>
   </div>
 </section>
 
 <!-- Game of the Week -->
 <section id="gotw" class="section">
-  <h2>Game of the Week <span class="badge badge-uvU">UvU</span></h2>
+  <h2>Game of the Week <span class="badge badge-uvu">UvU</span></h2>
   <div class="card" id="gotwCard"></div>
 </section>
 
-<!-- Upset Alert (Week 2 only) -->
+<!-- Upset Alert (Week 2 Only) -->
 <section id="upsets" class="section">
-  <h2>Upset Alert <span class="badge badge-upset">Week 2 only</span></h2>
+  <h2>Upset Alert <span class="badge badge-upset">Week 2 Only</span></h2>
   <div class="card">
     <ul id="upsetList" style="margin:0;padding-left:18px"></ul>
     <p class="small muted" id="upsetNote"></p>
@@ -209,54 +200,21 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <section id="conf" class="section">
   <h2>Conference Supremacy Tracker</h2>
   <div class="card">
-    <p class="small">Counts <strong>only</strong> <em>User vs User</em> games from Weeks 0–1. Win% = Wins ÷ (Wins+Losses). Intra-conference UvU adds one win and one loss to the same conference.</p>
+    <p class="small">Counts <strong>only</strong> <em>User vs User</em> games from Weeks 0–2. Win% = Wins ÷ (Wins + Losses). Intra-conference UvU adds one win and one loss to the same conference.</p>
     <div id="confBlurb" class="small" style="margin-bottom:10px"></div>
     <div id="confTableWrap"></div>
   </div>
 </section>
 
-<!-- Week 0 -->
-<section id="week0" class="section">
-  <h2>Week 0 — Final Scores</h2>
-  <div class="card">
-    <table class="table sortable" id="wk0Table">
-      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
-      <tbody id="wk0Body"></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- Week 1 -->
-<section id="week1" class="section">
-  <h2>Week 1 — Final Scores</h2>
-  <div class="card">
-    <table class="table sortable" id="wk1Table">
-      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
-      <tbody id="wk1Body"></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- Week 2 -->
-<section id="week2" class="section">
-  <h2>Week 2 — Final Scores</h2>
-  <div class="card">
-    <table class="table sortable" id="wk2Table">
-      <thead><tr><th data-type="str">Away</th><th data-type="num">A</th><th data-type="str">Home</th><th data-type="num">H</th><th data-type="str">Type</th></tr></thead>
-      <tbody id="wk2Body"><tr><td colspan="5" class="small muted">No Week 2 finals recorded yet.</td></tr></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- Week 4 — Slate (image + GOTW vote) -->
+<!-- Week 4 — Slate (Image + GOTW Vote) -->
 <section id="week4" class="section">
   <h2>Week 4 — User Games Slate</h2>
   <div class="card">
-    <p class="small"><strong>Vote for Game of the Week:</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord poll link</a></p>
-    <a href="https://professorzoom45.github.io/PTG/week4slate.png" target="_blank" rel="noopener">
+    <p class="small"><strong>Vote For Game Of The Week:</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord Poll Link</a></p>
+    <a href="https://professorzoom45.github.io/PTG/week4slate.jpg" target="_blank" rel="noopener">
       <img id="wk4Img" class="splash-hero" loading="lazy"
-           src="https://professorzoom45.github.io/PTG/week4slate.png"
-           alt="Week 4 user-games slate">
+           src="https://professorzoom45.github.io/PTG/week4slate.jpg"
+           alt="Week 4 User Games Slate">
     </a>
     <p id="wk4Fallback" class="small muted hidden">Trying alternate image name…</p>
   </div>
@@ -285,7 +243,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
 <footer>© D1SN — Running Late Dynasty. Tip: press <kbd>Enter</kbd> on a table header to sort.</footer>
 
 <script>
-/* ===== USER TEAMS / OWNERS / CONFS ===== */
+/* ===== User Teams / Owners / Conferences ===== */
 const USER_TEAMS=["LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware","Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma","Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech","Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina","Utah","Auburn","Minnesota","SMU","UCLA"];
 
 const OWNER_MAP={
@@ -308,20 +266,19 @@ const TEAM_CONF={
 
 const isUser = t => USER_TEAMS.includes(t);
 
-/* ===== POLLS ===== */
+/* ===== Polls (Week 3 — Coaches final after Week 2) ===== */
 const POLL_PRE=[[1,"Georgia"],[2,"Ohio State"],[3,"Notre Dame"],[4,"Texas"],[5,"Alabama"],[6,"North Carolina"],[7,"Miami"],[8,"Penn State"],[9,"LSU"],[10,"Clemson"],[11,"Minnesota"],[12,"USC"],[13,"Texas Tech"],[14,"Florida State"],[15,"Oklahoma"],[16,"Florida"],[17,"Washington"],[18,"Baylor"],[19,"Tennessee"],[20,"Texas A&M"],[21,"Colorado"],[22,"Arkansas"],[23,"BYU"],[24,"Utah"],[25,"Illinois"]];
 const POLL_NOW=[
-  [1,"Alabama",1600],[2,"Miami",1522],[3,"Notre Dame",1393],[4,"Texas",1331],[5,"South Carolina",1270],
-  [6,"North Carolina",1151],[7,"Penn State",1080],[8,"Ohio State",1055],[9,"LSU",991],[10,"Minnesota",918],
-  [11,"Georgia",871],[12,"Oregon",867],[13,"BYU",780],[14,"Texas A&M",732],[15,"Washington",686],
-  [16,"Texas Tech",641],[17,"Colorado",576],[18,"Arkansas",555],[19,"Indiana",413],[20,"SMU",399],
-  [21,"Michigan",355],[22,"USC",350],[23,"Baylor",275],[24,"Virginia Tech",265],[25,"Florida",235]
+  [1,"Alabama",1503],[2,"Miami",1429],[3,"South Carolina",1318],[4,"Notre Dame",1280],[5,"North Carolina",1210],
+  [6,"Ohio State",1182],[7,"Minnesota",1107],[8,"Penn State",1053],[9,"LSU",1011],[10,"Georgia",893],
+  [11,"Texas",749],[12,"BYU",749],[13,"Washington",701],[14,"Colorado",644],[15,"Texas Tech",612],
+  [16,"Michigan",523],[17,"SMU",512],[18,"Indiana",441],[19,"Oregon",399],[20,"Texas A&M",327],
+  [21,"Baylor",326],[22,"Delaware",322],[23,"Utah",287],[24,"Arkansas",322],[25,"Florida",229]
 ];
-const POLL_STEADY = { "South Carolina": 5, "Oregon": 12 };
-const POLL_LW_OVERRIDES={};
+const POLL_LW_OVERRIDES={}; // supply if needed
 
-/* ===== SCORES ===== */
-const WEEK0_RESULTS=[
+/* ===== Scores ===== */
+const WEEK0_RESULTS=[ /* kept for ratings math only */ 
   {away:"Florida",a:27,home:"Washington",h:42},
   {away:"USC",a:7,home:"Texas",h:40},
   {away:"Ohio",a:3,home:"Ohio State",h:28},
@@ -336,8 +293,7 @@ const WEEK0_RESULTS=[
   {away:"BYU",a:21,home:"Clemson",h:17},
   {away:"Miami",a:63,home:"Central Michigan",h:3}
 ];
-
-const WEEK1_RESULTS=[
+const WEEK1_RESULTS=[ /* kept for ratings math only */
   {away:"Clemson",a:14,home:"LSU",h:31},
   {away:"Texas A&M",a:38,home:"Missouri State",h:3},
   {away:"Texas",a:48,home:"Texas State",h:3},
@@ -350,25 +306,43 @@ const WEEK1_RESULTS=[
   {away:"Alabama",a:21,home:"Ohio State",h:14}
 ];
 
-/* Week 2 finals (placeholder; fill as you record) */
+/* Week 2 finals (displayed) */
 const WEEK2_RESULTS=[
-  // e.g. {away:"Team",a:0,home:"Team",h:0},
+  {away:"Maryland",a:13,home:"Washington",h:19},
+  {away:"UCLA",a:31,home:"Kennesaw State",h:7},
+  {away:"Texas Tech",a:43,home:"Oregon State",h:17},
+  {away:"Wisconsin",a:9,home:"South Carolina",h:77},
+  {away:"Oklahoma",a:10,home:"Michigan",h:24},
+  {away:"NC State",a:7,home:"Miami",h:58},
+  {away:"USC",a:13,home:"LSU",h:42},
+  {away:"BYU",a:66,home:"Utah State",h:3},
+  {away:"Auburn",a:17,home:"Army",h:7},
+  {away:"Arizona State",a:31,home:"Texas A&M",h:13},
+  {away:"Florida State",a:24,home:"Texas",h:21},
+  {away:"Tennessee",a:28,home:"Indiana",h:35},
+  {away:"Alabama",a:42,home:"California",h:17}
 ];
 
-/* ========= WEEK 3: FULL SCHEDULE (paste the full slate here) =========
-   Use either strings (e.g., "#9 LSU @ #13 BYU") or objects {m:"..."}.
-   The schedule table will automatically show ONLY User vs User and User vs CPU.
-*/
+/* ========= Week 3 schedule (only user-involved rows will render) ========= */
 const WEEK3_SCHEDULE = [
-  // TODO: paste full Week 3 schedule here:
   "#9 LSU @ #13 BYU",
+  "#1 Alabama @ Utah",
+  "Delaware @ Georgia Tech",
+  "#17 Colorado @ Northwestern",
+  "#14 Texas A&M @ Houston",
+  "Akron @ #10 Minnesota",
+  "Buffalo @ #7 Penn State",
+  "Illinois @ Wisconsin",
+  "#15 Washington @ Washington State",
+  "UCLA @ Tulane",
+  "#19 Indiana @ #22 USC",
   "#23 Baylor @ #8 Ohio State",
   "#6 North Carolina @ Florida State",
-  "#1 Alabama @ Utah",
-  "Arizona State @ Texas A&M",
-  "Michigan State @ SMU",
-  "Duke @ Colorado",
-  "Clemson @ Syracuse"
+  "Boston College @ Clemson",
+  "Pittsburgh @ #20 SMU",
+  "#2 Miami @ Syracuse",
+  "#3 Notre Dame @ Duke",
+  "Hawai'i @ Arizona State"
 ];
 
 /* ===== Helpers ===== */
@@ -404,20 +378,16 @@ function buildRecordMap(){
   return m;
 }
 
-/* ===== POWER INDEX (Elo, USERS ONLY, medal top 3) ===== */
+/* ===== Power Index (Elo, Users Only) ===== */
 function computeElo(){
   const K=24;
   const R=new Map();
   const getR=t=>R.has(t)?R.get(t):1500;
   const setR=(t,v)=>R.set(t,v);
 
-  // Seed ALL user teams so they show even if 0 games
   USER_TEAMS.forEach(t=>setR(t,1500));
-
-  // Include opponents encountered so Elo updates work
   allResults().forEach(g=>{ setR(g.away,getR(g.away)); setR(g.home,getR(g.home)); });
 
-  // Process games chronologically
   allResults().forEach(g=>{
     const Ra=getR(g.away), Rb=getR(g.home);
     const Sa = g.a>g.h?1:0, Sb = 1-Sa;
@@ -428,76 +398,61 @@ function computeElo(){
     setR(g.home, Rb + K*margin*(Sb-Eb));
   });
 
-  // Records (all games counted) for display
   const rec=buildRecordMap();
-
-  // Return USERS ONLY (32)
-  const rows=USER_TEAMS.map(t=>{
+  return USER_TEAMS.map(t=>{
     const r=Math.round(getR(t));
     const rr=rec.get(t)||{w:0,l:0};
     return {t, r, w:rr.w||0, l:rr.l||0};
   }).sort((a,b)=> b.r-a.r);
-
-  return rows;
 }
-
 function renderPower(){
-  const rows=computeElo(); // 32 user teams
+  const rows=computeElo();
   const body=document.getElementById('powerBody');
   body.innerHTML=rows.map((x,i)=>{
     const medalCls = i===0?'gold':i===1?'silver':i===2?'bronze':'';
     const teamCell = medalCls ? `<span class="${medalCls}"><strong>${x.t}</strong></span>` : `<strong>${x.t}</strong>`;
-    return `<tr>
-      <td>${i+1}</td><td>${teamCell}</td><td>${x.r}</td><td>${x.w}-${x.l}</td>
-    </tr>`;
+    return `<tr><td>${i+1}</td><td>${teamCell}</td><td>${x.r}</td><td>${x.w}-${x.l}</td></tr>`;
   }).join('');
   makeSortable(document.getElementById('powerTable'));
 }
 
-/* ===== POLL RENDER (ALL teams; #1 overall gold) ===== */
+/* ===== Poll Render (Coaches; #1 Gold) ===== */
 function renderPoll(){
   const rec=buildRecordMap();
   const preMap=new Map(POLL_PRE.map(([rk,t])=>[t,rk]));
 
   const now=POLL_NOW.map(([rk,t,pts])=>{
     const wl=rec.get(t)||{w:0,l:0};
-    const lwOverride = POLL_LW_OVERRIDES[t];
-    const baseLW = (typeof lwOverride==='number') ? lwOverride : (preMap.has(t) ? preMap.get(t) : '—');
-    const base = (typeof baseLW==='number') ? baseLW : null;
-    const delta = (base!==null) ? (base - rk) : null;
-    const dCls = delta===null? 'delta-none' : delta>0? 'delta-up' : delta<0? 'delta-down':'delta-none';
-    const deltaTxt = delta===null? 'NR' : (delta===0? '—' : (delta>0? `▲ ${delta}` : `▼ ${Math.abs(delta)}`));
+    const lwOverride=POLL_LW_OVERRIDES[t];
+    const baseLW=(typeof lwOverride==='number')?lwOverride:(preMap.has(t)?preMap.get(t):'NR');
+    const base=(typeof baseLW==='number')?baseLW:null;
+    const delta=(base!==null)?(base-rk):null;
+    const dCls=delta===null?'delta-none':delta>0?'delta-up':delta<0?'delta-down':'delta-none';
+    const deltaTxt=delta===null?'NR':(delta===0?'—':(delta>0?`▲ ${delta}`:`▼ ${Math.abs(delta)}`));
     return {rk,t,pts,lw:baseLW,delta,wl:`${wl.w||0}-${wl.l||0}`,dCls,deltaTxt};
   });
 
   const body=document.getElementById('pollBody');
   body.innerHTML=now.map(x=>{
-    const isNo1 = x.rk===1;
-    const teamTxt = x.t; // user bolding applied globally later
-    return `<tr>
-      <td>${x.rk}</td>
-      <td>${isNo1?`<span class="gold">${teamTxt}</span>`:teamTxt}</td>
-      <td>${x.lw}</td>
-      <td class="${x.dCls}">${x.deltaTxt}</td>
-      <td>${x.wl}</td>
-      <td>${x.pts}</td>
-    </tr>`;
+    const isNo1=x.rk===1;
+    const name = isNo1?`<span class="gold">${x.t}</span>`:x.t;
+    return `<tr><td>${x.rk}</td><td>${name}</td><td>${x.lw}</td><td class="${x.dCls}">${x.deltaTxt}</td><td>${x.wl}</td><td>${x.pts}</td></tr>`;
   }).join('');
 
-  const risers = now.filter(x=>x.delta!==null && x.delta>=3).sort((a,b)=>b.delta-a.delta).slice(0,5);
-  const fallers = now.filter(x=>x.delta!==null && x.delta<=-3).sort((a,b)=>a.delta-b.delta).slice(0,5);
-  const entrants = now.filter(x=>x.lw==='NR' || x.lw==='—').map(x=>`#${x.rk} ${x.t}`);
-  const dropped = POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${t}`);
+  const risers=now.filter(x=>x.delta!==null&&x.delta>=3).sort((a,b)=>b.delta-a.delta).slice(0,5);
+  const fallers=now.filter(x=>x.delta!==null&&x.delta<=-3).sort((a,b)=>a.delta-b.delta).slice(0,5);
+  const entrants=now.filter(x=>x.lw==='NR'||x.lw==='—').map(x=>`#${x.rk} ${x.t}`);
+  const dropped=POLL_PRE.map(p=>p[1]).filter(t=>!now.find(n=>n.t===t)).map(t=>`#${preMap.get(t)} ${t}`);
 
   document.getElementById('movers').innerHTML =
-    `<p><strong>Big risers:</strong> ${risers.map(x=>`#${x.rk} ${x.t} (▲${x.delta})`).join(', ')||'—'}</p>
-     <p><strong>Big fallers:</strong> ${fallers.map(x=>`#${x.rk} ${x.t} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
-     <p><strong>New entrants:</strong> ${entrants.join(', ')||'—'}</p>
-     <p><strong>Dropped out:</strong> ${dropped.join(', ')||'—'}</p>`;
+    `<p><strong>Big Risers:</strong> ${risers.map(x=>`#${x.rk} ${x.t} (▲${x.delta})`).join(', ')||'—'}</p>
+     <p><strong>Big Fallers:</strong> ${fallers.map(x=>`#${x.rk} ${x.t} (▼${Math.abs(x.delta)})`).join(', ')||'—'}</p>
+     <p><strong>New Entrants:</strong> ${entrants.join(', ')||'—'}</p>
+     <p><strong>Dropped Out:</strong> ${dropped.join(', ')||'—'}</p>`;
   makeSortable(document.getElementById('pollTable'));
 }
 
-/* ===== Matchup parsing & classifying ===== */
+/* ===== Matchup Parsing & Week 3 In-Progress ===== */
 function parseMatchup(str){
   const clean=s=>s.replace(/^\s*#\d+\s*/,'').trim();
   let a='',b='', ar=null, br=null;
@@ -510,79 +465,62 @@ function parseMatchup(str){
   return {a,b,ar,br,raw:str};
 }
 function matchupType(a,b){
-  const aUser=isUser(a), bUser=isUser(b);
-  if(aUser && bUser) return 'User vs User';
-  if(aUser ^ bUser)   return 'User vs CPU';
+  const aU=isUser(a), bU=isUser(b);
+  if(aU&&bU) return 'User vs User';
+  if(aU^bU)  return 'User vs CPU';
   return 'CPU vs CPU';
 }
-
-/* ===== WEEK 3 SCHEDULE (UvU & UvCPU only) ===== */
-function renderWeek3Schedule(){
-  const body=document.getElementById('wk3Body');
-  const rows = WEEK3_SCHEDULE.map(x=>typeof x==='string'?{m:x}:x).map(o=>parseMatchup(o.m||o.matchup||o));
-  const filtered = rows.filter(({a,b})=> matchupType(a,b)!=='CPU vs CPU');
-  if(!filtered.length){
-    body.innerHTML = `<tr><td colspan="2" class="small muted">No user-involved games found in the Week 3 slate.</td></tr>`;
-  }else{
-    body.innerHTML = filtered.map(({raw,a,b})=>{
-      const type = matchupType(a,b);
-      return `<tr><td>${raw}</td><td>${type}</td></tr>`;
-    }).join('');
-  }
-  makeSortable(document.getElementById('wk3Table'));
+function renderWeek3InProgress(){
+  const body=document.getElementById('wk3ipBody');
+  const rows=WEEK3_SCHEDULE.map(x=>parseMatchup(x));
+  const filtered=rows.filter(({a,b})=>matchupType(a,b)!=='CPU vs CPU');
+  body.innerHTML = filtered.map(({a,b})=>{
+    const A=isUser(a)?`<strong>${a}</strong>`:a;
+    const H=isUser(b)?`<strong>${b}</strong>`:b;
+    return `<tr><td>${A}</td><td>—</td><td>${H}</td><td>—</td><td>${matchupType(a,b)}</td></tr>`;
+  }).join('') || `<tr><td colspan="5" class="small muted">No user-involved games found in the Week 3 slate.</td></tr>`;
+  makeSortable(document.getElementById('wk3ipTable'));
 }
 
-/* ===== GOTW (pick from Week 3 filtered set) ===== */
+/* ===== GOTW ===== */
 function gotwScore(m){
   const {a,b,ar,br}=parseMatchup(m);
-  const uvu = isUser(a)&&isUser(b);
-  const ranked = (ar&&ar<=25)&&(br&&br<=25);
-  const sum = (ar||50)+(br||50);
+  const uvu=isUser(a)&&isUser(b);
+  const ranked=(ar&&ar<=25)&&(br&&br<=25);
+  const sum=(ar||50)+(br||50);
   return (uvu?1000:0)+(ranked?500:0)+(50-sum);
 }
 function renderGOTW(){
-  const candidates = WEEK3_SCHEDULE.map(x=>typeof x==='string'?x:(x.m||x.matchup||'')).filter(Boolean);
-  const filtered = candidates.filter(s=>{
-    const {a,b}=parseMatchup(s);
-    return matchupType(a,b)!=='CPU vs CPU';
-  });
+  const candidates=WEEK3_SCHEDULE.filter(Boolean);
+  const filtered=candidates.filter(s=>matchupType(...Object.values(parseMatchup(s)).slice(0,2))!=='CPU vs CPU');
   if(!filtered.length){
-    document.getElementById('gotwCard').innerHTML =
-      `<p class="small muted">Add Week 3 schedule above to auto-select a GOTW (prefers ranked UvU).</p>`;
+    document.getElementById('gotwCard').innerHTML=`<p class="small muted">Add Week 3 schedule above to auto-select a GOTW (prefers ranked UvU).</p>`;
     return;
   }
-  const best = filtered.slice().sort((x,y)=>gotwScore(y)-gotwScore(x))[0];
+  const best=filtered.slice().sort((x,y)=>gotwScore(y)-gotwScore(x))[0];
   const {a,b,ar,br}=parseMatchup(best);
   const rec=buildRecordMap(), ra=rec.get(a)||{w:0,l:0}, rb=rec.get(b)||{w:0,l:0};
-  const noteParts=[];
-  if(isUser(a)&&isUser(b)) noteParts.push('User vs User');
-  if(ar && br){
-    const top=Math.min(ar,br);
-    if(top<=5) noteParts.push('Top-5 matchup');
-    else if(top<=10) noteParts.push('Top-10 matchup');
-    else noteParts.push('Top-25 matchup');
-  }
-  const note = noteParts.join(' • ') || '—';
+  const notes=[];
+  if(isUser(a)&&isUser(b)) notes.push('User vs User');
+  if(ar&&br){ const top=Math.min(ar,br); notes.push(top<=5?'Top-5 Matchup':top<=10?'Top-10 Matchup':'Top-25 Matchup'); }
   document.getElementById('gotwCard').innerHTML =
-    `<p><strong>${ar?`#${ar} `:''}${a}</strong> @ 
-       <strong>${br?`#${br} `:''}${b}</strong>
-       <span class="badge badge-uvU">${note}</span></p>
-     <p class="small">Records so far: ${isUser(a)?`<strong>${a}</strong>`:a} ${ra.w}-${ra.l} • ${isUser(b)?`<strong>${b}</strong>`:b} ${rb.w}-${rb.l}</p>
-     <p class="small"><strong>Vote here:</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord GOTW poll</a></p>`;
+    `<p><strong>${ar?`#${ar} `:''}${a}</strong> @ <strong>${br?`#${br} `:''}${b}</strong> <span class="badge badge-uvu">${notes.join(' • ')||'—'}</span></p>
+     <p class="small">Records So Far: ${isUser(a)?`<strong>${a}</strong>`:a} ${ra.w}-${ra.l} • ${isUser(b)?`<strong>${b}</strong>`:b} ${rb.w}-${rb.l}</p>
+     <p class="small"><strong>Vote Here:</strong> <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Discord GOTW Poll</a></p>`;
 }
 
-/* ===== Upset Alert (WEEK 2 ONLY) ===== */
+/* ===== Upset Alert (Week 2 Only) ===== */
 function findWeek2Upsets(){
-  const games = WEEK2_RESULTS; // Week 2 only
+  const games=WEEK2_RESULTS;
   const upsets=[];
   games.forEach(g=>{
-    const winner = g.a>g.h? g.away : g.home;
-    const loser  = g.a>g.h? g.home : g.away;
-    const wr = preRank.get(winner) ?? 99;
-    const lr = preRank.get(loser) ?? 99;
-    const wScore = Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
-    if(lr < wr || (wr===99 && lr<=25)){
-      upsets.push({winner,loser,wr:(wr===99?'NR':wr),lr, wScore,lScore});
+    const winner=g.a>g.h?g.away:g.home;
+    const loser=g.a>g.h?g.home:g.away;
+    const wr=preRank.get(winner)??99;
+    const lr=preRank.get(loser)??99;
+    const wScore=Math.max(g.a,g.h), lScore=Math.min(g.a,g.h);
+    if(lr<wr || (wr===99&&lr<=25)){
+      upsets.push({winner,loser,wr:(wr===99?'NR':wr),lr,wScore,lScore});
     }
   });
   return upsets;
@@ -592,19 +530,18 @@ function renderUpsets(){
   const arr=findWeek2Upsets();
   if(!arr.length){
     list.innerHTML='<li class="small muted">No Week 2 upsets listed yet.</li>';
-    document.getElementById('upsetNote').textContent =
-      'This section only shows upsets from Week 2 finals. An upset = higher-ranked team (by preseason or prior week poll) lost to a lower-ranked or unranked opponent. Add Week 2 results above and this will auto-populate.';
+    document.getElementById('upsetNote').textContent='This section only shows upsets from Week 2 finals. An upset = higher-ranked team lost to a lower-ranked or unranked opponent.';
     return;
   }
-  list.innerHTML = arr.map(u=>{
-    const W = isUser(u.winner)?`<strong>${u.winner}</strong>`:u.winner;
-    const L = isUser(u.loser)?`<strong>${u.loser}</strong>`:u.loser;
+  list.innerHTML=arr.map(u=>{
+    const W=isUser(u.winner)?`<strong>${u.winner}</strong>`:u.winner;
+    const L=isUser(u.loser)?`<strong>${u.loser}</strong>`:u.loser;
     return `<li>${W} (${u.wr}) def. ${L} (#${u.lr}) ${u.wScore}–${u.lScore}</li>`;
   }).join('');
-  document.getElementById('upsetNote').textContent = 'Using preseason ranks as baseline (replace with Week 2 poll if available).';
+  document.getElementById('upsetNote').textContent='Used preseason ranks as baseline';
 }
 
-/* ===== Conference Supremacy Tracker (UvU only) ===== */
+/* ===== Conference Supremacy Tracker (UvU Only) ===== */
 function getUserVsUserGames(){ return allResults().filter(g=>isUser(g.away)&&isUser(g.home)); }
 function computeUvUConferenceStats(){
   const stats={};
@@ -615,20 +552,19 @@ function computeUvUConferenceStats(){
     stats[wConf].w++; stats[wConf].gp++; stats[lConf].l++; stats[lConf].gp++;
     stats[wConf].teams[winner].w++; stats[lConf].teams[loser].l++;
   });
-  const rows = Object.entries(stats).map(([conf,d])=>{
-    const pct = d.gp ? d.w/(d.w+d.l) : 0;
-    const teams = Object.entries(d.teams).sort((a,b)=>{
+  return Object.entries(stats).map(([conf,d])=>{
+    const pct=d.gp?d.w/(d.w+d.l):0;
+    const teams=Object.entries(d.teams).sort((a,b)=>{
       const [ta,ra]=a,[tb,rb]=b;
       if(ra.w!==rb.w) return rb.w-ra.w;
       if(ra.l!==rb.l) return ra.l-rb.l;
       const pa=currentPollRank.get(ta)||99, pb=currentPollRank.get(tb)||99;
       return pa-pb;
     });
-    const leaderTeam = teams.find(([,r])=>r.w>0 || r.l>0)?.[0] || teams[0][0];
-    const leaderRec = d.teams[leaderTeam];
+    const leaderTeam=teams.find(([,r])=>r.w>0||r.l>0)?.[0]||teams[0][0];
+    const leaderRec=d.teams[leaderTeam];
     return {conf,w:d.w,l:d.l,gp:d.gp,pct,leader:`${leaderTeam} (${leaderRec.w}-${leaderRec.l})`,raw:d};
   }).sort((a,b)=> b.pct-a.pct || b.w-a.w);
-  return rows;
 }
 function renderConferenceTracker(){
   const rows=computeUvUConferenceStats();
@@ -640,7 +576,7 @@ function renderConferenceTracker(){
   </thead><tbody></tbody>`;
   const tb=tbl.tBodies[0];
   rows.forEach((r,i)=>{
-    const leaderHtml = r.leader.replace(/^[^ ]+/, t => (isUser(t)? `<strong>${t}</strong>` : t));
+    const leaderHtml=r.leader.replace(/^[^ ]+/, t => (isUser(t)? `<strong>${t}</strong>` : t));
     tb.insertAdjacentHTML('beforeend',`<tr>
       <td>${i+1}</td><td>${r.conf}</td><td>${r.w}</td><td>${r.l}</td><td>${(r.pct*100).toFixed(1)}</td><td>${leaderHtml}</td>
     </tr>`);
@@ -650,35 +586,27 @@ function renderConferenceTracker(){
   const top=rows[0];
   if(top){
     const confName=top.conf;
-    const teamsOrder = Object.entries(top.raw.teams).sort((a,b)=>{
-      const [ta,ra]=a,[tb,rb]=b;
-      if(ra.w!==rb.w) return rb.w-ra.w;
-      if(ra.l!==rb.l) return ra.l-rb.l;
-      const pa=currentPollRank.get(ta)||99, pb=currentPollRank.get(tb)||99;
-      return pa-pb;
-    });
-    const topTeam=teamsOrder[0][0];
     const uvus=getUserVsUserGames().filter(g=>{
       const aC=TEAM_CONF[g.away], hC=TEAM_CONF[g.home];
       return aC===confName || hC===confName;
     });
-    const wins = uvus.filter(g=> (TEAM_CONF[g.a>g.h?g.away:g.home])===confName)
+    const wins=uvus.filter(g=> (TEAM_CONF[g.a>g.h?g.away:g.home])===confName)
       .map(g=>{const W=g.a>g.h?g.away:g.home, L=g.a>g.h?g.home:g.away, w=Math.max(g.a,g.h), l=Math.min(g.a,g.h);
         return `${isUser(W)?`<strong>${W}</strong>`:W} ${w}–${l} over ${isUser(L)?`<strong>${L}</strong>`:L}`;});
     document.getElementById('confBlurb').innerHTML =
       `<strong>${confName}</strong> leads at <strong>${top.w}-${top.l}</strong> (${(top.pct*100).toFixed(1)}%). 
-       Pace-setter: ${isUser(topTeam)?`<strong>${topTeam}</strong>`:topTeam}. Recent ${confName} UvU wins: <em>${wins.join(' • ')||'—'}</em>.`;
+       Pace-setter: ${wins.length?wins[0].split(' ')[0]:'—'}. Recent ${confName} UvU wins: <em>${wins.join(' • ')||'—'}</em>.`;
   }
 }
 
-/* ===== Render Weeks (bold user teams) ===== */
+/* ===== Generic Week Table Renderer (bolds user teams) ===== */
 function renderWeek(tblId,bodyId,games){
   const body=document.getElementById(bodyId);
   if(!games.length){ return; }
   body.innerHTML=games.map(g=>{
     const awayWin=g.a>g.h, type=(isUser(g.away)&&isUser(g.home))?'User vs User':(isUser(g.away)||isUser(g.home))?'User vs CPU':'CPU vs CPU';
-    const A = isUser(g.away)?`<strong>${g.away}</strong>`:g.away;
-    const H = isUser(g.home)?`<strong>${g.home}</strong>`:g.home;
+    const A=isUser(g.away)?`<strong>${g.away}</strong>`:g.away;
+    const H=isUser(g.home)?`<strong>${g.home}</strong>`:g.home;
     return `<tr>
       <td class="${awayWin?'cell-win':'cell-loss'}">${A}</td>
       <td class="${awayWin?'cell-win':'cell-loss'}">${g.a}</td>
@@ -701,94 +629,90 @@ function renderOwners(){
   makeSortable(document.getElementById('ownersTable'));
 }
 
-/* ===== Ticker (placeholders) ===== */
+/* ===== Ticker (Week 2 key results + GOTW) ===== */
 function renderTicker(){
   const row=document.getElementById('tickerRow');
-  const items=[
-    "Week 3 — cover art placeholder",
-    "Vote Game of the Week → Discord poll",
-    "Submit Week 2 finals & highlights in #general",
-    "Schools & Coaches → team pages"
+  const highlights=[
+    "GOTW: LSU 42–13 USC",
+    "Alabama 42–17 California",
+    "BYU 66–3 Utah State",
+    "Texas Tech 43–17 Oregon State",
+    "Miami 58–7 NC State",
+    "Washington 19–13 Maryland",
+    "Florida State 24–21 Texas",
+    "Utah 42–33 Arkansas",
+    "Indiana 35–28 Tennessee",
+    "Auburn 17–7 Army",
+    "UCLA 31–7 Kennesaw St.",
+    "Arizona State 31–13 Texas A&M",
+    "Michigan 24–10 Oklahoma",
+    "South Carolina 77–9 Wisconsin"
   ];
-  row.innerHTML = items.map(txt=>`<span>${txt}</span>`).join('');
+  row.innerHTML=highlights.map(txt=>`<span>${txt}</span>`).join('');
 }
 
-/* ===== Bold ALL user teams (including static text) ===== */
+/* ===== Bold All User Teams (Global) ===== */
 function boldUserTeamsEverywhere(){
-  const SKIP = new Set(['SCRIPT','STYLE','CODE','PRE','TEXTAREA']);
-  const teams = USER_TEAMS.slice().sort((a,b)=>b.length-a.length);
-  const patterns = teams.map(t=>({t, re:new RegExp(`(^|[^A-Za-z])(${t.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')})(?=$|[^A-Za-z])`,'g') }));
-  const walker=document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+  const SKIP=new Set(['SCRIPT','STYLE','CODE','PRE','TEXTAREA']);
+  const teams=USER_TEAMS.slice().sort((a,b)=>b.length-a.length);
+  const patterns=teams.map(t=>({t,re:new RegExp(`(^|[^A-Za-z])(${t.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')})(?=$|[^A-Za-z])`,'g')}));
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
     acceptNode(node){
       const p=node.parentElement;
-      if(!p || SKIP.has(p.tagName) || p.closest('strong')) return NodeFilter.FILTER_REJECT;
-      if(!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      if(!p||SKIP.has(p.tagName)||p.closest('strong')) return NodeFilter.FILTER_REJECT;
+      if(!node.nodeValue||!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     }
   });
-  const nodes=[];
-  while(walker.nextNode()) nodes.push(walker.currentNode);
-  nodes.forEach(textNode=>{
-    let s=textNode.nodeValue, changed=false;
-    patterns.forEach(({re})=>{
-      s = s.replace(re, (_,pre,match)=>{ changed=true; return `${pre}<strong>${match}</strong>`; });
-    });
-    if(changed){
-      const span=document.createElement('span');
-      span.innerHTML=s;
-      textNode.parentNode.replaceChild(span, textNode);
-    }
+  const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(tn=>{
+    let s=tn.nodeValue, changed=false;
+    patterns.forEach(({re})=>{ s=s.replace(re,(_,pre,match)=>{changed=true;return `${pre}<strong>${match}</strong>`;}); });
+    if(changed){ const span=document.createElement('span'); span.innerHTML=s; tn.parentNode.replaceChild(span,tn); }
   });
 }
 
-/* ===== Image fallbacks ===== */
+/* ===== Image Fallbacks ===== */
 function setupHeroFallback(){
-  const hero = document.getElementById('splashHero');
+  const hero=document.getElementById('splashHero');
   if(!hero) return;
-  hero.addEventListener('error', ()=>{
-    const tried = hero.getAttribute('data-tried-alt');
-    if(!tried){
+  hero.addEventListener('error',()=>{
+    if(!hero.getAttribute('data-tried-alt')){
       hero.setAttribute('data-tried-alt','1');
-      const src=hero.getAttribute('src');
-      hero.src = src.endsWith('.png') ? src.replace('.png','.PNG') : src.replace('.PNG','.png');
+      hero.src=hero.src.endsWith('.png')?hero.src.replace('.png','.PNG'):hero.src.replace('.PNG','.png');
     }
   });
 }
 function setupWeek4SlateFallback(){
-  const img = document.getElementById('wk4Img');
-  const msg = document.getElementById('wk4Fallback');
+  const img=document.getElementById('wk4Img');
+  const msg=document.getElementById('wk4Fallback');
   if(!img) return;
-  img.addEventListener('error', ()=>{
-    const tried = img.getAttribute('data-tried-alt');
-    if(!tried){
-      img.setAttribute('data-tried-alt','1');
-      const src=img.getAttribute('src');
-      img.src = src.endsWith('.png') ? src.replace('.png','.PNG') : src.replace('.PNG','.png');
-      msg?.classList.remove('hidden');
-      msg.textContent = 'Alternate image name attempted…';
-    }else{
-      msg?.classList.remove('hidden');
-      msg.textContent = 'Couldn’t load week4slate image.';
-    }
+  img.addEventListener('error',()=>{
+    const tried=img.getAttribute('data-tried-alt')||'';
+    let next=null;
+    if(tried===''){ next=img.src.replace(/\.jpg$/i,'.jpeg'); img.setAttribute('data-tried-alt','jpeg'); }
+    else if(tried==='jpeg'){ next=img.src.replace(/\.jpeg$/i,'.png'); img.setAttribute('data-tried-alt','png'); }
+    else if(tried==='png'){ next=img.src.toUpperCase(); img.setAttribute('data-tried-alt','upper'); }
+    else { msg?.classList.remove('hidden'); msg.textContent='Couldn’t load Week 4 slate image.'; return; }
+    msg?.classList.remove('hidden'); msg.textContent='Trying alternate image name…';
+    img.src=next;
   });
 }
 
 /* ===== Boot ===== */
 function boot(){
   renderTicker();
-  renderPower();                // USERS ONLY (32) with medals
-  renderPoll();                 // ALL TEAMS; #1 overall gold
-  renderWeek3Schedule();        // Only UvU & UvCPU shown
-  renderGOTW();                 // Pick from Week 3 schedule
-  renderUpsets();               // Week 2 only (placeholder if none)
-  renderConferenceTracker();
-  renderWeek('wk0Table','wk0Body',WEEK0_RESULTS);
-  renderWeek('wk1Table','wk1Body',WEEK1_RESULTS);
+  renderPower();
+  renderPoll();
   renderWeek('wk2Table','wk2Body',WEEK2_RESULTS);
+  renderWeek3InProgress();
+  renderGOTW();
+  renderUpsets();
+  renderConferenceTracker();
   renderOwners();
   setupHeroFallback();
   setupWeek4SlateFallback();
-  boldUserTeamsEverywhere();    // global bolding after render
+  boldUserTeamsEverywhere();
 }
 document.addEventListener('DOMContentLoaded', boot);
 </script>
