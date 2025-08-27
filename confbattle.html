@@ -97,6 +97,7 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   <a class="chip" href="#standings">Standings</a>
   <a class="chip" href="#matrix">Head-to-Head Matrix</a>
   <a class="chip" href="#log">Qualifying Games Log</a>
+  <a class="chip" href="#details">Conference Details</a>
   <a class="chip" href="#rules">Rules</a>
 </div>
 
@@ -139,6 +140,13 @@ footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-siz
   <h2>Qualifying Games Log</h2>
   <div class="card">
     <ul id="gameLog" style="margin:0;padding-left:18px"></ul>
+  </div>
+</section>
+
+<section id="details" class="section">
+  <h2>Conference Details — User Teams</h2>
+  <div class="card" id="confDetailsWrap">
+    <p class="small muted">Sorted by UvU non-conference record within each conference. Also shows overall record using Weeks 0–2 finals plus Week 3 results we have.</p>
   </div>
 </section>
 
@@ -214,15 +222,32 @@ const WEEK2_RESULTS=[
   {away:"Alabama",a:42,home:"California",h:17}
 ];
 
+/* ===== Week 3 finals from your screenshot ===== */
+const RECENT_ALL_RESULTS = [
+  {away:"Washington",a:56,home:"Washington St.",h:20},
+  {away:"Alabama",a:21,home:"Utah",h:31},
+  {away:"Georgia State",a:21,home:"Georgia",h:56},
+  {away:"South Carolina",a:41,home:"Missouri",h:10},
+  {away:"Buffalo",a:7,home:"Penn State",h:63},
+  {away:"New Mexico",a:21,home:"Oklahoma",h:28},
+  {away:"Miami",a:63,home:"Syracuse",h:17},
+  {away:"LSU",a:28,home:"BYU",h:21},
+  {away:"Delaware",a:13,home:"Georgia Tech",h:10},
+  {away:"Boston College",a:13,home:"Clemson",h:24},
+  {away:"Hawai'i",a:14,home:"Arizona State",h:35},
+  {away:"Baylor",a:35,home:"Ohio State",h:41}
+];
+
 /* ===== Week 3 UvU Non-Conference finals so far ===== */
 const RECENT_UVU_INTERCONF = [
   {week:"Week 3", away:"LSU", a:28, home:"BYU", h:21},     // SEC over Big 12
-  {week:"Week 3", away:"Alabama", a:21, home:"Utah", h:31} // Big 12 over SEC
-  // Add more as they finish; ONLY add UvU AND different conferences
+  {week:"Week 3", away:"Alabama", a:21, home:"Utah", h:31},// Big 12 over SEC
+  {week:"Week 3", away:"Baylor", a:35, home:"Ohio State", h:41} // Big Ten over SEC
 ];
 
 /* ===== Ticker items (latest notable finals) ===== */
 const TICKER = [
+  "Week 3: Ohio State 41–35 Baylor",
   "Week 3: Utah 31–21 Alabama",
   "Week 3 GOTW: LSU 28–21 BYU",
   "Week 3: Washington 56–20 Washington St.",
@@ -230,8 +255,7 @@ const TICKER = [
   "Week 2: BYU 66–3 Utah State",
   "Week 2: Florida State 24–21 Texas",
   "Week 1: Alabama 21–14 Ohio State",
-  "Week 0: Washington 42–27 Florida",
-  "Week 0: Texas Tech 28–0 Illinois"
+  "Week 0: Washington 42–27 Florida"
 ];
 
 /* ===== Helpers ===== */
@@ -264,8 +288,8 @@ function dedupeGames(arr){
   });
 }
 
-/* Gather all Week 0–2 results (from your magazine code) */
-function allRecordedResults(){
+/* Gather all Week 0–2 results */
+function w012ResultsTagged(){
   const tag=(arr,label)=>arr.map(g=>({week:label,away:g.away,a:g.a,home:g.home,h:g.h}));
   return dedupeGames([
     ...tag(WEEK0_RESULTS,"Week 0"),
@@ -274,9 +298,17 @@ function allRecordedResults(){
   ]);
 }
 
+/* All known finals for overall records (Weeks 0–2 + Week 3 partial) */
+function allKnownResults(){
+  return dedupeGames([
+    ...w012ResultsTagged(),
+    ...RECENT_ALL_RESULTS.map(g=>({week:"Week 3", ...g}))
+  ]);
+}
+
 /* Filter to UvU + Non-Conference only */
 function getQualifyingGames(){
-  const base=allRecordedResults().filter(g=> isUvU(g.away,g.home) && isInterconf(g.away,g.home));
+  const base=w012ResultsTagged().filter(g=> isUvU(g.away,g.home) && isInterconf(g.away,g.home));
   const extra=(RECENT_UVU_INTERCONF||[]).filter(g=> isUvU(g.away,g.home) && isInterconf(g.away,g.home));
   return [...base, ...extra];
 }
@@ -305,6 +337,63 @@ function computeBattle(){
   }).sort((a,b)=> b.pct-a.pct || b.w-a.w);
 
   return {table, matrix, log};
+}
+
+/* ===== Conference Details (team-level) ===== */
+function ordinal(n){
+  const s=["th","st","nd","rd"], v=n%100; return n + (s[(v-20)%10]||s[v]||s[0]);
+}
+function buildOverallRecordMap(){
+  const rec=new Map();
+  const add=(t,wl)=>{ const r=rec.get(t)||{w:0,l:0}; r[wl]++; rec.set(t,r); };
+  allKnownResults().forEach(g=>{
+    const w = g.a>g.h ? g.away : g.home;
+    const l = g.a>g.h ? g.home : g.away;
+    if(w) add(w,"w"); if(l) add(l,"l");
+  });
+  return rec;
+}
+function buildUvUNcRecordMapByTeam(){
+  const rec=new Map();
+  const add=(t,wl)=>{ const r=rec.get(t)||{w:0,l:0}; r[wl]++; rec.set(t,r); };
+  getQualifyingGames().forEach(g=>{
+    const w = g.a>g.h ? g.away : g.home;
+    const l = g.a>g.h ? g.home : g.away;
+    add(w,"w"); add(l,"l");
+  });
+  return rec;
+}
+function renderConferenceDetails(){
+  const confs=["SEC","Big Ten","ACC","Big 12"];
+  const overall=buildOverallRecordMap();
+  const uvunc=buildUvUNcRecordMapByTeam();
+  const wrap=document.getElementById('confDetailsWrap');
+  wrap.innerHTML="";
+  confs.forEach(conf=>{
+    const members=USER_TEAMS.filter(t=>TEAM_CONF[t]===conf);
+    const rows=members.map(t=>{
+      const nc=uvunc.get(t)||{w:0,l:0};
+      const ov=overall.get(t)||{w:0,l:0};
+      return {team:t, ncw:nc.w||0, ncl:nc.l||0, ow:ov.w||0, ol:ov.l||0};
+    }).sort((a,b)=> (b.ncw-a.ncw) || (a.ncl-b.ncl) || (b.ow-a.ow) || a.team.localeCompare(b.team));
+    const tbl=document.createElement('table');
+    tbl.className="table sortable";
+    tbl.innerHTML=`<thead>
+      <tr><th data-type="num">Place</th><th data-type="str">Team</th><th data-type="str">UvU Non-Conf</th><th data-type="str">Overall</th></tr>
+    </thead><tbody></tbody>`;
+    const tb=tbl.tBodies[0];
+    rows.forEach((r,i)=>{
+      tb.insertAdjacentHTML('beforeend',
+        `<tr><td>${i+1}</td><td><strong>${r.team}</strong></td><td>${r.ncw}-${r.ncl}</td><td>${r.ow}-${r.ol}</td></tr>`);
+    });
+    const h3=document.createElement('h3'); h3.textContent=conf;
+    wrap.appendChild(h3);
+    const p=document.createElement('p'); p.className="small muted";
+    p.textContent = `Leaders: ${rows.slice(0,3).map((r,i)=>`${ordinal(i+1)} ${r.team} (${r.ncw}-${r.ncl})`).join(' • ') || '—'}`;
+    wrap.appendChild(p);
+    wrap.appendChild(tbl);
+    makeSortable(tbl);
+  });
 }
 
 /* Renderers */
@@ -363,6 +452,7 @@ function boot(){
   renderStandings(data);
   renderMatrix(data);
   renderLog(data);
+  renderConferenceDetails();
 }
 document.addEventListener('DOMContentLoaded', boot);
 </script>
