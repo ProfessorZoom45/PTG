@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>D1SN — Conference Battle (UvU • Non-Conference)</title>
+<meta name="description" content="Running Late Dynasty — Conference Battle standings and logs. Counts ONLY User vs User, Non-Conference finals from Weeks 0–2 (plus Week 3 partial)." />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="https://professorzoom45.github.io/PTG/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Perfect Timing Gaming">
+<meta property="og:title" content="D1SN — Conference Battle" />
+<meta property="og:description" content="Live tally of UvU Non-Conference results by league (SEC, Big Ten, ACC, Big 12)." />
+<meta property="og:url" content="https://professorzoom45.github.io/PTG/confbatt.html">
+
+<style>
+:root{
+  --bg:#0b0b0b;--card:#141414;--line:#232323;--text:#e6e6e6;--muted:#a6a6a6;
+  --gold:#d5b15b;--silver:#c0c0c0;--bronze:#cd7f32;--accent:#f2d675;
+  --up:#16c784;--down:#ff5c5c;--no:#9aa3ad;
+  --chip:#121212;--chip-b:#2a2a2a;
+  --btn-a:#1a1a1a;--btn-b:#262626;--btn-glow:#f2d67566
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--gold);text-decoration:none}
+a:focus-visible,.chip:focus-visible,.cta-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+h1,h2{margin:0 0 .6rem}
+p{margin:.4rem 0 .8rem}
+.small{font-size:.92rem;color:#b0b0b0}
+.muted{color:var(--muted)}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px;scroll-margin-top:72px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-size:.9rem}
+
+/* Chips */
+.chips{max-width:1100px;margin:10px auto 6px;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--chip);border:1px solid var(--chip-b);color:#eaeaea;font-weight:600}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Ticker */
+.ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+.ticker .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008}
+.ticker .track{overflow:hidden;flex:1;min-width:280px}
+.ticker .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 30s linear infinite}
+.ticker:hover .row{animation-play-state:paused}
+.ticker .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
+.ticker .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+@keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+.cta-btn{margin-left:8px;border:1px solid #3c3c3c;padding:8px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+.cta-btn:hover{filter:brightness(1.08);box-shadow:0 0 0 2px #000 inset,0 0 22px var(--btn-glow)}
+
+/* Tables */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
+.sortable th{user-select:none;cursor:pointer}
+.sortable th[aria-sort="ascending"],.sortable th[aria-sort="descending"]{color:var(--accent)}
+
+/* Medal colors for leaderboard */
+.gold{color:var(--gold);font-weight:900}
+.silver{color:var(--silver);font-weight:900}
+.bronze{color:var(--bronze);font-weight:900}
+
+/* Matrix */
+.matrix{border-collapse:separate;border-spacing:0}
+.matrix th,.matrix td{border:1px solid #2a2a2a;padding:6px 10px}
+.matrix th{background:#101010;position:sticky;top:0}
+
+/* Game log labels */
+.win{color:var(--up);font-weight:800}
+.loss{color:var(--down);font-weight:800}
+.badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
+.badge-rule{border-color:#5151a3}
+.badge-uvu{border-color:#7740a3}
+.badge-nc{border-color:#a37740}
+
+@media (max-width:560px){ .ticker .row>*{padding-right:20px;margin-right:20px} }
+</style>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker" role="region" aria-label="D1SN Headlines">
+  <div class="wrap">
+    <a href="index.html" class="logo-a" title="Back to Magazine">D1SN</a>
+    <div class="track"><div class="row" id="tickerRow"></div></div>
+    <a class="cta-btn" href="index.html#conf" title="Open Conference section on the magazine">Back to Magazine</a>
+  </div>
+</div>
+
+<!-- Chips -->
+<div class="chips">
+  <a class="chip" href="#overview">Overview</a>
+  <a class="chip" href="#standings">Standings</a>
+  <a class="chip" href="#matrix">Head-to-Head Matrix</a>
+  <a class="chip" href="#log">Qualifying Games Log</a>
+  <a class="chip" href="#rules">Rules</a>
+</div>
+
+<section id="overview" class="section">
+  <h1>Conference Battle</h1>
+  <div class="card">
+    <p class="small">
+      Live tally of <strong>UvU Non-Conference</strong> finals across Weeks 0–2 (plus Week 3 partial). Wins are credited to the winner’s conference only.
+      <span class="badge badge-uvu">User vs User</span>
+      <span class="badge badge-nc">Non-Conference</span>
+    </p>
+    <p id="leaderBlurb" class="small"></p>
+  </div>
+</section>
+
+<section id="standings" class="section">
+  <h2>Standings</h2>
+  <div class="card">
+    <table class="table sortable" id="standingsTable">
+      <thead>
+        <tr>
+          <th data-type="num">#</th>
+          <th data-type="str">Conference</th>
+          <th data-type="num">W</th>
+          <th data-type="num">L</th>
+          <th data-type="num">Win%</th>
+        </tr>
+      </thead>
+      <tbody id="standingsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="matrix" class="section">
+  <h2>Head-to-Head Matrix</h2>
+  <div class="card" id="matrixWrap"></div>
+</section>
+
+<section id="log" class="section">
+  <h2>Qualifying Games Log</h2>
+  <div class="card">
+    <ul id="gameLog" style="margin:0;padding-left:18px"></ul>
+  </div>
+</section>
+
+<section id="rules" class="section">
+  <h2>What Counts?</h2>
+  <div class="card">
+    <p class="small">
+      <span class="badge badge-rule">Rule</span> A game is included only if:
+      (1) both teams are <strong>user-controlled</strong>, and
+      (2) their conferences are <strong>different</strong> (non-conference).
+      Intra-conference UvU games are excluded on purpose.
+    </p>
+  </div>
+</section>
+
+<footer>© D1SN — Running Late Dynasty • Conference Battle</footer>
+
+<script>
+/* ===== User Teams / Owners / Conferences (same mapping used across your site) ===== */
+const USER_TEAMS=["LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware","Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma","Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech","Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina","Utah","Auburn","Minnesota","SMU","UCLA"];
+const TEAM_CONF={
+  "Georgia":"SEC","Alabama":"SEC","LSU":"SEC","Texas":"SEC","Oklahoma":"SEC","Florida":"SEC","Tennessee":"SEC","Texas A&M":"SEC","South Carolina":"SEC","Arkansas":"SEC","Auburn":"SEC","Baylor":"SEC",
+  "Ohio State":"Big Ten","Michigan":"Big Ten","Penn State":"Big Ten","USC":"Big Ten","UCLA":"Big Ten","Washington":"Big Ten","Minnesota":"Big Ten","Illinois":"Big Ten",
+  "Clemson":"ACC","Florida State":"ACC","Miami":"ACC","North Carolina":"ACC","SMU":"ACC","Notre Dame":"ACC",
+  "Colorado":"Big 12","Texas Tech":"Big 12","Utah":"Big 12","Arizona State":"Big 12","BYU":"Big 12","Delaware":"Big 12"
+};
+const isUser = t => USER_TEAMS.includes(t);
+const confOf = t => TEAM_CONF[t]||'Ind';
+
+/* ===== Finals from your Week 3 magazine page (Weeks 0–2) ===== */
+const WEEK0_RESULTS=[
+  {away:"Florida",a:27,home:"Washington",h:42},
+  {away:"USC",a:7,home:"Texas",h:40},
+  {away:"Illinois",a:0,home:"Texas Tech",h:28},
+  {away:"Temple",a:20,home:"Penn State",h:57},
+  {away:"Iowa",a:7,home:"Alabama",h:42},
+  {away:"Indiana",a:24,home:"LSU",h:26},
+  {away:"UCLA",a:10,home:"California",h:14},
+  {away:"Michigan",a:20,home:"Houston",h:0},
+  {away:"Utah",a:56,home:"Utah State",h:31},
+  {away:"SMU",a:14,home:"Baylor",h:37},
+  {away:"BYU",a:21,home:"Clemson",h:17},
+  {away:"Miami",a:63,home:"Central Michigan",h:3},
+  {away:"Ohio",a:3,home:"Ohio State",h:28}
+];
+
+const WEEK1_RESULTS=[
+  {away:"Clemson",a:14,home:"LSU",h:31},
+  {away:"Texas A&M",a:38,home:"Missouri State",h:3},
+  {away:"Texas",a:48,home:"Texas State",h:3},
+  {away:"California",a:44,home:"Tennessee",h:47},
+  {away:"Arizona State",a:7,home:"South Carolina",h:20},
+  {away:"Marshall",a:3,home:"Penn State",h:70},
+  {away:"Michigan",a:35,home:"NC State",h:20},
+  {away:"Georgia",a:26,home:"Miami",h:38},
+  {away:"Florida State",a:38,home:"Ole Miss",h:24},
+  {away:"Alabama",a:21,home:"Ohio State",h:14}
+];
+
+const WEEK2_RESULTS=[
+  {away:"Maryland",a:13,home:"Washington",h:19},
+  {away:"UCLA",a:31,home:"Kennesaw State",h:7},
+  {away:"Texas Tech",a:43,home:"Oregon State",h:17},
+  {away:"Wisconsin",a:9,home:"South Carolina",h:77},
+  {away:"Oklahoma",a:10,home:"Michigan",h:24},
+  {away:"NC State",a:7,home:"Miami",h:58},
+  {away:"USC",a:13,home:"LSU",h:42},
+  {away:"BYU",a:66,home:"Utah State",h:3},
+  {away:"Auburn",a:17,home:"Army",h:7},
+  {away:"Arizona State",a:31,home:"Texas A&M",h:13},
+  {away:"Florida State",a:24,home:"Texas",h:21},
+  {away:"Tennessee",a:28,home:"Indiana",h:35},
+  {away:"Alabama",a:42,home:"California",h:17}
+];
+
+/* ===== Week 3 UvU Non-Conference finals so far ===== */
+const RECENT_UVU_INTERCONF = [
+  {week:"Week 3", away:"LSU", a:28, home:"BYU", h:21},     // SEC over Big 12
+  {week:"Week 3", away:"Alabama", a:21, home:"Utah", h:31} // Big 12 over SEC
+  // Add more as they finish; ONLY add UvU AND different conferences
+];
+
+/* ===== Ticker items (latest notable finals) ===== */
+const TICKER = [
+  "Week 3: Utah 31–21 Alabama",
+  "Week 3 GOTW: LSU 28–21 BYU",
+  "Week 3: Washington 56–20 Washington St.",
+  "Week 2: Alabama 42–17 California",
+  "Week 2: BYU 66–3 Utah State",
+  "Week 2: Florida State 24–21 Texas",
+  "Week 1: Alabama 21–14 Ohio State",
+  "Week 0: Washington 42–27 Florida",
+  "Week 0: Texas Tech 28–0 Illinois"
+];
+
+/* ===== Helpers ===== */
+function makeSortable(table){
+  if(!table) return;
+  const ths=[...table.querySelectorAll('thead th')];
+  ths.forEach((th,i)=>{
+    th.setAttribute('aria-sort','none'); th.tabIndex=0;
+    th.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); th.click(); }});
+    th.addEventListener('click',()=>{
+      const tbody=table.tBodies[0],rows=[...tbody.rows];
+      const dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
+      ths.forEach(x=>x.setAttribute('aria-sort','none')); th.setAttribute('aria-sort',dir);
+      const parse=(td)=>{ const v=td.textContent.trim(); return i===0 || th.dataset.type==="num" ? (+v.replace(/[^0-9.-]/g,'')||0) : v.toLowerCase(); };
+      rows.sort((a,b)=>{const A=parse(a.cells[i]),B=parse(b.cells[i]); return (A<B?-1:A>B?1:0)*(dir==='ascending'?1:-1);});
+      rows.forEach(r=>tbody.appendChild(r));
+    });
+  });
+}
+
+const isUvU = (a,h)=> isUser(a)&&isUser(h);
+const isInterconf = (a,h)=> confOf(a)!==confOf(h);
+
+function dedupeGames(arr){
+  const seen=new Set();
+  return arr.filter(g=>{
+    const key=[g.away,g.home,g.a,g.h].join("|");
+    if(seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+}
+
+/* Gather all Week 0–2 results (from your magazine code) */
+function allRecordedResults(){
+  const tag=(arr,label)=>arr.map(g=>({week:label,away:g.away,a:g.a,home:g.home,h:g.h}));
+  return dedupeGames([
+    ...tag(WEEK0_RESULTS,"Week 0"),
+    ...tag(WEEK1_RESULTS,"Week 1"),
+    ...tag(WEEK2_RESULTS,"Week 2"),
+  ]);
+}
+
+/* Filter to UvU + Non-Conference only */
+function getQualifyingGames(){
+  const base=allRecordedResults().filter(g=> isUvU(g.away,g.home) && isInterconf(g.away,g.home));
+  const extra=(RECENT_UVU_INTERCONF||[]).filter(g=> isUvU(g.away,g.home) && isInterconf(g.away,g.home));
+  return [...base, ...extra];
+}
+
+/* Compute standings + matrix + log */
+function computeBattle(){
+  const games=getQualifyingGames();
+  const confs=["SEC","Big Ten","ACC","Big 12"]; // limit to the four in play
+  const stats=Object.fromEntries(confs.map(c=>[c,{w:0,l:0}]));
+  const matrix=Object.fromEntries(confs.map(r=>[r,Object.fromEntries(confs.map(c=>[c,{w:0,l:0}]))]));
+
+  const log=games.map(g=>{
+    const awayWon = g.a>g.h;
+    const winner = awayWon? g.away : g.home;
+    const loser  = awayWon? g.home : g.away;
+    const wC = confOf(winner), lC = confOf(loser);
+    stats[wC].w++; stats[lC].l++;
+    matrix[wC][lC].w++; matrix[lC][wC].l++;
+    return {week:g.week, winner, wC, wScore:Math.max(g.a,g.h), loser, lC, lScore:Math.min(g.a,g.h)};
+  });
+
+  const table = Object.keys(stats).map(c=>{
+    const w=stats[c].w||0, l=stats[c].l||0;
+    const pct = (w+l)? (w/(w+l))*100 : 0;
+    return {conf:c,w,l,pct:+pct.toFixed(1)};
+  }).sort((a,b)=> b.pct-a.pct || b.w-a.w);
+
+  return {table, matrix, log};
+}
+
+/* Renderers */
+function renderTicker(){
+  const row=document.getElementById('tickerRow');
+  row.innerHTML=TICKER.map(t=>`<span>${t}</span>`).join('');
+}
+
+function renderStandings({table}){
+  const body=document.getElementById('standingsBody');
+  body.innerHTML=table.map((r,i)=>{
+    const m=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const name = m? `<span class="${m}">${r.conf}</span>` : r.conf;
+    return `<tr><td>${i+1}</td><td>${name}</td><td>${r.w}</td><td>${r.l}</td><td>${r.pct.toFixed(1)}</td></tr>`;
+  }).join('');
+  makeSortable(document.getElementById('standingsTable'));
+
+  const leader=table[0];
+  document.getElementById('leaderBlurb').innerHTML =
+    leader ? `<strong>${leader.conf}</strong> currently leads the Conference Battle at <strong>${leader.w}-${leader.l}</strong> (${leader.pct.toFixed(1)}%).`
+            : `No qualifying games yet. Add UvU non-conference finals to populate.`;
+}
+
+function renderMatrix({matrix}){
+  const confs=Object.keys(matrix);
+  if(!confs.length){ document.getElementById('matrixWrap').textContent='No data yet.'; return; }
+  const header = `<tr><th></th>${confs.map(c=>`<th>${c}</th>`).join('')}</tr>`;
+  const rows = confs.map(r=>{
+    const cells=confs.map(c=>{
+      if(c===r) return `<td style="color:#666">—</td>`;
+      const rec=matrix[r][c]||{w:0,l:0};
+      return `<td>${rec.w}-${rec.l}</td>`;
+    }).join('');
+    return `<tr><th>${r}</th>${cells}</tr>`;
+  }).join('');
+  document.getElementById('matrixWrap').innerHTML =
+    `<table class="matrix"><thead>${header}</thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderLog({log}){
+  const ul=document.getElementById('gameLog');
+  if(!log.length){ ul.innerHTML='<li class="muted small">No qualifying UvU non-conference finals recorded yet.</li>'; return; }
+  // group by week
+  const byWeek=new Map();
+  log.forEach(g=>{ if(!byWeek.has(g.week)) byWeek.set(g.week,[]); byWeek.get(g.week).push(g); });
+  ul.innerHTML=[...byWeek.entries()].map(([wk,arr])=>{
+    const items=arr.map(g=>`<li>${wk}: <span class="win">${g.wC}</span> — <strong>${g.winner}</strong> ${g.wScore} def. <strong>${g.loser}</strong> ${g.lScore} — <span class="loss">${g.lC}</span></li>`).join('');
+    return items;
+  }).join('');
+}
+
+/* Boot */
+function boot(){
+  renderTicker();
+  const data=computeBattle();
+  renderStandings(data);
+  renderMatrix(data);
+  renderLog(data);
+}
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>

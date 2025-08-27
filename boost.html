@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>D1SN — Boost Tracker</title>
+
+<!-- THEME: black background, white headings, gold accents -->
+<style>
+:root{
+  --bg:#0b0b0b; --card:#141414; --line:#232323;
+  --text:#e6e6e6; --muted:#a6a6a6;
+  --gold:#d5b15b; --accent:#f2d675;
+  --btn-a:#1a1a1a; --btn-b:#262626; --btn-glow:#f2d67566;
+  --win-bg:#143a29; --win-fg:#bff8d7;
+  --loss-bg:#3f2629; --loss-fg:#ffd0d0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+h1,h2{color:#fff;margin:0 0 .6rem}
+a{color:var(--gold);text-decoration:none}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.small{font-size:.92rem;color:#b0b0b0}
+.muted{color:var(--muted)}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:1000px){.grid{grid-template-columns:1fr 1fr}}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
+.cell-win{background:var(--win-bg);color:var(--win-fg);border-radius:6px;padding:3px 8px}
+.cell-loss{background:var(--loss-bg);color:var(--loss-fg);border-radius:6px;padding:3px 8px}
+
+/* Ticker */
+.ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.twrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+.tlogo{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51}
+.track{overflow:hidden;flex:1;min-width:280px}
+.row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 30s linear infinite}
+.row:hover{animation-play-state:paused}
+.row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
+.row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.cta{margin-left:8px;border:1px solid #3c3c3c;padding:8px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+
+/* Badges */
+.badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
+</style>
+</head>
+<body>
+
+<!-- TICKER: completed user games where BOTH teams were ranked (UvU or UvCPU) -->
+<div class="ticker">
+  <div class="twrap">
+    <span class="tlogo">D1SN</span>
+    <div class="track"><div class="row" id="tickerRow"><span>Loading ranked finals…</span></div></div>
+    <a class="cta" href="#announcement">Boost Announcement</a>
+  </div>
+</div>
+
+<section class="section">
+  <h1>Boost Tracker</h1>
+  <div class="card">
+    <p>Tracks completed <strong>User vs User</strong> and <strong>User vs CPU</strong> games. Ranks are shown next to school names. The ticker shows only <em>completed user games where both teams were ranked</em> at kickoff (UvU or UvCPU).</p>
+    <p class="small muted">Bracket (Top 5 / 10 / 15 / 25) uses the <em>worst</em> of the two ranks (e.g., <strong>#6 Alabama @ #2 Ohio State</strong> ⇒ <strong>Top 10</strong>).</p>
+  </div>
+</section>
+
+<section class="section grid">
+  <div class="card">
+    <h2>Completed — User vs User <span class="badge">Users</span></h2>
+    <table class="table">
+      <thead><tr><th>Away</th><th>A</th><th>Home</th><th>H</th><th>Week</th><th>Bracket</th></tr></thead>
+      <tbody id="uvuBody"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h2>Completed — User vs CPU <span class="badge">Users</span></h2>
+    <table class="table">
+      <thead><tr><th>Away</th><th>A</th><th>Home</th><th>H</th><th>Week</th><th>Bracket</th></tr></thead>
+      <tbody id="uvcpuBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- EXACT announcement you provided -->
+<section id="announcement" class="section">
+  <h2>🏆 Game of the Week – Boost Announcement</h2>
+  <div class="card">
+    <p>This week’s Game of the Week has been decided, and with it comes exclusive boost rewards for the winner and their supporters.</p>
+
+    <p><strong>📋 Boost Rules Recap:</strong><br>
+      • Boosts apply only to true freshmen.<br>
+      • 🚫 No stacking rewards or boosting the same player more than +5 in one attribute.<br>
+      • Must Vote Before The Game Starts!
+    </p>
+
+    <p>Supporters can also claim a reward by voting in Discord for their pick.</p>
+
+    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
+
+    <p><strong>🎯 Boost Breakdown by Matchup Ranking:</strong><br>
+      • Top 5 Matchup: Winner +5 Awareness | Supporters +1 Awareness<br>
+      • Top 10 Matchup: Winner +4 Awareness | Supporters +1 Awareness<br>
+      • Top 15 Matchup: Winner +3 Awareness | Supporters +1 Awareness<br>
+      • All Other Matchups: Winner +2 Awareness | Supporters +1 Awareness
+    </p>
+
+    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
+
+    <p><strong>🔥 This Week’s Featured Game:</strong><br>
+      #6 Alabama @ #2 Ohio State (Top 10 Matchup)<br>
+      • Winner: +4 Awareness to a true freshman<br>
+      • Supporters: +1 Awareness to their freshman of choice
+    </p>
+
+    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
+
+    <p><strong>📢 Coaches and league members — make sure you cast your votes in the Running Late Dynasty Discord right here:</strong><br>
+      👉 <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Cast Your Vote 🗳️</a></p>
+
+    <p>The winning coach’s supporters will also be rewarded!</p>
+
+    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
+
+    <p><strong>⚠️ Note:</strong> Moving forward, Game of the Week will be selected by admins after each advance.</p>
+  </div>
+</section>
+
+<script>
+/* ===== USERS (32-team dynasty) ===== */
+const USER_TEAMS=[
+  "LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware",
+  "Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma",
+  "Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech",
+  "Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina",
+  "Utah","Auburn","Minnesota","SMU","UCLA"
+];
+
+/* ===== POLLS (for ranks at kickoff) =====
+   Use PRE for Weeks 0-1, NOW for Weeks 2-3 (based on your screenshots). */
+const POLL_PRE=[
+  [1,"Georgia"],[2,"Ohio State"],[3,"Notre Dame"],[4,"Texas"],[5,"Alabama"],
+  [6,"North Carolina"],[7,"Miami"],[8,"Penn State"],[9,"LSU"],[10,"Clemson"],
+  [11,"Minnesota"],[12,"USC"],[13,"Texas Tech"],[14,"Florida State"],[15,"Oklahoma"],
+  [16,"Florida"],[17,"Washington"],[18,"Baylor"],[19,"Tennessee"],[20,"Texas A&M"],
+  [21,"Colorado"],[22,"Arkansas"],[23,"BYU"],[24,"Utah"],[25,"Illinois"]
+];
+
+const POLL_NOW=[
+  [1,"Alabama"],[2,"Miami"],[3,"South Carolina"],[4,"Notre Dame"],[5,"North Carolina"],
+  [6,"Ohio State"],[7,"Minnesota"],[8,"Penn State"],[9,"LSU"],[10,"Georgia"],
+  [11,"Texas"],[12,"BYU"],[13,"Washington"],[14,"Colorado"],[15,"Texas Tech"],
+  [16,"Michigan"],[17,"SMU"],[18,"Indiana"],[19,"Oregon"],[20,"Texas A&M"],
+  [21,"Baylor"],[22,"Delaware"],[23,"Utah"],[24,"Arkansas"],[25,"Florida"]
+];
+
+const PRE = new Map(POLL_PRE.map(([r,t])=>[t,r]));
+const NOW = new Map(POLL_NOW.map(([r,t])=>[t,r]));
+const rankAt=(team,tag)=> (tag==="now"?NOW:PRE).get(team)||null;
+const isUser = t => USER_TEAMS.includes(t);
+
+/* ===== RESULTS (from your screenshots) ===== */
+const WEEK0=[
+  // UvU
+  {away:"BYU",a:21,home:"Clemson",h:17},
+  {away:"Florida",a:27,home:"Washington",h:42},
+  {away:"USC",a:7,home:"Texas",h:40},
+  // UvCPU
+  {away:"Miami",a:63,home:"Central Michigan",h:3},
+  {away:"Alabama",a:42,home:"Iowa",h:7},
+  {away:"LSU",a:26,home:"Indiana",h:24},
+  {away:"Penn State",a:57,home:"Temple",h:20},
+  {away:"Utah",a:56,home:"Utah State",h:31},
+  {away:"UCLA",a:10,home:"California",h:14},
+  {away:"Michigan",a:20,home:"Houston",h:0},
+  {away:"Baylor",a:37,home:"SMU",h:14} // UvU
+];
+
+const WEEK1=[
+  // UvU
+  {away:"Clemson",a:14,home:"LSU",h:31},
+  {away:"Georgia",a:26,home:"Miami",h:38},
+  {away:"Alabama",a:21,home:"Ohio State",h:14},
+  {away:"Arizona State",a:7,home:"South Carolina",h:20},
+  // UvCPU
+  {away:"Texas",a:48,home:"Texas State",h:3},
+  {away:"Tennessee",a:47,home:"California",h:44},
+  {away:"Texas A&M",a:38,home:"Missouri State",h:3},
+  {away:"Penn State",a:70,home:"Marshall",h:3},
+  {away:"Michigan",a:35,home:"NC State",h:20},
+  {away:"Florida State",a:38,home:"Ole Miss",h:24}
+];
+
+const WEEK2=[
+  // UvU
+  {away:"USC",a:13,home:"LSU",h:42},
+  {away:"Florida State",a:24,home:"Texas",h:21},
+  {away:"Michigan",a:24,home:"Oklahoma",h:10},
+  {away:"Arizona State",a:31,home:"Texas A&M",h:13},
+  // UvCPU
+  {away:"BYU",a:66,home:"Utah State",h:3},
+  {away:"Auburn",a:17,home:"Army",h:7},
+  {away:"UCLA",a:31,home:"Kennesaw State",h:7}
+];
+
+const WEEK3=[
+  // UvU
+  {away:"LSU",a:28,home:"BYU",h:21},
+  {away:"Alabama",a:21,home:"Utah",h:31}
+];
+
+const WEEKS=[
+  {wk:"Week 0",poll:"pre",games:WEEK0},
+  {wk:"Week 1",poll:"pre",games:WEEK1},
+  {wk:"Week 2",poll:"now",games:WEEK2},
+  {wk:"Week 3",poll:"now",games:WEEK3}
+];
+
+/* Bracket logic: use WORST (higher number) of the two ranks present */
+function bracketFrom(ar,br){
+  if(ar==null && br==null) return null;
+  const top = Math.max(ar??0, br??0) || null; // worst rank among present
+  if(top==null) return null;
+  if(top<=5) return "Top 5";
+  if(top<=10) return "Top 10";
+  if(top<=15) return "Top 15";
+  if(top<=25) return "Top 25";
+  return null;
+}
+
+/* Build tables + ticker */
+const uvuBody=document.getElementById('uvuBody');
+const uvcpuBody=document.getElementById('uvcpuBody');
+const tickerRow=document.getElementById('tickerRow');
+
+const tickerItems=[];
+WEEKS.forEach(({wk,poll,games})=>{
+  games.forEach(g=>{
+    const A=g.away,H=g.home,a=g.a,h=g.h;
+    const ar=rankAt(A,poll), br=rankAt(H,poll);
+    const Auser=isUser(A), Huser=isUser(H);
+    if(!(Auser||Huser)) return; // ignore CPU vs CPU
+
+    const bracket = bracketFrom(ar,br);
+    const rowHtml = `
+      <tr>
+        <td class="${a>h?'cell-win':'cell-loss'}">${ar?`#${ar} `:''}${A}</td>
+        <td class="${a>h?'cell-win':'cell-loss'}">${a}</td>
+        <td class="${h>a?'cell-win':'cell-loss'}">${br?`#${br} `:''}${H}</td>
+        <td class="${h>a?'cell-win':'cell-loss'}">${h}</td>
+        <td>${wk}</td>
+        <td>${bracket||'—'}</td>
+      </tr>`;
+
+    if(Auser && Huser) uvuBody.insertAdjacentHTML('beforeend',rowHtml);
+    else uvcpuBody.insertAdjacentHTML('beforeend',rowHtml);
+
+    // Ticker item only when BOTH ranked (user vs anything)
+    if(ar && br) {
+      const winner = a>h ? `${A} ${a}–${h}` : `${H} ${h}–${a}`;
+      tickerItems.push(`<span>${wk}: #${ar} ${A} @ #${br} ${H} — ${winner}</span>`);
+    }
+  });
+});
+tickerRow.innerHTML = tickerItems.join('') || '<span>No ranked user finals yet…</span>';
+</script>
+</body>
+</html>

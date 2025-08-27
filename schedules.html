@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>D1SN — Schedules (Weeks 0–4)</title>
+<meta name="description" content="Running Late Dynasty — user-involved schedules for Weeks 0–4. Includes Week 2 finals. Ticker pulls the most recent finals automatically." />
+<meta name="color-scheme" content="dark" />
+
+<style>
+:root{
+  --bg:#0b0b0b;--card:#141414;--line:#232323;--text:#e6e6e6;--muted:#a6a6a6;
+  --gold:#d5b15b;--accent:#f2d675;--btn-a:#1a1a1a;--btn-b:#262626;--btn-glow:#f2d67566;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--gold);text-decoration:none}
+a:focus-visible,.chip:focus-visible,.cta-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+h1,h2{margin:0 0 .6rem}
+p{margin:.4rem 0 .8rem}
+.small{font-size:.92rem;color:#b0b0b0}
+.muted{color:var(--muted)}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px;scroll-margin-top:72px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+footer{max-width:1100px;margin:12px auto 40px;padding:0 14px;color:#aaa;font-size:.9rem}
+
+/* Chips */
+.chips{max-width:1100px;margin:10px auto 6px;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-block;padding:8px 12px;border-radius:999px;background:#121212;border:1px solid #2a2a2a;color:#eaeaea;font-weight:600}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Ticker */
+.ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+.ticker .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008}
+.ticker .track{overflow:hidden;flex:1;min-width:280px}
+.ticker .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 30s linear infinite}
+.ticker:hover .row{animation-play-state:paused}
+.ticker .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
+.ticker .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+@keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+.cta-btn{margin-left:8px;border:1px solid #3c3c3c;padding:8px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+.cta-btn:hover{filter:brightness(1.08);box-shadow:0 0 0 2px #000 inset,0 0 22px var(--btn-glow)}
+
+/* Tables */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
+.sortable th{user-select:none;cursor:pointer}
+.sortable th[aria-sort="ascending"],.sortable th[aria-sort="descending"]{color:var(--accent)}
+strong.user{color:#fff}
+.type{font-size:.9rem;color:#bbb}
+.cell-win{background:#143a29;color:#bff8d7;border-radius:6px;padding:3px 8px}
+.cell-loss{background:#3f2629;color:#ffd0d0;border-radius:6px;padding:3px 8px}
+</style>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker" role="region" aria-label="D1SN Headlines">
+  <div class="wrap">
+    <a href="index.html" class="logo-a" title="Back to Magazine">D1SN</a>
+    <div class="track"><div class="row" id="tickerRow"></div></div>
+    <a class="cta-btn" href="index.html#week3" title="Open Week 3 on the magazine">Back to Magazine</a>
+  </div>
+</div>
+
+<!-- Chips -->
+<div class="chips">
+  <a class="chip" href="#wk0">Week 0 — Schedule</a>
+  <a class="chip" href="#wk1">Week 1 — Schedule</a>
+  <a class="chip" href="#wk2">Week 2 — Finals</a>
+  <a class="chip" href="#wk3">Week 3 — Schedule</a>
+  <a class="chip" href="#wk4">Week 4 — Schedule</a>
+</div>
+
+<section class="section">
+  <h1>Schedules — Weeks 0–4</h1>
+  <p class="small muted">Only user-involved games appear. Week 2 shows finals; the rest are scheduled slates. The schedule “date/time” is simplified to just the <strong>Week</strong> label.</p>
+</section>
+
+<!-- Week 0 -->
+<section id="wk0" class="section">
+  <h2>Week 0 — User Games</h2>
+  <div class="card">
+    <table class="table sortable" id="wk0Table">
+      <thead>
+        <tr>
+          <th data-type="str">Away</th>
+          <th data-type="str">Home</th>
+          <th data-type="str">Week</th>
+          <th data-type="str">Type</th>
+          <th data-type="str">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="wk0Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 1 -->
+<section id="wk1" class="section">
+  <h2>Week 1 — User Games</h2>
+  <div class="card">
+    <table class="table sortable" id="wk1Table">
+      <thead>
+        <tr>
+          <th data-type="str">Away</th>
+          <th data-type="str">Home</th>
+          <th data-type="str">Week</th>
+          <th data-type="str">Type</th>
+          <th data-type="str">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="wk1Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 2 (FINALS) -->
+<section id="wk2" class="section">
+  <h2>Week 2 — User Games (Finals)</h2>
+  <div class="card">
+    <table class="table sortable" id="wk2Table">
+      <thead>
+        <tr>
+          <th data-type="str">Away</th>
+          <th data-type="num">A</th>
+          <th data-type="str">Home</th>
+          <th data-type="num">H</th>
+          <th data-type="str">Type</th>
+          <th data-type="str">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="wk2Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 3 -->
+<section id="wk3" class="section">
+  <h2>Week 3 — User Games</h2>
+  <div class="card">
+    <table class="table sortable" id="wk3Table">
+      <thead>
+        <tr>
+          <th data-type="str">Away</th>
+          <th data-type="str">Home</th>
+          <th data-type="str">Week</th>
+          <th data-type="str">Type</th>
+          <th data-type="str">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="wk3Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Week 4 -->
+<section id="wk4" class="section">
+  <h2>Week 4 — User Games</h2>
+  <div class="card">
+    <table class="table sortable" id="wk4Table">
+      <thead>
+        <tr>
+          <th data-type="str">Away</th>
+          <th data-type="str">Home</th>
+          <th data-type="str">Week</th>
+          <th data-type="str">Type</th>
+          <th data-type="str">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="wk4Body"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>© D1SN — Running Late Dynasty • Schedules</footer>
+
+<!-- Inject newest finals (from your uploads) for the ticker -->
+<script>
+window.RECENT_RESULTS = [
+  {a:"Miami",as:63,h:"Syracuse",hs:17},
+  {a:"LSU",as:28,h:"BYU",hs:21},          // Week 3 GOTW result
+  {a:"Penn State",as:63,h:"Buffalo",hs:7},
+  {a:"Washington",as:56,h:"Washington St.",hs:20}
+];
+</script>
+
+<script>
+/* ===== User teams (for filtering & bolding) ===== */
+const USER_TEAMS=["LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware","Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma","Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech","Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina","Utah","Auburn","Minnesota","SMU","UCLA"];
+const isUser = t => USER_TEAMS.includes(t);
+
+/* ===== Conference map (for Notes) ===== */
+const CONF={
+  // SEC
+  "LSU":"SEC","Alabama":"SEC","Arkansas":"SEC","Florida":"SEC","Georgia":"SEC","Tennessee":"SEC","South Carolina":"SEC","Texas":"SEC","Oklahoma":"SEC","Texas A&M":"SEC","Auburn":"SEC","Kentucky":"SEC","Ole Miss":"SEC","Mississippi State":"SEC","Missouri":"SEC","Vanderbilt":"SEC","Baylor":"SEC",
+  // Big Ten
+  "Michigan":"B1G","Ohio State":"B1G","Penn State":"B1G","USC":"B1G","Minnesota":"B1G","Oregon":"B1G","Washington":"B1G","Indiana":"B1G","Wisconsin":"B1G","Illinois":"B1G","Rutgers":"B1G","Michigan State":"B1G","Northwestern":"B1G","Maryland":"B1G","Iowa":"B1G","Purdue":"B1G","Nebraska":"B1G",
+  // Big 12
+  "Texas Tech":"B12","Colorado":"B12","Utah":"B12","UCF":"B12","Cincinnati":"B12","Kansas":"B12","Kansas State":"B12","Oklahoma State":"B12","Iowa State":"B12","Houston":"B12","BYU":"B12","Arizona":"B12","Arizona State":"B12","West Virginia":"B12","Delaware":"B12",
+  // ACC
+  "Miami":"ACC","Clemson":"ACC","Florida State":"ACC","North Carolina":"ACC","Duke":"ACC","Georgia Tech":"ACC","Pittsburgh":"ACC","Boston College":"ACC","Syracuse":"ACC","Virginia":"ACC","Virginia Tech":"ACC","Notre Dame":"ACC","SMU":"ACC","California":"ACC","Stanford":"ACC",
+  // Others we face
+  "Memphis":"AAC","Tulane":"AAC","Temple":"AAC","Buffalo":"MAC","Kennesaw State":"CUSA","Army":"IND","Utah State":"MWC","Georgia State":"SBC","New Mexico":"MWC","Washington St.":"PAC","Oregon State":"PAC","Hawai'i":"MWC","Central Michigan":"MAC","Southern Miss":"SBC","Toledo":"MAC","West Virginia":"B12","UMass":"IND","Akron":"MAC","UL Monroe":"SBC","Jacksonville State":"CUSA","FCS East":"FCS","FCS West":"FCS","FCS Southeast":"FCS","FCS Midwest":"FCS"
+};
+
+/* Rivalries to label */
+const RIV_KEYS=new Set([
+  ["Washington","Washington St."].sort().join("|"),
+  ["Alabama","LSU"].sort().join("|"),
+  ["Colorado","Utah"].sort().join("|")
+]);
+function isRival(a,b){ return RIV_KEYS.has([a,b].sort().join("|")); }
+
+/* ===== Week 0 (from your week0 HTML; no times) ===== */
+const WEEK0_SCHED = [
+  {away:"BYU", home:"Clemson", date:"", time:""},
+  {away:"UCLA", home:"California", date:"", time:""},
+  {away:"Miami", home:"Central Michigan", date:"", time:""},
+  {away:"Michigan State", home:"Notre Dame", date:"", time:""},
+  {away:"Baylor", home:"SMU", date:"", time:""},
+  {away:"Michigan", home:"Houston", date:"", time:""},
+  {away:"Texas Tech", home:"Illinois", date:"", time:""},
+  {away:"Utah", home:"Utah State", date:"", time:""},
+  {away:"Penn State", home:"Temple", date:"", time:""},
+  {away:"USC", home:"Texas", date:"", time:""},
+  {away:"Washington", home:"Florida", date:"", time:""},
+  {away:"Ohio State", home:"Ohio", date:"", time:""},
+  {away:"LSU", home:"Indiana", date:"", time:""},
+  {away:"Alabama", home:"Iowa", date:"", time:""},
+  {away:"Southern Miss", home:"Auburn", date:"", time:""},
+];
+
+/* ===== Week 1 (from your week1 HTML) ===== */
+const WEEK1_SCHED = [
+  {away:"Missouri", home:"11 Minnesota", date:"Thu, Sep 3", time:"12:00 PM"},
+  {away:"6 Alabama", home:"2 Ohio State", date:"Sat, Sep 5", time:"12:00 PM", note:"GOTW"},
+  {away:"Marshall", home:"8 Penn State", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Colorado State", home:"16 Indiana", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"FCS East", home:"Maryland", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"UMass", home:"Rutgers", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Ohio", home:"Nebraska", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"NC State", home:"Michigan", date:"Sat, Sep 5", time:"3:30 PM"},
+  {away:"Toledo", home:"Michigan State", date:"Sat, Sep 5", time:"3:30 PM"},
+  {away:"West Virginia", home:"Wisconsin", date:"Sat, Sep 5", time:"4:00 PM"},
+  {away:"Boise State", home:"13 Oregon", date:"Sat, Sep 5", time:"7:00 PM"},
+  {away:"Delaware", home:"Louisville", date:"Thu, Sep 3", time:"7:30 PM"},
+  {away:"Boston College", home:"3 Notre Dame", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"1 Georgia", home:"9 Miami", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"California", home:"Tennessee", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Akron", home:"Wake Forest", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"FCS East", home:"Syracuse", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"FCS East", home:"Virginia Tech", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"FCS East", home:"Duke", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Florida State", home:"Ole Miss", date:"Sat, Sep 5", time:"3:30 PM"},
+  {away:"Stanford", home:"Virginia", date:"Sat, Sep 5", time:"4:00 PM"},
+  {away:"7 North Carolina", home:"TCU", date:"Sat, Sep 5", time:"6:00 PM"},
+  {away:"22 Colorado", home:"Georgia Tech", date:"Sat, Sep 5", time:"7:30 PM"},
+  {away:"17 Clemson", home:"10 LSU", date:"Sat, Sep 5", time:"8:00 PM"},
+  {away:"FCS Southeast", home:"UCF", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Oregon State", home:"Houston", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Cincinnati", home:"Coastal Carolina", date:"Sat, Sep 5", time:"1:00 PM"},
+  {away:"FCS Southeast", home:"Oklahoma State", date:"Sat, Sep 5", time:"3:30 PM"},
+  {away:"FCS Midwest", home:"Iowa State", date:"Sat, Sep 5", time:"3:30 PM"},
+  {away:"Jacksonville State", home:"23 Arkansas", date:"Sat, Sep 5", time:"1:30 PM"},
+  {away:"Texas State", home:"4 Texas", date:"Sat, Sep 5", time:"3:30 PM"},
+  {away:"18 Baylor", home:"Auburn", date:"Sat, Sep 5", time:"6:00 PM"},
+  {away:"UL Monroe", home:"Mississippi State", date:"Sat, Sep 5", time:"6:00 PM"},
+  {away:"FCS West", home:"Arizona", date:"Sat, Sep 5", time:"8:00 PM"},
+  {away:"FCS Southeast", home:"Vanderbilt", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"FCS East", home:"Kentucky", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"UTEP", home:"Oklahoma", date:"Sat, Sep 5", time:"12:00 PM"},
+  {away:"Missouri State", home:"20 Texas A&M", date:"Sat, Sep 5", time:"12:00 PM"},
+];
+
+/* ===== Week 2 FINALS (from your Week 3 HTML) ===== */
+const WEEK2_FINALS=[
+  {away:"Maryland",a:13,home:"Washington",h:19},
+  {away:"UCLA",a:31,home:"Kennesaw State",h:7},
+  {away:"Texas Tech",a:43,home:"Oregon State",h:17},
+  {away:"Wisconsin",a:9,home:"South Carolina",h:77},
+  {away:"Oklahoma",a:10,home:"Michigan",h:24},
+  {away:"NC State",a:7,home:"Miami",h:58},
+  {away:"USC",a:13,home:"LSU",h:42},                // Week 2 GOTW
+  {away:"BYU",a:66,home:"Utah State",h:3},
+  {away:"Auburn",a:17,home:"Army",h:7},
+  {away:"Arizona State",a:31,home:"Texas A&M",h:13},
+  {away:"Florida State",a:24,home:"Texas",h:21},
+  {away:"Tennessee",a:28,home:"Indiana",h:35},
+  {away:"Alabama",a:42,home:"California",h:17}
+];
+
+/* ===== Week 3–4 (from screenshots) ===== */
+const WEEK3_SCHED=[
+  {away:"#5 North Carolina",home:"#25 Florida State",date:"Sat, Sep 19",time:"1:00 PM"},
+  {away:"Boston College",home:"Clemson",date:"Sat, Sep 19",time:"1:30 PM"},
+  {away:"Pittsburgh",home:"#18 SMU",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"#22 Delaware",home:"Georgia Tech",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"#2 Miami",home:"Syracuse",date:"Sat, Sep 19",time:"4:00 PM"},
+  {away:"#3 Notre Dame",home:"Duke",date:"Sat, Sep 19",time:"6:00 PM"},
+  {away:"#4 South Carolina",home:"Missouri",date:"Sat, Sep 19",time:"1:30 PM"},
+  {away:"Georgia State",home:"#10 Georgia",date:"Sat, Sep 19",time:"2:15 PM"},
+  {away:"New Mexico",home:"Oklahoma",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"#8 LSU",home:"#11 BYU",date:"Sat, Sep 19",time:"3:30 PM"}, // GOTW
+  {away:"#1 Alabama",home:"#21 Utah",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"Memphis",home:"Arkansas",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"#20 Baylor",home:"#7 Ohio State",date:"Sat, Sep 19",time:"6:00 PM"},
+  {away:"#23 Texas A&M",home:"Houston",date:"Sat, Sep 19",time:"9:00 PM"},
+  {away:"Akron",home:"#9 Minnesota",date:"Sat, Sep 19",time:"12:00 PM"},
+  {away:"Buffalo",home:"#6 Penn State",date:"Sat, Sep 19",time:"12:00 PM"},
+  {away:"Illinois",home:"Wisconsin",date:"Sat, Sep 19",time:"2:30 PM"},
+  {away:"#12 Washington",home:"Washington St.",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"UCLA",home:"Tulane",date:"Sat, Sep 19",time:"3:30 PM"},
+  {away:"#16 Indiana",home:"USC",date:"Sat, Sep 19",time:"5:00 PM"},
+  {away:"#15 Colorado",home:"Northwestern",date:"Sat, Sep 19",time:"7:30 PM"},
+  {away:"Hawai'i",home:"Arizona State",date:"Sat, Sep 19",time:"10:30 PM"}
+];
+
+const WEEK4_SCHED=[
+  {away:"Rice",home:"#4 South Carolina",date:"Sat, Sep 26",time:"12:30 PM"},
+  {away:"Vanderbilt",home:"#13 Texas",date:"Sat, Sep 26",time:"2:00 PM"},
+  {away:"#1 Alabama",home:"#8 LSU",date:"Sat, Sep 26",time:"2:15 PM"},
+  {away:"#24 Florida",home:"#20 Baylor",date:"Sat, Sep 26",time:"4:00 PM"},
+  {away:"Oklahoma",home:"Ole Miss",date:"Sat, Sep 26",time:"5:00 PM"},
+  {away:"Jacksonville State",home:"Auburn",date:"Sat, Sep 26",time:"6:00 PM"},
+  {away:"#23 Texas A&M",home:"Tennessee",date:"Sat, Sep 26",time:"7:00 PM"},
+  {away:"Kentucky",home:"#10 Georgia",date:"Sat, Sep 26",time:"8:00 PM"},
+  {away:"Illinois",home:"#5 North Carolina",date:"Sat, Sep 26",time:"12:00 PM"},
+  {away:"#9 Minnesota",home:"Michigan State",date:"Sat, Sep 26",time:"2:00 PM"},
+  {away:"Purdue",home:"UCLA",date:"Sat, Sep 26",time:"3:00 PM"},
+  {away:"#17 Michigan",home:"#19 Oregon",date:"Sat, Sep 26",time:"3:15 PM"},
+  {away:"Sam Houston",home:"#14 Texas Tech",date:"Sat, Sep 26",time:"12:00 PM"},
+  {away:"#15 Colorado",home:"#21 Utah",date:"Sat, Sep 26",time:"2:00 PM"},
+  {away:"Arizona",home:"#22 Delaware",date:"Sat, Sep 26",time:"6:00 PM"},
+  {away:"Houston",home:"Arizona State",date:"Sat, Sep 26",time:"10:15 PM"},
+  {away:"California",home:"#3 Notre Dame",date:"Sat, Sep 26",time:"3:15 PM"},
+  {away:"#25 Florida State",home:"Pittsburgh",date:"Sat, Sep 26",time:"4:00 PM"}
+];
+
+/* =================== Helpers (plug-in set) =================== */
+const stripRank = s => (s ?? "").toString().replace(/^(?:#?\d+\s+)/,"").trim();
+
+/* Finals -> keep only UvU/UvCPU and add {type} */
+function userFinals(games){
+  return (games || [])
+    .filter(g => isUser(g.away) || isUser(g.home))
+    .map(g => ({...g, type: (isUser(g.away) && isUser(g.home)) ? "User vs User" : "User vs CPU"}));
+}
+
+/* Parse schedule row (object or string) to {away,home} */
+function parseSchedRow(row){
+  if (typeof row === "string"){
+    const parts = row.split(/ @ | at | vs /i);
+    const away = stripRank(parts[0] || "");
+    const home = stripRank(parts[1] || "");
+    return {away, home};
+  }
+  return { ...row, away: stripRank(row.away), home: stripRank(row.home) };
+}
+
+/* Notes: Conference game / Non-Conference battle + Rivalry */
+function makeNotesBuilder(CONF, RIV_SET){
+  return (away, home) => {
+    const ca = CONF?.[away], ch = CONF?.[home];
+    // Treat unknown or different conferences as Non-Conference battle
+    const conf = (ca && ch && ca===ch) ? "Conference game" : "Non-Conference battle";
+    const riv = RIV_SET && RIV_SET.has([away,home].sort().join("|")) ? " • Rivalry" : "";
+    return conf + riv;
+  };
+}
+
+/* Schedule -> UvU/UvCPU only, add {type, week, notes} */
+function userSchedule(rows, {weekLabel="Week ?", notesFn} = {}){
+  return (rows || [])
+    .map(parseSchedRow)
+    .filter(r => isUser(r.away) || isUser(r.home))
+    .map(r => ({
+      away: r.away,
+      home: r.home,
+      week: weekLabel,
+      type: (isUser(r.away) && isUser(r.home)) ? "User vs User" : "User vs CPU",
+      notes: notesFn ? notesFn(r.away, r.home) : ""
+    }));
+}
+
+/* Append GOTW note to a schedule array using "Away@Home" key */
+function markGOTW(arr, gotwKey){
+  if(!gotwKey) return arr;
+  return arr.map(r=>{
+    const isG = (`${r.away}@${r.home}` === gotwKey);
+    return {...r, notes: r.notes + (isG ? (r.notes ? " • " : "") + "Game of the Week" : "")};
+  });
+}
+
+/* ===== Notes builder instance ===== */
+const notesFn = makeNotesBuilder(CONF, RIV_KEYS);
+
+/* ===== Sortable ===== */
+function makeSortable(table){
+  if(!table) return;
+  const ths=[...table.querySelectorAll('thead th')];
+  ths.forEach((th,i)=>{
+    th.setAttribute('aria-sort','none'); th.tabIndex=0;
+    th.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); th.click(); }});
+    th.addEventListener('click',()=>{
+      const tbody=table.tBodies[0],rows=[...tbody.rows];
+      const dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
+      ths.forEach(x=>x.setAttribute('aria-sort','none')); th.setAttribute('aria-sort',dir);
+      const parse=td=>td.textContent.trim().toLowerCase();
+      rows.sort((a,b)=>{const A=parse(a.cells[i]),B=parse(b.cells[i]); return (A<B? -1: A>B? 1: 0)*(dir==='ascending'?1:-1);});
+      rows.forEach(r=>tbody.appendChild(r));
+    });
+  });
+}
+
+/* ===== Renderers ===== */
+function renderSched(tblId, bodyId, rows){
+  const body=document.getElementById(bodyId);
+  body.innerHTML = (rows||[]).map(g=>{
+    const A=isUser(g.away)?`<strong class="user">${g.away}</strong>`:g.away;
+    const H=isUser(g.home)?`<strong class="user">${g.home}</strong>`:g.home;
+    return `<tr>
+      <td>${A}</td>
+      <td>${H}</td>
+      <td>${g.week}</td>
+      <td class="type">${g.type}</td>
+      <td>${g.notes||""}</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="5" class="muted">No user games scheduled.</td></tr>`;
+  makeSortable(document.getElementById(tblId));
+}
+
+function renderWeek2Finals(){
+  const body=document.getElementById('wk2Body');
+  const rows=userFinals(WEEK2_FINALS).map(g=>{
+    const A=isUser(g.away)?`<strong class="user">${g.away}</strong>`:g.away;
+    const H=isUser(g.home)?`<strong class="user">${g.home}</strong>`:g.home;
+    const awayWin=g.a>g.h;
+    const gotw = (g.away==="USC" && g.home==="LSU") ? " • Game of the Week" : "";
+    // Build conf/rivalry note consistent with schedules:
+    const baseNote = makeNotesBuilder(CONF, RIV_KEYS)(g.away,g.home);
+    return `<tr>
+      <td class="${awayWin?'cell-win':'cell-loss'}">${A}</td>
+      <td class="${awayWin?'cell-win':'cell-loss'}">${g.a}</td>
+      <td class="${!awayWin?'cell-win':'cell-loss'}">${H}</td>
+      <td class="${!awayWin?'cell-win':'cell-loss'}">${g.h}</td>
+      <td class="type">${g.type}</td>
+      <td>${baseNote}${gotw}</td>
+    </tr>`;
+  }).join('');
+  body.innerHTML = rows || `<tr><td colspan="6" class="muted">No user-involved finals recorded.</td></tr>`;
+  makeSortable(document.getElementById('wk2Table'));
+}
+
+/* ===== Ticker ===== */
+const FALLBACK_RESULTS=[
+  {a:"USC",as:13,h:"LSU",hs:42},
+  {a:"Alabama",as:42,h:"California",hs:17},
+  {a:"BYU",as:66,h:"Utah State",hs:3},
+  {a:"Texas Tech",as:43,h:"Oregon State",hs:17},
+  {a:"Miami",as:58,h:"NC State",hs:7}
+];
+function renderTicker(){
+  const data = Array.isArray(window.RECENT_RESULTS) && window.RECENT_RESULTS.length ? window.RECENT_RESULTS : FALLBACK_RESULTS;
+  const row=document.getElementById('tickerRow');
+  row.innerHTML = data.map(g => `<span>${g.a} ${g.as}–${g.hs} ${g.h}</span>`).join('');
+}
+
+/* ===== Boot ===== */
+function boot(){
+  renderTicker();
+
+  // Normalize schedules -> add notes -> mark GOTW where applicable
+  const wk0 = userSchedule(WEEK0_SCHED, {weekLabel:"Week 0", notesFn});                 // No GOTW officially
+  const wk1 = markGOTW(userSchedule(WEEK1_SCHED, {weekLabel:"Week 1", notesFn}), "Alabama@Ohio State");
+  const wk3 = markGOTW(userSchedule(WEEK3_SCHED, {weekLabel:"Week 3", notesFn}), "LSU@BYU");
+  const wk4 = userSchedule(WEEK4_SCHED, {weekLabel:"Week 4", notesFn});
+
+  renderSched('wk0Table','wk0Body',wk0);
+  renderSched('wk1Table','wk1Body',wk1);
+  renderWeek2Finals(); // Week 2 finals
+  renderSched('wk3Table','wk3Body',wk3);
+  renderSched('wk4Table','wk4Body',wk4);
+}
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>

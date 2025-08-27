@@ -32,6 +32,7 @@
   <link rel="prefetch" href="issue03.html" as="document" />
   <link rel="prefetch" href="issue04.html" as="document" />
   <link rel="prefetch" href="teamhub.html" as="document" />
+  <link rel="prefetch" href="coaches.html" as="document" />
   <link rel="prefetch" href="confbatt.html" as="document" />
   <link rel="prefetch" href="boost.html" as="document" />
   <link rel="preload" as="image" href="Oh.PNG" />
@@ -105,7 +106,7 @@
       Auto-redirecting to <strong>latest issue</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
     </p>
 
-    <!-- Buttons (3 rows) -->
+    <!-- Buttons (rows) -->
     <div class="cta-rows">
       <!-- Row 1: Issue 01–04 -->
       <div class="row-btns">
@@ -115,17 +116,22 @@
         <a class="cta-btn" href="issue04.html" title="Open Issue 04">Issue 04</a>
       </div>
 
-      <!-- Row 2: Team Pages – Stay Here – Conference Battle -->
+      <!-- Row 2: Team Pages – Schools – Conference Battle -->
       <div class="row-btns">
         <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
-        <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
+        <a class="cta-btn" href="coaches.html" title="Schools Page">Schools</a>
         <a class="cta-btn" href="confbatt.html" title="Conference Battle">Conference Battle</a>
       </div>
 
-      <!-- Row 3: Dynasty Boost -->
+      <!-- Row 3: Dynasty Boost + Latest -->
       <div class="row-btns">
         <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
         <a class="cta-btn" id="readNow" href="issue03.html" title="Open Latest Issue (detected)">Open Latest Issue</a>
+      </div>
+
+      <!-- Row 4: Stay Here (alone) -->
+      <div class="row-btns">
+        <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
       </div>
     </div>
   </section>
@@ -209,5 +215,4 @@
     })();
   </script>
 </body>
-  </html>
-  
+</html>
