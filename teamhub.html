@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D1SN — Teams & Coaches (Hub)</title>
-<meta name="description" content="Hub for the 32 user/owner pages and preseason coaching cards." />
+<meta name="description" content="Hub for user teams with quick links to each coach section on the Coaches page." />
 <meta name="color-scheme" content="dark" />
 
 <link rel="canonical" href="https://professorzoom45.github.io/PTG/teamhub.html">
@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Perfect Timing Gaming">
 <meta property="og:title" content="D1SN — Teams & Coaches (Hub)">
-<meta property="og:description" content="Hub for the 32 user/owner pages and preseason coaching cards." />
+<meta property="og:description" content="Tap a badge to open the Coaches page at that team’s section." />
 <meta property="og:url" content="https://professorzoom45.github.io/PTG/teamhub.html">
 <meta property="og:image" content="assets/og-teamhub.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -79,7 +79,6 @@ footer{max-width:1100px;margin:18px auto 40px;padding:0 14px;color:#cfcfcf;font-
   border:1px solid #000;
 }
 .badges a:hover{ transform:translateY(-1px); box-shadow:0 0 0 2px #000 inset, 0 0 20px var(--c2,#999); }
-/* Focus ring increased by 50%: 3px -> 4.5px */
 .badges a:focus-visible{ outline:4.5px solid var(--c2,#bbb); outline-offset:3px; }
 .badges a img{ display:block; width:100%; height:auto; border-radius:16px; background:#0f0f0f; }
 </style>
@@ -131,57 +130,17 @@ footer{max-width:1100px;margin:18px auto 40px;padding:0 14px;color:#cfcfcf;font-
 <footer>© D1SN — Teams & Coaches Hub. Badges are base64-encoded SVG generated within this file.</footer>
 
 <script>
-/* ===== Slug helper MUST match coaches.html ids (team-<slug>) ===== */
+/* ============== Slug MUST MATCH coaches.html ids (team-<slug>) ============== */
 function slug(name){
   return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
 }
 
-/* ===== Build link to coaches page + anchor to the team section ===== */
+/* ============== Link: send users to coaches.html at the right section ============== */
 function linkFor(teamName){
   return `coaches.html#team-${slug(teamName)}`;
 }
 
-/* ===== Team data (team, nickname, conf, c1, c2) =====
-   Custom conferences respected: Baylor → SEC, Utah → Big 12. */
-const TEAMS = [
-  {"team":"Alabama","nickname":"Crimson Tide","conf":"SEC","c1":"#9E1B32","c2":"#FFFFFF"},
-  {"team":"Arizona State","nickname":"Sun Devils","conf":"Big 12","c1":"#8C1D40","c2":"#FFC627"},
-  {"team":"Arkansas","nickname":"Razorbacks","conf":"SEC","c1":"#9D2235","c2":"#FFFFFF"},
-  {"team":"Auburn","nickname":"Tigers","conf":"SEC","c1":"#0C2340","c2":"#F26522"},
-  {"team":"Baylor","nickname":"Bears","conf":"SEC","c1":"#154733","c2":"#FFB81C"},
-  {"team":"BYU","nickname":"Cougars","conf":"Big 12","c1":"#003DA5","c2":"#FFFFFF"},
-  {"team":"Clemson","nickname":"Tigers","conf":"ACC","c1":"#F56600","c2":"#522D80"},
-  {"team":"Colorado","nickname":"Buffaloes","conf":"Big 12","c1":"#000000","c2":"#CFB87C"},
-  {"team":"Delaware","nickname":"Fightin’ Blue Hens","conf":"Big 12","c1":"#00539F","c2":"#FFD200"},
-  {"team":"Florida","nickname":"Gators","conf":"SEC","c1":"#003087","c2":"#FA4616"},
-  {"team":"Florida State","nickname":"Seminoles","conf":"ACC","c1":"#782F40","c2":"#CEB888"},
-  {"team":"Georgia","nickname":"Bulldogs","conf":"SEC","c1":"#BA0C2F","c2":"#000000"},
-  {"team":"Illinois","nickname":"Fighting Illini","conf":"Big Ten","c1":"#13294B","c2":"#E84A27"},
-  {"team":"LSU","nickname":"Tigers","conf":"SEC","c1":"#461D7C","c2":"#FDD023"},
-  {"team":"Miami","nickname":"Hurricanes","conf":"ACC","c1":"#005030","c2":"#F47321"},
-  {"team":"Michigan","nickname":"Wolverines","conf":"Big Ten","c1":"#00274C","c2":"#FFCB05"},
-  {"team":"Minnesota","nickname":"Golden Gophers","conf":"Big Ten","c1":"#7A0019","c2":"#FFCC33"},
-  {"team":"North Carolina","nickname":"Tar Heels","conf":"ACC","c1":"#7BAFD4","c2":"#FFFFFF"},
-  {"team":"Notre Dame","nickname":"Fighting Irish","conf":"ACC","c1":"#0C2340","c2":"#C99700"},
-  {"team":"Ohio State","nickname":"Buckeyes","conf":"Big Ten","c1":"#BB0000","c2":"#666666"},
-  {"team":"Oklahoma","nickname":"Sooners","conf":"SEC","c1":"#841617","c2":"#F5E6D3"},
-  {"team":"Penn State","nickname":"Nittany Lions","conf":"Big Ten","c1":"#1E407C","c2":"#FFFFFF"},
-  {"team":"SMU","nickname":"Mustangs","conf":"ACC","c1":"#C8102E","c2":"#003DA5"},
-  {"team":"South Carolina","nickname":"Gamecocks","conf":"SEC","c1":"#73000A","c2":"#000000"},
-  {"team":"Tennessee","nickname":"Volunteers","conf":"SEC","c1":"#FF8200","c2":"#FFFFFF"},
-  {"team":"Texas","nickname":"Longhorns","conf":"SEC","c1":"#BF5700","c2":"#FFFFFF"},
-  {"team":"Texas A&M","nickname":"Aggies","conf":"SEC","c1":"#500000","c2":"#FFFFFF"},
-  {"team":"Texas Tech","nickname":"Red Raiders","conf":"Big 12","c1":"#CC0000","c2":"#000000"},
-  {"team":"UCLA","nickname":"Bruins","conf":"Big Ten","c1":"#2D68C4","c2":"#FFB300"},
-  {"team":"USC","nickname":"Trojans","conf":"Big Ten","c1":"#990000","c2":"#FFC72C"},
-  {"team":"Utah","nickname":"Utes","conf":"Big 12","c1":"#CC0000","c2":"#000000"},
-  {"team":"Washington","nickname":"Huskies","conf":"Big Ten","c1":"#4B2E83","c2":"#B7A57A"}
-];
-
-/* Alphabetical */
-const TEAMS_SORTED = [...TEAMS].sort((a,b)=> a.team.localeCompare(b.team));
-
-/* ===== SVG badge generator (white text) ===== */
+/* ============== SVG badge generator (white text) ============== */
 function xmlEsc(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
 function badgeData(team){
   const W=540, H=180, r=24;
@@ -214,7 +173,49 @@ function badgeData(team){
   return "data:image/svg+xml;base64," + b64;
 }
 
-/* ===== Render (alphabetical) ===== */
+/* ============== Team list (ALL teams from coaches.html; custom confs kept) ============== */
+const TEAMS = [
+  {"team":"Alabama","nickname":"Crimson Tide","conf":"SEC","c1":"#9E1B32","c2":"#FFFFFF"},
+  {"team":"Arizona State","nickname":"Sun Devils","conf":"Big 12","c1":"#8C1D40","c2":"#FFC627"},
+  {"team":"Arkansas","nickname":"Razorbacks","conf":"SEC","c1":"#9D2235","c2":"#FFFFFF"},
+  {"team":"Auburn","nickname":"Tigers","conf":"SEC","c1":"#0C2340","c2":"#F26522"},
+  {"team":"Baylor","nickname":"Bears","conf":"SEC","c1":"#154733","c2":"#FFB81C"},       /* custom */
+  {"team":"BYU","nickname":"Cougars","conf":"Big 12","c1":"#003DA5","c2":"#FFFFFF"},
+  {"team":"Clemson","nickname":"Tigers","conf":"ACC","c1":"#F56600","c2":"#522D80"},
+  {"team":"Colorado","nickname":"Buffaloes","conf":"Big 12","c1":"#000000","c2":"#CFB87C"},
+  {"team":"Delaware","nickname":"Fightin’ Blue Hens","conf":"Big 12","c1":"#00539F","c2":"#FFD200"},
+  {"team":"Florida","nickname":"Gators","conf":"SEC","c1":"#003087","c2":"#FA4616"},
+  {"team":"Florida State","nickname":"Seminoles","conf":"ACC","c1":"#782F40","c2":"#CEB888"},
+  {"team":"Georgia","nickname":"Bulldogs","conf":"SEC","c1":"#BA0C2F","c2":"#000000"},
+  {"team":"Georgia Tech","nickname":"Yellow Jackets","conf":"ACC","c1":"#B3A369","c2":"#000000"},
+  {"team":"Illinois","nickname":"Fighting Illini","conf":"Big Ten","c1":"#13294B","c2":"#E84A27"},
+  {"team":"LSU","nickname":"Tigers","conf":"SEC","c1":"#461D7C","c2":"#FDD023"},
+  {"team":"Miami","nickname":"Hurricanes","conf":"ACC","c1":"#005030","c2":"#F47321"},
+  {"team":"Michigan","nickname":"Wolverines","conf":"Big Ten","c1":"#00274C","c2":"#FFCB05"},
+  {"team":"Minnesota","nickname":"Golden Gophers","conf":"Big Ten","c1":"#7A0019","c2":"#FFCC33"},
+  {"team":"North Carolina","nickname":"Tar Heels","conf":"ACC","c1":"#7BAFD4","c2":"#FFFFFF"},
+  {"team":"Notre Dame","nickname":"Fighting Irish","conf":"ACC","c1":"#0C2340","c2":"#C99700"},
+  {"team":"Ohio State","nickname":"Buckeyes","conf":"Big Ten","c1":"#BB0000","c2":"#666666"},
+  {"team":"Oklahoma","nickname":"Sooners","conf":"SEC","c1":"#841617","c2":"#F5E6D3"},    /* custom */
+  {"team":"Ole Miss","nickname":"Rebels","conf":"SEC","c1":"#CE1126","c2":"#00205B"},
+  {"team":"Oregon","nickname":"Ducks","conf":"Big Ten","c1":"#154733","c2":"#FEE123"},
+  {"team":"Penn State","nickname":"Nittany Lions","conf":"Big Ten","c1":"#1E407C","c2":"#FFFFFF"},
+  {"team":"SMU","nickname":"Mustangs","conf":"ACC","c1":"#C8102E","c2":"#003DA5"},
+  {"team":"South Carolina","nickname":"Gamecocks","conf":"SEC","c1":"#73000A","c2":"#000000"},
+  {"team":"Tennessee","nickname":"Volunteers","conf":"SEC","c1":"#FF8200","c2":"#FFFFFF"},
+  {"team":"Texas","nickname":"Longhorns","conf":"SEC","c1":"#BF5700","c2":"#FFFFFF"},
+  {"team":"Texas A&M","nickname":"Aggies","conf":"SEC","c1":"#500000","c2":"#FFFFFF"},
+  {"team":"Texas Tech","nickname":"Red Raiders","conf":"Big 12","c1":"#CC0000","c2":"#000000"},
+  {"team":"UCLA","nickname":"Bruins","conf":"Big Ten","c1":"#2D68C4","c2":"#FFB300"},
+  {"team":"USC","nickname":"Trojans","conf":"Big Ten","c1":"#990000","c2":"#FFC72C"},
+  {"team":"Utah","nickname":"Utes","conf":"Big 12","c1":"#CC0000","c2":"#000000"},        /* custom */
+  {"team":"Washington","nickname":"Huskies","conf":"Big Ten","c1":"#4B2E83","c2":"#B7A57A"}
+];
+
+/* Alphabetical for display */
+const TEAMS_SORTED = [...TEAMS].sort((a,b)=> a.team.localeCompare(b.team));
+
+/* ============== Render badges ============== */
 const badges = document.getElementById('badges');
 const count = document.getElementById('count');
 
@@ -228,7 +229,7 @@ function render(filter=""){
 
     n++;
     const a = document.createElement('a');
-    a.href = linkFor(t.team);                     // <-- goes to coaches.html#team-<slug>
+    a.href = linkFor(t.team);                     // -> coaches.html#team-<slug>
     a.title = `${t.team} • ${t.nickname} • ${t.conf}`;
 
     /* link frame/glow use team colors */
@@ -247,10 +248,6 @@ function render(filter=""){
 
 render();
 document.getElementById('q').addEventListener('input', e => render(e.target.value));
-
-/* NOTE on “retired” handles:
-   The coaches page should show “(retired)” for teams without an active owner/handle.
-   This hub doesn’t display handles, but the anchor links above land on the correct coach sections. */
 </script>
 </body>
 </html>
