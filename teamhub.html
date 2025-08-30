@@ -92,11 +92,11 @@ footer{max-width:1100px;margin:18px auto 40px;padding:0 14px;color:#cfcfcf;font-
     <div class="track" aria-live="polite">
       <div class="row">
         <span><strong>TEAMS & COACHES — HUB</strong></span>
-        <span><strong>Badges are base64 SVG (two team colors)</strong></span>
+        <span><strong>Click a badge to jump to that team’s coach section</strong></span>
         <span><strong>SEC • ACC • BIG TEN • BIG 12</strong></span>
 
         <span aria-hidden="true"><strong>TEAMS & COACHES — HUB</strong></span>
-        <span aria-hidden="true"><strong>Badges are base64 SVG (two team colors)</strong></span>
+        <span aria-hidden="true"><strong>Click a badge to jump to that team’s coach section</strong></span>
         <span aria-hidden="true"><strong>SEC • ACC • BIG TEN • BIG 12</strong></span>
       </div>
     </div>
@@ -112,7 +112,7 @@ footer{max-width:1100px;margin:18px auto 40px;padding:0 14px;color:#cfcfcf;font-
 
 <section class="section" aria-labelledby="teams-h">
   <h1 id="teams-h">Teams &amp; Coaches</h1>
-  <p class="small">Filter below, or tap any badge to open that owner page. (Each team page uses its own color theme.)</p>
+  <p class="small">Filter below, or tap any badge to open the Coaches page at that team’s section.</p>
 
   <div class="card">
     <div class="toolbar">
@@ -131,18 +131,18 @@ footer{max-width:1100px;margin:18px auto 40px;padding:0 14px;color:#cfcfcf;font-
 <footer>© D1SN — Teams & Coaches Hub. Badges are base64-encoded SVG generated within this file.</footer>
 
 <script>
-/* ===== Abbreviation map (lowercase .html for all) ===== */
-const FILE_MAP = {
-  "LSU":"lsu","Clemson":"clem","Arkansas":"ark","Michigan":"mich","Texas":"ut","Ohio State":"osu",
-  "Miami":"um","Delaware":"ud","Georgia":"uga","Arizona State":"asu","Florida":"uf","Washington":"uw",
-  "Alabama":"ua","BYU":"byu","Oklahoma":"ok","Florida State":"fsu","Notre Dame":"nd","South Carolina":"sc",
-  "Illinois":"ill","USC":"usc","Texas Tech":"ttu","Baylor":"bu","Colorado":"cu","Texas A&M":"tamu",
-  "Penn State":"psu","Tennessee":"tenn","North Carolina":"unc","Utah":"utah","Auburn":"au","Minnesota":"umn",
-  "SMU":"smu","UCLA":"ucla"
-};
+/* ===== Slug helper MUST match coaches.html ids (team-<slug>) ===== */
+function slug(name){
+  return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+
+/* ===== Build link to coaches page + anchor to the team section ===== */
+function linkFor(teamName){
+  return `coaches.html#team-${slug(teamName)}`;
+}
 
 /* ===== Team data (team, nickname, conf, c1, c2) =====
-   c1 and c2 are the two primary team colors used for the link frame AND badge background */
+   Custom conferences respected: Baylor → SEC, Utah → Big 12. */
 const TEAMS = [
   {"team":"Alabama","nickname":"Crimson Tide","conf":"SEC","c1":"#9E1B32","c2":"#FFFFFF"},
   {"team":"Arizona State","nickname":"Sun Devils","conf":"Big 12","c1":"#8C1D40","c2":"#FFC627"},
@@ -178,28 +178,16 @@ const TEAMS = [
   {"team":"Washington","nickname":"Huskies","conf":"Big Ten","c1":"#4B2E83","c2":"#B7A57A"}
 ];
 
-/* Alphabetical (no dupes needed here) */
+/* Alphabetical */
 const TEAMS_SORTED = [...TEAMS].sort((a,b)=> a.team.localeCompare(b.team));
 
-/* ===== Build link path (always lowercase .html) ===== */
-function linkFor(teamName){
-  const code = FILE_MAP[teamName];
-  return `teams/${code}.html`;
-}
-
-/* ===== Helpers ===== */
-function xmlEsc(s){
-  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
-}
-
-/* ===== Create a base64 data URL for a badge (SVG with two-color background) =====
-   All text forced to white as requested. */
+/* ===== SVG badge generator (white text) ===== */
+function xmlEsc(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
 function badgeData(team){
   const W=540, H=180, r=24;
   const title = xmlEsc(team.team);
   const nick  = xmlEsc(team.nickname);
-  const c1 = team.c1, c2 = team.c2;
-  const fg = "#FFFFFF"; /* <-- force white writing */
+  const c1 = team.c1, c2 = team.c2, fg = "#FFFFFF";
 
   const svg = `
   <svg xmlns='http://www.w3.org/2000/svg' width='{W}' height='{H}' viewBox='0 0 {W} {H}'>
@@ -240,15 +228,15 @@ function render(filter=""){
 
     n++;
     const a = document.createElement('a');
-    a.href = linkFor(t.team);
-    a.title = t.team + " " + t.nickname;
+    a.href = linkFor(t.team);                     // <-- goes to coaches.html#team-<slug>
+    a.title = `${t.team} • ${t.nickname} • ${t.conf}`;
 
-    /* make the LINK itself team-colored (frame + glow) */
+    /* link frame/glow use team colors */
     a.style.setProperty('--c1', t.c1);
     a.style.setProperty('--c2', t.c2);
 
     const img = document.createElement('img');
-    img.alt = a.title;
+    img.alt = `${t.team} ${t.nickname}`;
     img.src = badgeData(t);
 
     a.appendChild(img);
@@ -259,6 +247,10 @@ function render(filter=""){
 
 render();
 document.getElementById('q').addEventListener('input', e => render(e.target.value));
+
+/* NOTE on “retired” handles:
+   The coaches page should show “(retired)” for teams without an active owner/handle.
+   This hub doesn’t display handles, but the anchor links above land on the correct coach sections. */
 </script>
 </body>
 </html>
