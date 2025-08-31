@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>D1SN — Boost & Completion Tracker</title>
+<title>D1SN — Boost & Completion Tracker (Sortable)</title>
 
 <!-- THEME: black background, white headings, gold accents -->
 <style>
@@ -62,6 +62,12 @@ a{color:var(--gold);text-decoration:none}
 .comp tbody tr:nth-child(even){background:var(--stripe)}
 .badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
 .badge.bonus{border-color:#caae51;color:#111;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c)}
+
+/* Sortable headers */
+th.sortable{cursor:pointer;user-select:none;position:relative}
+th.sortable .sort-ind{font-size:.8rem;color:var(--muted);margin-left:6px}
+th.sortable.active{color:var(--accent)}
+th.sortable.active .sort-ind{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -108,7 +114,7 @@ a{color:var(--gold);text-decoration:none}
       <span class="pill"><b>Week 6 Bonus:</b> Played = 2 credits • Missed = 1 credit</span>
       <span class="pill"><b>Joined:</b> “On Time” or “Late (W5)”</span>
     </div>
-    <table class="comp" id="compTable">
+    <table class="comp" id="compTable" aria-label="User completion grid (sortable)">
       <thead id="compHead"></thead>
       <tbody id="compBody"></tbody>
     </table>
@@ -319,31 +325,36 @@ const compHead=document.getElementById('compHead');
 const compBody=document.getElementById('compBody');
 
 const weekLabels = ["W0","W1","W2","W3","W4","W5","W6 (Bonus)"];
+
+/* Build sortable header */
+function headerCell(label, key, type="num", sortable=true){
+  const cls = sortable ? 'sortable' : '';
+  const ind = sortable ? '<span class="sort-ind">↕</span>' : '';
+  return `<th class="${key==='team'?'sticky':''} ${cls}" data-key="${key}" data-type="${type}" tabindex="0" role="button" aria-label="Sort by ${label}">
+            ${label}${ind}
+          </th>`;
+}
 compHead.innerHTML = `
   <tr>
-    <th class="sticky">Team</th>
-    ${weekLabels.map(w=>`<th>${w}</th>`).join("")}
-    <th>Total</th>
-    <th>Joined</th>
+    ${headerCell("Team","team","text",true)}
+    ${weekLabels.map((w,i)=>headerCell(w,`w${i}`,"num",true)).join("")}
+    ${headerCell("Total","total","num",true)}
+    ${headerCell("Joined","joined","text",true)}
   </tr>`;
 
-// Build per-team row
+/* Build per-team rows (with data attributes for sorting) */
 [...ALL_USERS].sort().forEach(team=>{
   const style = teamStyle(team);
   const played = playedByTeam.get(team) || new Set();
 
   // cells for W0..W5
-  const wCells = [];
+  const weekVals = [];
   for(let n=0;n<=5;n++){
-    if(!joinedBy(team,n)){ wCells.push("○"); }            // not in league yet
-    else { wCells.push( played.has(n) ? "1" : "0" ); }     // completed or missed
+    if(!joinedBy(team,n)) weekVals.push("○");
+    else weekVals.push( played.has(n) ? "1" : "0" );
   }
 
-  // Week 6 BONUS logic:
-  // If joined by week 6:
-  //   - if played: 2 credits (display "2")
-  //   - else: 1 credit (display "1")
-  // If not joined by week 6 (edge-case): display ○ and 0 credit
+  // Week 6 BONUS
   let w6Cell, w6Credit=0;
   if(joinedBy(team,6)){
     const playedW6 = played.has(6);
@@ -354,22 +365,113 @@ compHead.innerHTML = `
     w6Credit = 0;
   }
 
-  // Sum total = sum(W0..W5 numeric 1/0) + w6Credit
-  const baseSum = wCells.reduce((s,c)=> s + (c==="1"?1:0), 0);
+  const baseSum = weekVals.reduce((s,c)=> s + (c==="1"?1:0), 0);
   const total = baseSum + w6Credit;
-
   const joinedLabel = (team in LATE_JOINERS) ? `Late (W${LATE_JOINERS[team]})` : "On Time";
 
+  const dataAttrs = [
+    `data-team="${team}"`,
+    weekVals.map((v,i)=>`data-w${i}="${v}"`).join(" "),
+    `data-w6="${w6Cell}"`,
+    `data-total="${total}"`,
+    `data-joined="${joinedLabel}"`
+  ].join(" ");
+
   compBody.insertAdjacentHTML('beforeend', `
-    <tr class="teamRow" style="${style}">
+    <tr class="teamRow" style="${style}" ${dataAttrs}>
       <td class="sticky"><span class="teamTag" style="${style}">${team}</span></td>
-      ${wCells.map(v=>`<td>${v}</td>`).join("")}
+      ${weekVals.map(v=>`<td>${v}</td>`).join("")}
       <td>${w6Cell}</td>
       <td><strong>${total}</strong></td>
       <td>${joinedLabel}</td>
     </tr>
   `);
 });
+
+/* ========= Simple table sorter (click any header) ========= */
+(function enableSorting(){
+  const table = document.getElementById('compTable');
+  const thead = table.querySelector('thead');
+  const tbody = table.querySelector('tbody');
+  let lastKey=null, asc=true;
+
+  function valForType(v,type){
+    if(type==="num"){
+      if(v==="○") return -Infinity;
+      const n=parseFloat(v.replace(/[^0-9.-]/g,'')); // strip any non-numeric
+      return isNaN(n)?-Infinity:n;
+    }
+    // text
+    return String(v).toLowerCase();
+  }
+
+  function getCellValue(tr,key,type){
+    // read from data-* when possible for reliability
+    const ds = tr.dataset;
+    if(key in ds) return valForType(ds[key],type);
+    // fallback: find column index by header position
+    return valForType(tr.querySelector('td:nth-child(1)').textContent.trim(), type);
+  }
+
+  function sortBy(key,type){
+    const rows=[...tbody.querySelectorAll('tr')];
+    rows.sort((a,b)=>{
+      const va=getCellValue(a,key,type);
+      const vb=getCellValue(b,key,type);
+      if(va<vb) return asc?-1:1;
+      if(va>vb) return asc?1:-1;
+      // stable tie-break: Team name asc
+      const ta=a.dataset.team.toLowerCase();
+      const tb=b.dataset.team.toLowerCase();
+      return ta.localeCompare(tb);
+    });
+    rows.forEach(r=>tbody.appendChild(r));
+  }
+
+  function clearHeaderStates(){
+    thead.querySelectorAll('th.sortable').forEach(th=>{
+      th.classList.remove('active');
+      const ind=th.querySelector('.sort-ind');
+      if(ind) ind.textContent='↕';
+    });
+  }
+
+  function setHeaderState(th){
+    th.classList.add('active');
+    const ind=th.querySelector('.sort-ind');
+    if(ind) ind.textContent = asc ? '↑' : '↓';
+  }
+
+  thead.addEventListener('click', (e)=>{
+    const th = e.target.closest('th.sortable');
+    if(!th) return;
+    const key = th.dataset.key;
+    const type = th.dataset.type||'text';
+    // toggle asc/desc if same column
+    if(lastKey===key) asc=!asc; else {asc=true; lastKey=key;}
+    sortBy(key,type);
+    clearHeaderStates();
+    setHeaderState(th);
+  });
+
+  // keyboard accessibility (Enter/Space)
+  thead.addEventListener('keydown', (e)=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const th = e.target.closest('th.sortable');
+    if(!th) return;
+    e.preventDefault();
+    th.click();
+  });
+
+  // default sort: Total desc
+  const defaultTh = thead.querySelector('th[data-key="total"]');
+  if(defaultTh){
+    lastKey='total'; asc=false;
+    sortBy('total','num');
+    clearHeaderStates();
+    setHeaderState(defaultTh);
+  }
+})();
 </script>
 </body>
 </html>
