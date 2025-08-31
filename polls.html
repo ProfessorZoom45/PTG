@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>D1SN — Polls & Power Index (Users Marked)</title>
+<meta name="description" content="Polls & Power Index with user teams highlighted (and former users noted). Includes a JSON block that team pages can fetch." />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="https://professorzoom45.github.io/PTG/">
+
+<style>
+:root{
+  --bg:#0b0b0b;--card:#141414;--line:#232323;--text:#e6e6e6;--muted:#a6a6a6;
+  --gold:#d5b15b;--silver:#c0c0c0;--bronze:#cd7f32;--accent:#f2d675;
+  --user:#66e3ff;--former:#ffb366;
+  --btn-a:#1a1a1a;--btn-b:#262626;--btn-glow:#f2d67566;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent);text-decoration:none}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+h1,h2{margin:.2rem 0 .6rem}
+.small{color:var(--muted);font-size:.92rem}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left}
+.gold{color:var(--gold);font-weight:900}
+.silver{color:var(--silver);font-weight:900}
+.bronze{color:var(--bronze);font-weight:900}
+.badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.78rem;margin-left:8px}
+.ubadge{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:999px;border:1px solid #2b2b2b;background:#0e0e0e;font-size:.72rem;letter-spacing:.2px}
+.ubadge.user{border-color:#2a3a44;color:var(--user)}
+.ubadge.former{border-color:#4a3726;color:var(--former)}
+.ticker{position:sticky;top:0;z-index:5;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
+.logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008}
+footer{max-width:1100px;margin:20px auto 40px;padding:0 14px;color:#aaa;font-size:.9rem}
+.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+</style>
+</head>
+<body>
+
+<!-- Sticky header -->
+<div class="ticker">
+  <div class="wrap">
+    <a href="https://professorzoom45.github.io/PTG/" class="logo-a" title="Home">D1SN</a>
+  </div>
+</div>
+
+<section class="section">
+  <h1>Polls & Power Index</h1>
+  <p class="small legend">
+    <span><strong>Medals:</strong> <span class="gold">1st</span>, <span class="silver">2nd</span>, <span class="bronze">3rd</span></span>
+    <span><span class="ubadge user">USER</span> = active user team</span>
+    <span><span class="ubadge former">FORMER</span> = former user team</span>
+  </p>
+</section>
+
+<section class="section" id="power">
+  <h2>Power Index <span class="badge">Users Only</span></h2>
+  <div class="card">
+    <table class="table" id="powerTable">
+      <thead><tr><th>#</th><th>Team</th><th>Rating</th><th>Record</th></tr></thead>
+      <tbody id="powerBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="combined">
+  <h2>Top-25 — Combined (Media + Coaches)</h2>
+  <div class="card">
+    <table class="table" id="comboTable">
+      <thead>
+        <tr><th>#</th><th>Team</th><th>Media</th><th>Coaches</th><th>Record</th></tr>
+      </thead>
+      <tbody id="comboBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>© D1SN — Running Late Dynasty</footer>
+
+<!-- ===================== DATA & LOGIC (inline, self-contained) ===================== -->
+<script>
+/* ===== USER FLAGS (updated) =====
+   New users: Ole Miss, Georgia Tech, Oregon
+   Former users: Utah, USC, Minnesota
+*/
+const ACTIVE_USERS = new Set([
+  "Alabama","Arizona State","Arkansas","Auburn","BYU","Clemson","Colorado","Delaware","Florida","Florida State",
+  "Georgia","Georgia Tech","Illinois","LSU","Michigan","Miami","North Carolina","Notre Dame","Ohio State","Oklahoma",
+  "Oregon","Ole Miss","Penn State","SMU","South Carolina","Tennessee","Texas","Texas A&M","Texas Tech","UCLA","Washington"
+]);
+const FORMER_USERS = new Set(["Utah","USC","Minnesota"]);
+
+function labelTeam(t){
+  const isActive = ACTIVE_USERS.has(t);
+  const wasUser  = FORMER_USERS.has(t);
+  const name = isActive ? `<strong>${t}</strong>` : t;
+  const tag = isActive ? `<span class="ubadge user">USER</span>` : (wasUser ? `<span class="ubadge former">FORMER</span>` : "");
+  return `${name}${tag}`;
+}
+
+/* ===== Week results used for records (Weeks 0–5; Week 5 partial) ===== */
+const WEEK0_RESULTS=[
+  {away:"Florida",a:27,home:"Washington",h:42},
+  {away:"USC",a:7,home:"Texas",h:40},
+  {away:"Ohio",a:3,home:"Ohio State",h:28},
+  {away:"Illinois",a:0,home:"Texas Tech",h:28},
+  {away:"Temple",a:20,home:"Penn State",h:57},
+  {away:"Iowa",a:7,home:"Alabama",h:42},
+  {away:"Indiana",a:24,home:"LSU",h:26},
+  {away:"UCLA",a:10,home:"California",h:14},
+  {away:"Michigan",a:20,home:"Houston",h:0},
+  {away:"Utah",a:56,home:"Utah State",h:31},
+  {away:"SMU",a:14,home:"Baylor",h:37},
+  {away:"BYU",a:21,home:"Clemson",h:17},
+  {away:"Miami",a:63,home:"Central Michigan",h:3}
+];
+const WEEK1_RESULTS=[
+  {away:"Clemson",a:14,home:"LSU",h:31},
+  {away:"Texas A&M",a:38,home:"Missouri State",h:3},
+  {away:"Texas",a:48,home:"Texas State",h:3},
+  {away:"California",a:44,home:"Tennessee",h:47},
+  {away:"Arizona State",a:7,home:"South Carolina",h:20},
+  {away:"Marshall",a:3,home:"Penn State",h:70},
+  {away:"Michigan",a:35,home:"NC State",h:20},
+  {away:"Georgia",a:26,home:"Miami",h:38},
+  {away:"Florida State",a:38,home:"Ole Miss",h:24},
+  {away:"Alabama",a:21,home:"Ohio State",h:14}
+];
+const WEEK2_RESULTS=[
+  {away:"Maryland",a:13,home:"Washington",h:19},
+  {away:"UCLA",a:31,home:"Kennesaw State",h:7},
+  {away:"Texas Tech",a:43,home:"Oregon State",h:17},
+  {away:"Wisconsin",a:9,home:"South Carolina",h:77},
+  {away:"Oklahoma",a:10,home:"Michigan",h:24},
+  {away:"NC State",a:7,home:"Miami",h:58},
+  {away:"USC",a:13,home:"LSU",h:42},
+  {away:"BYU",a:66,home:"Utah State",h:3},
+  {away:"Auburn",a:17,home:"Army",h:7},
+  {away:"Arizona State",a:31,home:"Texas A&M",h:13},
+  {away:"Florida State",a:24,home:"Texas",h:21},
+  {away:"Tennessee",a:28,home:"Indiana",h:35},
+  {away:"Alabama",a:42,home:"California",h:17}
+];
+const WEEK3_RESULTS=[
+  {away:"Washington",a:56,home:"Washington State",h:20},
+  {away:"Alabama",a:21,home:"Utah",h:31},
+  {away:"Georgia State",a:21,home:"Georgia",h:56},
+  {away:"South Carolina",a:41,home:"Missouri",h:10},
+  {away:"Buffalo",a:7,home:"Penn State",h:63},
+  {away:"Baylor",a:35,home:"Ohio State",h:41},
+  {away:"Oregon",a:23,home:"Oregon State",h:10},
+  {away:"New Mexico",a:21,home:"Oklahoma",h:28},
+  {away:"Miami",a:63,home:"Syracuse",h:17},
+  {away:"LSU",a:28,home:"BYU",h:21},
+  {away:"Delaware",a:13,home:"Georgia Tech",h:10},
+  {away:"Boston College",a:13,home:"Clemson",h:24},
+  {away:"Hawai'i",a:14,home:"Arizona State",h:35}
+];
+const WEEK4_RESULTS=[
+  {away:"Illinois",a:0,home:"North Carolina",h:38},
+  {away:"Sam Houston",a:6,home:"Texas Tech",h:77},
+  {away:"Vanderbilt",a:26,home:"Texas",h:44},
+  {away:"Texas A&M",a:0,home:"Tennessee",h:49},
+  {away:"Rice",a:14,home:"South Carolina",h:73},
+  {away:"Oklahoma",a:0,home:"Ole Miss",h:24},
+  {away:"Michigan",a:42,home:"Oregon",h:24},
+  {away:"Georgia Tech",a:28,home:"NC State",h:7},
+  {away:"Florida State",a:24,home:"Pittsburgh",h:14},
+  {away:"Alabama",a:28,home:"LSU",h:24},
+  {away:"Houston",a:13,home:"Arizona State",h:21}
+];
+const WEEK5_RESULTS=[
+  {away:"Purdue",a:0,home:"Washington",h:49},
+  {away:"North Carolina",a:45,home:"Notre Dame",h:20},
+  {away:"Oklahoma State",a:24,home:"Texas Tech",h:38},
+  {away:"SMU",a:41,home:"Louisville",h:10},
+  {away:"Georgia Tech",a:22,home:"Miami",h:48},
+  {away:"Tennessee",a:14,home:"Syracuse",h:21},
+  {away:"Kansas State",a:7,home:"BYU",h:63}
+];
+
+/* ===== MEDIA POLL (unchanged from latest media screenshot) ===== */
+const MEDIA_POLL=[
+  [1,"Miami",1604],
+  [2,"Penn State",1535],
+  [3,"South Carolina",1482],
+  [4,"Ohio State",1288],
+  [5,"Alabama",1239],
+  [6,"Georgia",1120],
+  [7,"Washington",1083],
+  [8,"Texas",1007],
+  [9,"LSU",953],
+  [10,"North Carolina",932],
+  [11,"Texas Tech",906],
+  [12,"Notre Dame",865],
+  [13,"Michigan",780],
+  [14,"Delaware",711],
+  [15,"Minnesota",688],
+  [16,"BYU",680],
+  [17,"SMU",652],
+  [18,"Florida State",598],
+  [19,"Florida",525],
+  [20,"Auburn",439],
+  [21,"Colorado",435],
+  [22,"Arizona State",377],
+  [23,"Indiana",325],
+  [24,"Clemson",214],
+  [25,"Louisiana",193]
+];
+
+/* ===== UPDATED COACHES POLL (transcribed from new screenshots) ===== */
+const COACHES_POLL=[
+  [1,"Miami",1501],
+  [2,"South Carolina",1453],
+  [3,"Ohio State",1283],
+  [4,"Penn State",1254],
+  [5,"Alabama",1160],
+  [6,"Georgia",1066],
+  [7,"Texas",1047],
+  [8,"Washington",963],
+  [9,"Michigan",874],
+  [10,"North Carolina",825],
+  [11,"LSU",797],
+  [12,"Notre Dame",774],
+  [13,"Texas Tech",755],
+  [14,"Minnesota",732],
+  [15,"Delaware",687],
+  [16,"SMU",668],
+  [17,"BYU",597],
+  [18,"Florida State",561],
+  [19,"Colorado",478],
+  [20,"Florida",457],
+  [21,"Auburn",448],
+  [22,"Arizona State",355],
+  [23,"Indiana",269],
+  [24,"Clemson",183],
+  [25,"Virginia",167]
+];
+
+/* ===== Records & helpers ===== */
+const allResults = ()=>[]
+  .concat(WEEK0_RESULTS,WEEK1_RESULTS,WEEK2_RESULTS,WEEK3_RESULTS,WEEK4_RESULTS,WEEK5_RESULTS);
+const recordMap = (()=>{ const m=new Map(); const add=(t,w)=>{const r=m.get(t)||{w:0,l:0}; r[w?'w':'l']++; m.set(t,r);};
+  allResults().forEach(g=>{ const w=g.a>g.h?g.away:g.home; const l=g.a>g.h?g.home:g.away; add(w,true); add(l,false); }); return m; })();
+
+/* ===== Power Index (Elo-style, users only) ===== */
+const USER_TEAMS_FOR_ELO = Array.from(ACTIVE_USERS);
+function computeElo(){
+  const K=24, R=new Map(), getR=t=>R.has(t)?R.get(t):1500, setR=(t,v)=>R.set(t,v);
+  USER_TEAMS_FOR_ELO.forEach(t=>setR(t,1500));
+  allResults().forEach(g=>{ setR(g.away,getR(g.away)); setR(g.home,getR(g.home)); });
+  allResults().forEach(g=>{
+    const Ra=getR(g.away), Rb=getR(g.home), Sa=g.a>g.h?1:0, Sb=1-Sa;
+    const Ea=1/(1+Math.pow(10,(Rb-Ra)/400)), Eb=1-Ea;
+    const margin=Math.max(1, Math.log1p(Math.abs(g.a-g.h))/0.7);
+    setR(g.away, Ra + K*margin*(Sa-Ea)); setR(g.home, Rb + K*margin*(Sb-Eb));
+  });
+  return USER_TEAMS_FOR_ELO.map(t=>{
+    const r=Math.round(getR(t)); const rr=recordMap.get(t)||{w:0,l:0};
+    return {team:t, rating:r, record:{w:rr.w||0,l:rr.l||0}};
+  }).sort((a,b)=> b.rating-a.rating)
+    .map((x,i)=>({rank:i+1, ...x, medal: i===0?'gold':i===1?'silver':i===2?'bronze':null}));
+}
+
+/* ===== Combined poll (Media + Coaches avg; NR=26) ===== */
+function computeCombined(){
+  const rec=(t)=>{const r=recordMap.get(t)||{w:0,l:0}; return `${r.w||0}-${r.l||0}`;};
+  const mRank=new Map(MEDIA_POLL.map(([rk,t,pts])=>[t,{rk,pts}]));
+  const cRank=new Map(COACHES_POLL.map(([rk,t,pts])=>[t,{rk,pts}]));
+  const teams=new Set([...mRank.keys(),...cRank.keys()]);
+  const combined=[...teams].map(t=>{
+    const mr=mRank.get(t)?.rk ?? 26, cr=cRank.get(t)?.rk ?? 26;
+    const mp=mRank.get(t)?.pts ?? 0,  cp=cRank.get(t)?.pts ?? 0;
+    const avg=(mr+cr)/2;
+    return {team:t, media:{rank:mr,pts:mp}, coaches:{rank:cr,pts:cp}, avg, record:rec(t)};
+  }).sort((a,b)=> a.avg-b.avg || (b.media.pts+b.coaches.pts)-(a.media.pts+a.coaches.pts))
+    .map((x,i)=>({rank:i+1, ...x, medal: i===0?'gold':i===1?'silver':i===2?'bronze':null}));
+  return combined;
+}
+
+/* ===== Render tables + export JSON ===== */
+function renderPage(){
+  const pi = computeElo();
+  const combo = computeCombined();
+
+  // Power Index table (users only)
+  document.getElementById('powerBody').innerHTML = pi.map(r=>{
+    const decorated = r.medal ? `<span class="${r.medal}">${labelTeam(r.team)}</span>` : labelTeam(r.team);
+    return `<tr><td>${r.rank}</td><td>${decorated}</td><td>${r.rating}</td><td>${r.record.w}-${r.record.l}</td></tr>`;
+  }).join('');
+
+  // Combined poll table (all ranked teams)
+  document.getElementById('comboBody').innerHTML = combo.map(r=>{
+    const name = r.medal ? `<span class="${r.medal}">${labelTeam(r.team)}</span>` : labelTeam(r.team);
+    const mTxt = r.media.rank<=25?`#${r.media.rank} (${r.media.pts})`:'NR';
+    const cTxt = r.coaches.rank<=25?`#${r.coaches.rank} (${r.coaches.pts})`:'NR';
+    return `<tr><td>${r.rank}</td><td>${name}</td><td>${mTxt}</td><td>${cTxt}</td><td>${r.record}</td></tr>`;
+  }).join('');
+
+  // Export JSON for team pages
+  const exported = {
+    updated: new Date().toISOString().slice(0,10),
+    flags: {
+      active_users: Array.from(ACTIVE_USERS),
+      former_users: Array.from(FORMER_USERS)
+    },
+    power_index: pi,
+    polls: {
+      media: MEDIA_POLL.map(([rank,team,points])=>({rank,team,points})),
+      coaches: COACHES_POLL.map(([rank,team,points])=>({rank,team,points})),
+      combined: combo.map(r=>({
+        rank:r.rank, team:r.team, medal:r.medal,
+        media:r.media, coaches:r.coaches, record:r.record
+      }))
+    },
+    helpers: { teamSummary: null }
+  };
+
+  function teamSummary(team){
+    const isActive = ACTIVE_USERS.has(team);
+    const wasUser  = FORMER_USERS.has(team);
+    const piRow = (isActive ? pi.find(x=>x.team===team) : null) || {rank:null, rating:null, record:{w:0,l:0}, medal:null};
+    const comboMap = new Map(combo.map(x=>[x.team,x]));
+    const cp = comboMap.get(team) || null;
+    return {
+      team,
+      flags: {active:isActive, former:wasUser},
+      power: { rank:piRow.rank, rating:piRow.rating, record:piRow.record, medal:piRow.medal },
+      media: cp?cp.media:{rank:null,pts:null},
+      coaches: cp?cp.coaches:{rank:null,pts:null},
+      combined: cp?{rank:cp.rank, medal:cp.medal}:{rank:null, medal:null}
+    };
+  }
+  exported.helpers.teamSummary = teamSummary.toString();
+
+  document.getElementById('d1sn-polls-data').textContent = JSON.stringify(exported);
+  window.D1SN_POLLS_LIVE = { data: exported, teamSummary };
+}
+document.addEventListener('DOMContentLoaded', renderPage);
+</script>
+
+<!-- Hidden JSON block for other pages to fetch -->
+<script type="application/json" id="d1sn-polls-data">{}</script>
+</body>
+</html>
