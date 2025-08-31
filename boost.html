@@ -3,18 +3,17 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>D1SN — Boost Tracker</title>
+<title>D1SN — Boost & Completion Tracker</title>
 
 <!-- THEME: black background, white headings, gold accents -->
 <style>
 :root{
-  --bg:#0b0b0b; --card:#141414; --line:#232323;
+  --bg:#0b0b0b; --card:#141414; --line:#232323; --stripe:#161616;
   --text:#e6e6e6; --muted:#a6a6a6;
   --gold:#d5b15b; --accent:#f2d675;
   --btn-a:#1a1a1a; --btn-b:#262626; --btn-glow:#f2d67566;
   --win-bg:#143a29; --win-fg:#bff8d7;
   --loss-bg:#3f2629; --loss-fg:#ffd0d0;
-  --ok:#20c997;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
@@ -26,11 +25,18 @@ a{color:var(--gold);text-decoration:none}
 .muted{color:var(--muted)}
 .grid{display:grid;gap:14px;grid-template-columns:1fr}
 @media(min-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+
 .table{width:100%;border-collapse:collapse}
 .table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
 .table th{color:#fff}
+.table tbody tr:nth-child(even){background:var(--stripe)}
 .cell-win{background:var(--win-bg);color:var(--win-fg);border-radius:6px;padding:3px 8px}
 .cell-loss{background:var(--loss-bg);color:var(--loss-fg);border-radius:6px;padding:3px 8px}
+
+/* Team accents */
+.teamTag{display:inline-flex;align-items:center;gap:8px;padding:2px 8px;border-radius:8px;border:1px solid #333;background:#101010}
+.teamTag::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--tcol,#777)}
+.teamRow{border-left:6px solid var(--tcol,#555);background:linear-gradient(90deg,var(--tbg,transparent),transparent 55%)}
 
 /* Ticker */
 .ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
@@ -45,16 +51,17 @@ a{color:var(--gold);text-decoration:none}
 .cta{margin-left:8px;border:1px solid #3c3c3c;padding:8px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
 
 /* Completion grid */
+.legend{display:flex;gap:14px;align-items:center;margin:6px 0 12px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #3a3a3a;background:#101010;padding:4px 8px;border-radius:999px;font-size:.85rem}
+.pill b{color:#fff}
 .comp-wrap{overflow:auto}
-.comp{min-width:820px;border-collapse:collapse;width:100%}
+.comp{min-width:1020px;border-collapse:collapse;width:100%}
 .comp th,.comp td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:center}
-.comp th.sticky{position:sticky;left:0;background:var(--card);z-index:1;text-align:left}
-.comp td.sticky{position:sticky;left:0;background:var(--card);text-align:left}
-.dot{display:inline-block;width:20px;height:20px;line-height:20px;border-radius:6px;background:#1c1c1c;border:1px solid #333}
-.dot.done{background:var(--ok);color:#041;font-weight:700}
-.dot.blank{opacity:.25}
-.total{font-weight:800;color:var(--accent)}
+.comp th{background:#121212}
+.comp th.sticky,.comp td.sticky{position:sticky;left:0;background:var(--card);z-index:1;text-align:left}
+.comp tbody tr:nth-child(even){background:var(--stripe)}
 .badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
+.badge.bonus{border-color:#caae51;color:#111;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c)}
 </style>
 </head>
 <body>
@@ -64,14 +71,14 @@ a{color:var(--gold);text-decoration:none}
   <div class="twrap">
     <span class="tlogo">D1SN</span>
     <div class="track"><div class="row" id="tickerRow"><span>Loading ranked finals…</span></div></div>
-    <a class="cta" href="#announcement">Boost Announcement</a>
+    <a class="cta" href="#grid">Completion Grid</a>
   </div>
 </div>
 
 <section class="section">
-  <h1>Boost Tracker</h1>
+  <h1>Boost & Completion Tracker</h1>
   <div class="card">
-    <p>Tracks completed <strong>User vs User</strong> and <strong>User vs CPU</strong> games. Ranks are shown next to school names. The ticker shows only <em>completed user games where both teams were ranked</em> at kickoff.</p>
+    <p>Tracks completed <strong>User vs User</strong> and <strong>User vs CPU</strong> games (Weeks 0–6). Ranks display next to school names. The ticker shows only <em>completed user games where both teams were ranked</em> at kickoff.</p>
     <p class="small muted">Bracket (Top 5 / 10 / 15 / 25) uses the <em>worst</em> of the two ranks (e.g., <strong>#6 Alabama @ #2 Ohio State</strong> ⇒ <strong>Top 10</strong>).</p>
   </div>
 </section>
@@ -93,64 +100,22 @@ a{color:var(--gold);text-decoration:none}
   </div>
 </section>
 
-<section class="section">
-  <h2>✅ User Completion Grid <span class="badge">Week 6 = Free Credit</span></h2>
+<section id="grid" class="section">
+  <h2>✅ User Completion Grid <span class="badge bonus">Week 6 = BONUS</span></h2>
   <div class="card comp-wrap">
+    <div class="legend">
+      <span class="pill"><b>Weekly Cell:</b> 1 = completed • 0 = missed • ○ = not in league yet</span>
+      <span class="pill"><b>Week 6 Bonus:</b> Played = 2 credits • Missed = 1 credit</span>
+      <span class="pill"><b>Joined:</b> “On Time” or “Late (W5)”</span>
+    </div>
     <table class="comp" id="compTable">
       <thead id="compHead"></thead>
       <tbody id="compBody"></tbody>
     </table>
-    <p class="small muted" style="margin-top:8px">
-      ✓ = reported final that week. Week 6 is credited to <em>everyone</em>.  
-      New users (Ole Miss, Georgia Tech, Oregon) joined in Week 6 and may miss at most <strong>one</strong> week from Week 6 and beyond.
-    </p>
   </div>
 </section>
 
-<section id="announcement" class="section">
-  <h2>🏆 Game of the Week – Boost Announcement</h2>
-  <div class="card">
-    <p>This week’s Game of the Week has been decided, and with it comes exclusive boost rewards for the winner and their supporters.</p>
-
-    <p><strong>📋 Boost Rules Recap:</strong><br>
-      • Boosts apply only to true freshmen.<br>
-      • 🚫 No stacking rewards or boosting the same player more than +5 in one attribute.<br>
-      • Must Vote Before The Game Starts!
-    </p>
-
-    <p>Supporters can also claim a reward by voting in Discord for their pick.</p>
-
-    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
-
-    <p><strong>🎯 Boost Breakdown by Matchup Ranking:</strong><br>
-      • Top 5 Matchup: Winner +5 Awareness | Supporters +1 Awareness<br>
-      • Top 10 Matchup: Winner +4 Awareness | Supporters +1 Awareness<br>
-      • Top 15 Matchup: Winner +3 Awareness | Supporters +1 Awareness<br>
-      • All Other Matchups: Winner +2 Awareness | Supporters +1 Awareness
-    </p>
-
-    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
-
-    <p><strong>🔥 This Week’s Featured Game:</strong><br>
-      #6 Alabama @ #2 Ohio State (Top 10 Matchup)<br>
-      • Winner: +4 Awareness to a true freshman<br>
-      • Supporters: +1 Awareness to their freshman of choice
-    </p>
-
-    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
-
-    <p><strong>📢 Cast your votes in the Running Late Dynasty Discord:</strong><br>
-      👉 <a href="https://discord.com/channels/1382826467683205180/1407980310158905448" target="_blank" rel="noopener">Cast Your Vote 🗳️</a></p>
-
-    <p>The winning coach’s supporters will also be rewarded!</p>
-
-    <hr style="border:0;border-top:1px solid var(--line);margin:10px 0"/>
-
-    <p><strong>⚠️ Note:</strong> Moving forward, Game of the Week will be selected by admins after each advance.</p>
-  </div>
-</section>
-
-<!-- Compatibility: if your host page provides <script id="d1sn-polls-data"> it will override fallback. -->
+<!-- OPTIONAL: If your host page already provides this, it will override the fallback below -->
 <script type="application/json" id="d1sn-polls-data-EXAMPLE" style="display:none">
 {
   "pre":[[1,"Georgia"],[2,"Ohio State"],[3,"Notre Dame"],[4,"Texas"],[5,"Alabama"],
@@ -167,7 +132,23 @@ a{color:var(--gold);text-decoration:none}
 </script>
 
 <script>
-/* ===== USERS (32 + 3 late-joiners) ===== */
+/* ========= Team color map (primary accent) ========= */
+const TEAM_COLORS={
+  "LSU":"#461D7C","Clemson":"#F56600","Arkansas":"#9D2235","Michigan":"#00274C",
+  "Texas":"#BF5700","Ohio State":"#BB0000","Miami":"#005030","Delaware":"#00539F",
+  "Georgia":"#BA0C2F","Arizona State":"#8C1D40","Florida":"#0021A5","Washington":"#4B2E83",
+  "Alabama":"#9E1B32","BYU":"#001A5B","Oklahoma":"#841617","Florida State":"#782F40",
+  "Notre Dame":"#0C2340","South Carolina":"#73000A","Illinois":"#E84A27","USC":"#990000",
+  "Texas Tech":"#CC0000","Baylor":"#154734","Colorado":"#CFB87C","Texas A&M":"#500000",
+  "Penn State":"#041E42","Tennessee":"#FF8200","North Carolina":"#4B9CD3","Utah":"#CC0000",
+  "Auburn":"#0C2340","Minnesota":"#7A0019","SMU":"#CE1126","UCLA":"#2774AE",
+  "Ole Miss":"#CE1126","Georgia Tech":"#B3A369","Oregon":"#006A00"
+};
+function hexToRGBA(hex,a=.14){const m=hex.replace('#','');const n=parseInt(m,16);
+  const r=(n>>16)&255,g=(n>>8)&255,b=n&255;return `rgba(${r},${g},${b},${a})`;}
+const teamStyle=t=>`--tcol:${TEAM_COLORS[t]||'#555'};--tbg:${hexToRGBA(TEAM_COLORS[t]||'#555',.12)}`;
+
+/* ========= Users ========= */
 const CORE_USERS=[
   "LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware",
   "Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma",
@@ -175,37 +156,27 @@ const CORE_USERS=[
   "Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina",
   "Utah","Auburn","Minnesota","SMU","UCLA"
 ];
-
-// Late joiners begin counting as users in Week 6 (and get Week 6 credit).
-const LATE_JOINERS={"Ole Miss":6,"Georgia Tech":6,"Oregon":6};
-
-// Union of all users
+// Late joiners: joined at Week 5 (W5)
+const LATE_JOINERS={"Ole Miss":5,"Georgia Tech":5,"Oregon":5};
 const ALL_USERS=[...CORE_USERS, ...Object.keys(LATE_JOINERS)];
 
-/* ===== Polls: load external JSON if present ===== */
+/* ========= Polls (external override if present) ========= */
 function loadPolls(){
-  const el = document.getElementById('d1sn-polls-data') || document.getElementById('d1sn-polls-data-EXAMPLE');
-  let data=null;
-  if(el){ try{ data = JSON.parse(el.textContent.trim()); }catch(e){} }
-  return (data && data.pre && data.now) ? data
-        : JSON.parse(document.getElementById('d1sn-polls-data-EXAMPLE').textContent);
+  const el=document.getElementById('d1sn-polls-data')||document.getElementById('d1sn-polls-data-EXAMPLE');
+  try{ return JSON.parse(el.textContent.trim()); }catch{ return {pre:[],now:[]} }
 }
-const POLLS = loadPolls();
-const PRE = new Map(POLLS.pre.map(([r,t])=>[t,r]));
-const NOW = new Map(POLLS.now.map(([r,t])=>[t,r]));
-
-/* Helpers */
-const weekNum = label => Number(String(label).replace(/[^0-9]/g,"")) || 0;
+const POLLS=loadPolls();
+const PRE=new Map(POLLS.pre.map(([r,t])=>[t,r]));
+const NOW=new Map(POLLS.now.map(([r,t])=>[t,r]));
 const rankAt=(team,tag)=> (tag==="now"?NOW:PRE).get(team)||null;
-const joinedBy = (team,wNum) => {
-  const j = LATE_JOINERS[team] ?? 0; // 0 = from start
-  return wNum >= j;
-};
-const isUserAtWeek = (team,wNum) => ALL_USERS.includes(team) && joinedBy(team,wNum);
 
-function bracketFrom(ar,br){
-  if(ar==null && br==null) return null;
-  const worst = Math.max(ar??0, br??0) || null;
+/* ========= Helpers ========= */
+const weekNum = label => Number(String(label).replace(/[^0-9]/g,""))||0;
+const joinedBy=(team,wNum)=> (LATE_JOINERS[team]??0) <= wNum; // core users default 0
+const isUserAtWeek=(team,wNum)=> ALL_USERS.includes(team) && joinedBy(team,wNum);
+function bracketFrom(aRank,hRank){
+  if(aRank==null && hRank==null) return null;
+  const worst=Math.max(aRank??0,hRank??0)||null;
   if(worst==null) return null;
   if(worst<=5) return "Top 5";
   if(worst<=10) return "Top 10";
@@ -214,7 +185,7 @@ function bracketFrom(ar,br){
   return null;
 }
 
-/* ===== RESULTS (Weeks 0–5 from screenshots) ===== */
+/* ========= Results (Weeks 0–5 from your screenshots). Week 6 is bonus week; add games if played. ========= */
 const WEEK0=[
   {away:"BYU",a:21,home:"Clemson",h:17},
   {away:"Florida",a:27,home:"Washington",h:42},
@@ -284,9 +255,10 @@ const WEEK5=[
   {away:"Tennessee",a:14,home:"Syracuse",h:21},
   {away:"Kansas State",a:7,home:"BYU",h:63}
 ];
-
-// Week 6 = Free Week (no games; auto-credit for everyone)
-const WEEK6=[];
+// Week 6 BONUS week: add games here if any were played in Week 6
+const WEEK6=[
+  // Example: {away:"Alabama",a:28,home:"Florida",h:21}
+];
 
 const WEEKS=[
   {wk:"Week 0",poll:"pre",games:WEEK0},
@@ -295,50 +267,45 @@ const WEEKS=[
   {wk:"Week 3",poll:"now",games:WEEK3},
   {wk:"Week 4",poll:"now",games:WEEK4},
   {wk:"Week 5",poll:"now",games:WEEK5},
-  {wk:"Week 6",poll:"now",games:WEEK6} // free credit
+  {wk:"Week 6",poll:"now",games:WEEK6} // BONUS week
 ];
 
-/* Build tables + ticker + completion grid */
+/* ========= Build completed tables + ticker ========= */
 const uvuBody=document.getElementById('uvuBody');
 const uvcpuBody=document.getElementById('uvcpuBody');
 const tickerRow=document.getElementById('tickerRow');
+const tickerItems=[];
 
-const completions = new Map(ALL_USERS.map(t=>[t,new Set()]));
-const weekLabels = WEEKS.map(w=>w.wk);
+/* Map: team -> Set(weeks played) */
+const playedByTeam=new Map(ALL_USERS.map(t=>[t,new Set()]));
 
-// process results
 WEEKS.forEach(({wk,poll,games})=>{
-  const wNum = weekNum(wk);
-  // auto-credit Week 6 for all who have joined by Week 6
-  if(wNum===6){
-    ALL_USERS.forEach(team=>{
-      if(joinedBy(team,6)) completions.get(team).add(wk);
-    });
-  }
+  const wNum=weekNum(wk);
   games.forEach(g=>{
-    const A=g.away,H=g.home,a=g.a,h=g.h;
+    const {away:A,home:H,a,h}=g;
     const Auser=isUserAtWeek(A,wNum), Huser=isUserAtWeek(H,wNum);
-    if(!(Auser||Huser)) return; // ignore CPU vs CPU for tracking
-
-    // mark completion for users who have joined
-    if(Auser) completions.get(A).add(wk);
-    if(Huser) completions.get(H).add(wk);
+    if(!(Auser||Huser)) return; // ignore CPU vs CPU
 
     const ar=rankAt(A,poll), br=rankAt(H,poll);
-    const bracket = bracketFrom(ar,br);
-    const rowHtml = `
+    const bracket=bracketFrom(ar,br);
+
+    // Row with team color tags
+    const rowHtml=`
       <tr>
-        <td class="${a>h?'cell-win':'cell-loss'}">${ar?`#${ar} `:''}${A}</td>
+        <td><span class="teamTag" style="${teamStyle(A)}">${ar?`#${ar} `:''}${A}</span></td>
         <td class="${a>h?'cell-win':'cell-loss'}">${a}</td>
-        <td class="${h>a?'cell-win':'cell-loss'}">${br?`#${br} `:''}${H}</td>
+        <td><span class="teamTag" style="${teamStyle(H)}">${br?`#${br} `:''}${H}</span></td>
         <td class="${h>a?'cell-win':'cell-loss'}">${h}</td>
         <td>${wk}</td>
         <td>${bracket||'—'}</td>
       </tr>`;
-    if(Auser && Huser) uvuBody.insertAdjacentHTML('beforeend',rowHtml);
-    else uvcpuBody.insertAdjacentHTML('beforeend',rowHtml);
 
-    // ticker (only if BOTH teams ranked at kickoff)
+    if(Auser && Huser){ uvuBody.insertAdjacentHTML('beforeend',rowHtml); }
+    else { uvcpuBody.insertAdjacentHTML('beforeend',rowHtml); }
+
+    if(Auser) playedByTeam.get(A).add(wNum);
+    if(Huser) playedByTeam.get(H).add(wNum);
+
     if(ar && br){
       const winner = a>h ? `${A} ${a}–${h}` : `${H} ${h}–${a}`;
       tickerItems.push(`<span>${wk}: #${ar} ${A} @ #${br} ${H} — ${winner}</span>`);
@@ -347,48 +314,61 @@ WEEKS.forEach(({wk,poll,games})=>{
 });
 tickerRow.innerHTML = tickerItems.join('') || '<span>No ranked user finals yet…</span>';
 
-/* Completion Grid */
+/* ========= Completion Grid with Week 6 BONUS ========= */
 const compHead=document.getElementById('compHead');
 const compBody=document.getElementById('compBody');
+
+const weekLabels = ["W0","W1","W2","W3","W4","W5","W6 (Bonus)"];
 compHead.innerHTML = `
   <tr>
     <th class="sticky">Team</th>
     ${weekLabels.map(w=>`<th>${w}</th>`).join("")}
     <th>Total</th>
-    <th>Miss Left (W6+)</th>
+    <th>Joined</th>
   </tr>`;
 
-// set of weeks that count against the late-join allowance (>=6)
-const post6Weeks = new Set(weekLabels.filter(w=>weekNum(w)>=6));
+// Build per-team row
+[...ALL_USERS].sort().forEach(team=>{
+  const style = teamStyle(team);
+  const played = playedByTeam.get(team) || new Set();
 
-[...completions.keys()].sort().forEach(team=>{
-  const weeks = completions.get(team);
-  const joinedFrom = LATE_JOINERS[team] ?? 0;
-  const total = weeks.size;
+  // cells for W0..W5
+  const wCells = [];
+  for(let n=0;n<=5;n++){
+    if(!joinedBy(team,n)){ wCells.push("○"); }            // not in league yet
+    else { wCells.push( played.has(n) ? "1" : "0" ); }     // completed or missed
+  }
 
-  // allowed misses: only for late joiners -> 1, others -> 0
-  const allowed = (team in LATE_JOINERS) ? 1 : 0;
-  let missesUsed = 0;
-  post6Weeks.forEach(w=>{
-    if(joinedBy(team, weekNum(w))){ // only count after they joined
-      if(!weeks.has(w)) missesUsed++;
-    }
-  });
-  const missLeft = Math.max(allowed - missesUsed, 0);
-  const missCell = allowed ? `${missLeft}` : "—";
+  // Week 6 BONUS logic:
+  // If joined by week 6:
+  //   - if played: 2 credits (display "2")
+  //   - else: 1 credit (display "1")
+  // If not joined by week 6 (edge-case): display ○ and 0 credit
+  let w6Cell, w6Credit=0;
+  if(joinedBy(team,6)){
+    const playedW6 = played.has(6);
+    w6Credit = playedW6 ? 2 : 1;
+    w6Cell = String(w6Credit);
+  }else{
+    w6Cell = "○";
+    w6Credit = 0;
+  }
 
-  const row = `
-    <tr>
-      <td class="sticky">${team}</td>
-      ${weekLabels.map(w=>{
-        const wN = weekNum(w);
-        if(!joinedBy(team,wN)) return `<td><span class="dot blank"> </span></td>`;
-        return `<td>${weeks.has(w)?'<span class="dot done">✓</span>':'<span class="dot">—</span>'}</td>`;
-      }).join("")}
-      <td class="total">${total}</td>
-      <td>${missCell}</td>
-    </tr>`;
-  compBody.insertAdjacentHTML('beforeend', row);
+  // Sum total = sum(W0..W5 numeric 1/0) + w6Credit
+  const baseSum = wCells.reduce((s,c)=> s + (c==="1"?1:0), 0);
+  const total = baseSum + w6Credit;
+
+  const joinedLabel = (team in LATE_JOINERS) ? `Late (W${LATE_JOINERS[team]})` : "On Time";
+
+  compBody.insertAdjacentHTML('beforeend', `
+    <tr class="teamRow" style="${style}">
+      <td class="sticky"><span class="teamTag" style="${style}">${team}</span></td>
+      ${wCells.map(v=>`<td>${v}</td>`).join("")}
+      <td>${w6Cell}</td>
+      <td><strong>${total}</strong></td>
+      <td>${joinedLabel}</td>
+    </tr>
+  `);
 });
 </script>
 </body>
