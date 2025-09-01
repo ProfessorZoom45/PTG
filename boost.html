@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>D1SN — Boost & Completion Tracker (Sortable)</title>
+<title>D1SN — Boost & Completion Tracker</title>
 
 <!-- THEME: black background, white headings, gold accents -->
 <style>
@@ -28,7 +28,7 @@ a{color:var(--gold);text-decoration:none}
 
 .table{width:100%;border-collapse:collapse}
 .table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
-.table th{color:#fff}
+.table th{color:#fff;cursor:pointer;user-select:none}
 .table tbody tr:nth-child(even){background:var(--stripe)}
 .cell-win{background:var(--win-bg);color:var(--win-fg);border-radius:6px;padding:3px 8px}
 .cell-loss{background:var(--loss-bg);color:var(--loss-fg);border-radius:6px;padding:3px 8px}
@@ -57,17 +57,13 @@ a{color:var(--gold);text-decoration:none}
 .comp-wrap{overflow:auto}
 .comp{min-width:1020px;border-collapse:collapse;width:100%}
 .comp th,.comp td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:center}
-.comp th{background:#121212}
+.comp th{background:#121212;cursor:pointer;user-select:none}
 .comp th.sticky,.comp td.sticky{position:sticky;left:0;background:var(--card);z-index:1;text-align:left}
 .comp tbody tr:nth-child(even){background:var(--stripe)}
 .badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
 .badge.bonus{border-color:#caae51;color:#111;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c)}
-
-/* Sortable headers */
-th.sortable{cursor:pointer;user-select:none;position:relative}
-th.sortable .sort-ind{font-size:.8rem;color:var(--muted);margin-left:6px}
-th.sortable.active{color:var(--accent)}
-th.sortable.active .sort-ind{color:var(--accent)}
+.sortHint{font-size:.8rem;color:var(--muted);margin-top:6px}
+.thActive{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -84,25 +80,40 @@ th.sortable.active .sort-ind{color:var(--accent)}
 <section class="section">
   <h1>Boost & Completion Tracker</h1>
   <div class="card">
-    <p>Tracks completed <strong>User vs User</strong> and <strong>User vs CPU</strong> games (Weeks 0–6). Ranks display next to school names. The ticker shows only <em>completed user games where both teams were ranked</em> at kickoff.</p>
-    <p class="small muted">Bracket (Top 5 / 10 / 15 / 25) uses the <em>worst</em> of the two ranks (e.g., <strong>#6 Alabama @ #2 Ohio State</strong> ⇒ <strong>Top 10</strong>).</p>
+    <p>Tracks completed <strong>User vs User</strong> and <strong>User vs CPU</strong> games (Weeks 0–6). Week 6 is a <strong>BONUS week</strong> (played = 2 credits, missed = 1 credit). The ticker shows only <em>completed user games where both teams were ranked</em> at kickoff.</p>
+    <p class="small muted">Bracket (Top 5 / 10 / 15 / 25) uses the worst of the two ranks (e.g., <strong>#6 Alabama @ #2 Ohio State</strong> ⇒ <strong>Top 10</strong>).</p>
+    <p class="small muted"><strong>Former users (effective Week 7):</strong> Oklahoma, USC.</p>
   </div>
 </section>
 
 <section class="section grid">
   <div class="card">
     <h2>Completed — User vs User <span class="badge">Users</span></h2>
-    <table class="table">
-      <thead><tr><th>Away</th><th>A</th><th>Home</th><th>H</th><th>Week</th><th>Bracket</th></tr></thead>
+    <table class="table" id="uvuTable">
+      <thead>
+        <tr>
+          <th data-sort="str">Away</th><th data-sort="num">A</th>
+          <th data-sort="str">Home</th><th data-sort="num">H</th>
+          <th data-sort="wk">Week</th><th data-sort="str">Bracket</th>
+        </tr>
+      </thead>
       <tbody id="uvuBody"></tbody>
     </table>
+    <div class="sortHint">Tip: Click headers to sort (toggles).</div>
   </div>
   <div class="card">
     <h2>Completed — User vs CPU <span class="badge">Users</span></h2>
-    <table class="table">
-      <thead><tr><th>Away</th><th>A</th><th>Home</th><th>H</th><th>Week</th><th>Bracket</th></tr></thead>
+    <table class="table" id="uvcpuTable">
+      <thead>
+        <tr>
+          <th data-sort="str">Away</th><th data-sort="num">A</th>
+          <th data-sort="str">Home</th><th data-sort="num">H</th>
+          <th data-sort="wk">Week</th><th data-sort="str">Bracket</th>
+        </tr>
+      </thead>
       <tbody id="uvcpuBody"></tbody>
     </table>
+    <div class="sortHint">Tip: Click headers to sort (toggles).</div>
   </div>
 </section>
 
@@ -110,18 +121,19 @@ th.sortable.active .sort-ind{color:var(--accent)}
   <h2>✅ User Completion Grid <span class="badge bonus">Week 6 = BONUS</span></h2>
   <div class="card comp-wrap">
     <div class="legend">
-      <span class="pill"><b>Weekly Cell:</b> 1 = completed • 0 = missed • ○ = not in league yet</span>
+      <span class="pill"><b>Cells:</b> 1 = completed • 0 = missed • ○ = not in league yet • – = former user</span>
       <span class="pill"><b>Week 6 Bonus:</b> Played = 2 credits • Missed = 1 credit</span>
       <span class="pill"><b>Joined:</b> “On Time” or “Late (W5)”</span>
     </div>
-    <table class="comp" id="compTable" aria-label="User completion grid (sortable)">
+    <table class="comp" id="compTable">
       <thead id="compHead"></thead>
       <tbody id="compBody"></tbody>
     </table>
+    <div class="sortHint">Tip: Click any header (Team, W0–W6, Total, Joined) to sort.</div>
   </div>
 </section>
 
-<!-- OPTIONAL: If your host page already provides this, it will override the fallback below -->
+<!-- If your host page has d1sn-polls-data, it will override this example -->
 <script type="application/json" id="d1sn-polls-data-EXAMPLE" style="display:none">
 {
   "pre":[[1,"Georgia"],[2,"Ohio State"],[3,"Notre Dame"],[4,"Texas"],[5,"Alabama"],
@@ -138,7 +150,7 @@ th.sortable.active .sort-ind{color:var(--accent)}
 </script>
 
 <script>
-/* ========= Team color map (primary accent) ========= */
+/* ========= Team colors ========= */
 const TEAM_COLORS={
   "LSU":"#461D7C","Clemson":"#F56600","Arkansas":"#9D2235","Michigan":"#00274C",
   "Texas":"#BF5700","Ohio State":"#BB0000","Miami":"#005030","Delaware":"#00539F",
@@ -148,13 +160,19 @@ const TEAM_COLORS={
   "Texas Tech":"#CC0000","Baylor":"#154734","Colorado":"#CFB87C","Texas A&M":"#500000",
   "Penn State":"#041E42","Tennessee":"#FF8200","North Carolina":"#4B9CD3","Utah":"#CC0000",
   "Auburn":"#0C2340","Minnesota":"#7A0019","SMU":"#CE1126","UCLA":"#2774AE",
-  "Ole Miss":"#CE1126","Georgia Tech":"#B3A369","Oregon":"#006A00"
+  "Ole Miss":"#CE1126","Georgia Tech":"#B3A369","Oregon":"#006A00","Indiana":"#990000",
+  "Vanderbilt":"#866D4B","Kentucky":"#0033A0","Duke":"#001A57","Louisville":"#AD0000",
+  "California":"#003262","Washington State":"#981E32","Syracuse":"#D44500","Pittsburgh":"#003594",
+  "Texas State":"#6B2F2F","Central Michigan":"#6E1E3A","Utah State":"#0F2439","Kennesaw State":"#FFC425",
+  "Marshall":"#00B140","NC State":"#CC0000","Army":"#232323","Temple":"#A41E35","Iowa":"#000000",
+  "Houston":"#C8102E","Vanderbilt":"#866D4B","Virginia":"#232D4B","UCF":"#BA9B37",
+  "Missouri":"#F1B82D","Minnesota":"#7A0019","Washington State":"#981E32"
 };
 function hexToRGBA(hex,a=.14){const m=hex.replace('#','');const n=parseInt(m,16);
   const r=(n>>16)&255,g=(n>>8)&255,b=n&255;return `rgba(${r},${g},${b},${a})`;}
 const teamStyle=t=>`--tcol:${TEAM_COLORS[t]||'#555'};--tbg:${hexToRGBA(TEAM_COLORS[t]||'#555',.12)}`;
 
-/* ========= Users ========= */
+/* ========= Users / membership windows ========= */
 const CORE_USERS=[
   "LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware",
   "Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma",
@@ -162,11 +180,17 @@ const CORE_USERS=[
   "Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina",
   "Utah","Auburn","Minnesota","SMU","UCLA"
 ];
-// Late joiners: joined at Week 5 (W5)
+// Late joiners: Week they joined
 const LATE_JOINERS={"Ole Miss":5,"Georgia Tech":5,"Oregon":5};
-const ALL_USERS=[...CORE_USERS, ...Object.keys(LATE_JOINERS)];
+// Former users: Week they left (active through week-1). Oklahoma + USC leave at Week 7.
+const FORMER_USERS={"Oklahoma":7,"USC":7};
 
-/* ========= Polls (external override if present) ========= */
+const ALL_USERS=[...CORE_USERS, ...Object.keys(LATE_JOINERS), ...Object.keys(FORMER_USERS)];
+const joinedWeek = t => (t in LATE_JOINERS) ? LATE_JOINERS[t] : 0;
+const leftWeek   = t => (t in FORMER_USERS) ? FORMER_USERS[t] : Infinity;
+const activeAtWeek=(team,w)=> joinedWeek(team) <= w && w < leftWeek(team);
+
+/* ========= Polls ========= */
 function loadPolls(){
   const el=document.getElementById('d1sn-polls-data')||document.getElementById('d1sn-polls-data-EXAMPLE');
   try{ return JSON.parse(el.textContent.trim()); }catch{ return {pre:[],now:[]} }
@@ -178,8 +202,6 @@ const rankAt=(team,tag)=> (tag==="now"?NOW:PRE).get(team)||null;
 
 /* ========= Helpers ========= */
 const weekNum = label => Number(String(label).replace(/[^0-9]/g,""))||0;
-const joinedBy=(team,wNum)=> (LATE_JOINERS[team]??0) <= wNum; // core users default 0
-const isUserAtWeek=(team,wNum)=> ALL_USERS.includes(team) && joinedBy(team,wNum);
 function bracketFrom(aRank,hRank){
   if(aRank==null && hRank==null) return null;
   const worst=Math.max(aRank??0,hRank??0)||null;
@@ -191,8 +213,9 @@ function bracketFrom(aRank,hRank){
   return null;
 }
 
-/* ========= Results (Weeks 0–5 from your screenshots). Week 6 is bonus week; add games if played. ========= */
-const WEEK0=[
+/* ========= Results ========= */
+/* Week 0–5 lists unchanged from prior page (trimmed here for brevity) */
+const WEEK0=[ // (UvU & UvCPU important games)
   {away:"BYU",a:21,home:"Clemson",h:17},
   {away:"Florida",a:27,home:"Washington",h:42},
   {away:"USC",a:7,home:"Texas",h:40},
@@ -261,9 +284,21 @@ const WEEK5=[
   {away:"Tennessee",a:14,home:"Syracuse",h:21},
   {away:"Kansas State",a:7,home:"BYU",h:63}
 ];
-// Week 6 BONUS week: add games here if any were played in Week 6
+/* Week 6 — BONUS Week: results from your screenshot */
 const WEEK6=[
-  // Example: {away:"Alabama",a:28,home:"Florida",h:21}
+  {away:"Washington",a:49,home:"Indiana",h:7},
+  {away:"Virginia",a:24,home:"North Carolina",h:42},
+  {away:"Tennessee",a:23,home:"Kentucky",h:33},
+  {away:"Texas Tech",a:35,home:"UCF",h:24},
+  {away:"Minnesota",a:11,home:"Michigan",h:17},
+  {away:"Notre Dame",a:21,home:"Miami",h:42},
+  {away:"LSU",a:40,home:"Vanderbilt",h:15},
+  {away:"Georgia Tech",a:34,home:"Duke",h:3},
+  {away:"Louisville",a:3,home:"Florida State",h:31},
+  {away:"California",a:20,home:"Clemson",h:25},
+  {away:"Utah",a:2,home:"BYU",h:65},
+  {away:"Auburn",a:35,home:"Arkansas",h:38}
+  // Some lines on the board had no final yet (e.g., Air Force @ Utah State) – omitted.
 ];
 
 const WEEKS=[
@@ -281,21 +316,18 @@ const uvuBody=document.getElementById('uvuBody');
 const uvcpuBody=document.getElementById('uvcpuBody');
 const tickerRow=document.getElementById('tickerRow');
 const tickerItems=[];
-
-/* Map: team -> Set(weeks played) */
 const playedByTeam=new Map(ALL_USERS.map(t=>[t,new Set()]));
 
 WEEKS.forEach(({wk,poll,games})=>{
   const wNum=weekNum(wk);
   games.forEach(g=>{
     const {away:A,home:H,a,h}=g;
-    const Auser=isUserAtWeek(A,wNum), Huser=isUserAtWeek(H,wNum);
+    const Auser=activeAtWeek(A,wNum), Huser=activeAtWeek(H,wNum);
     if(!(Auser||Huser)) return; // ignore CPU vs CPU
 
     const ar=rankAt(A,poll), br=rankAt(H,poll);
     const bracket=bracketFrom(ar,br);
 
-    // Row with team color tags
     const rowHtml=`
       <tr>
         <td><span class="teamTag" style="${teamStyle(A)}">${ar?`#${ar} `:''}${A}</span></td>
@@ -309,8 +341,8 @@ WEEKS.forEach(({wk,poll,games})=>{
     if(Auser && Huser){ uvuBody.insertAdjacentHTML('beforeend',rowHtml); }
     else { uvcpuBody.insertAdjacentHTML('beforeend',rowHtml); }
 
-    if(Auser) playedByTeam.get(A).add(wNum);
-    if(Huser) playedByTeam.get(H).add(wNum);
+    if(Auser) playedByTeam.get(A)?.add(wNum);
+    if(Huser) playedByTeam.get(H)?.add(wNum);
 
     if(ar && br){
       const winner = a>h ? `${A} ${a}–${h}` : `${H} ${h}–${a}`;
@@ -320,67 +352,49 @@ WEEKS.forEach(({wk,poll,games})=>{
 });
 tickerRow.innerHTML = tickerItems.join('') || '<span>No ranked user finals yet…</span>';
 
-/* ========= Completion Grid with Week 6 BONUS ========= */
+/* ========= Completion Grid with Week 6 BONUS & former-user handling ========= */
 const compHead=document.getElementById('compHead');
 const compBody=document.getElementById('compBody');
-
 const weekLabels = ["W0","W1","W2","W3","W4","W5","W6 (Bonus)"];
-
-/* Build sortable header */
-function headerCell(label, key, type="num", sortable=true){
-  const cls = sortable ? 'sortable' : '';
-  const ind = sortable ? '<span class="sort-ind">↕</span>' : '';
-  return `<th class="${key==='team'?'sticky':''} ${cls}" data-key="${key}" data-type="${type}" tabindex="0" role="button" aria-label="Sort by ${label}">
-            ${label}${ind}
-          </th>`;
-}
 compHead.innerHTML = `
   <tr>
-    ${headerCell("Team","team","text",true)}
-    ${weekLabels.map((w,i)=>headerCell(w,`w${i}`,"num",true)).join("")}
-    ${headerCell("Total","total","num",true)}
-    ${headerCell("Joined","joined","text",true)}
+    <th class="sticky" data-sort="str">Team</th>
+    ${weekLabels.map(w=>`<th data-sort="${w.startsWith('W')?'num':'num'}">${w}</th>`).join("")}
+    <th data-sort="num">Total</th>
+    <th data-sort="str">Joined</th>
   </tr>`;
 
-/* Build per-team rows (with data attributes for sorting) */
-[...ALL_USERS].sort().forEach(team=>{
+// Build per-team rows
+[...new Set(ALL_USERS)].sort().forEach(team=>{
   const style = teamStyle(team);
   const played = playedByTeam.get(team) || new Set();
 
   // cells for W0..W5
-  const weekVals = [];
+  const wCells = [];
   for(let n=0;n<=5;n++){
-    if(!joinedBy(team,n)) weekVals.push("○");
-    else weekVals.push( played.has(n) ? "1" : "0" );
+    if(n < joinedWeek(team)) { wCells.push("○"); }       // not in league yet
+    else if(n >= leftWeek(team)) { wCells.push("–"); }   // former user
+    else { wCells.push( played.has(n) ? "1" : "0" ); }   // completed or missed
   }
 
-  // Week 6 BONUS
+  // Week 6 BONUS:
   let w6Cell, w6Credit=0;
-  if(joinedBy(team,6)){
+  if(6 < joinedWeek(team)) { w6Cell = "○"; w6Credit=0; }
+  else if(6 >= leftWeek(team)) { w6Cell = "–"; w6Credit=0; }
+  else {
     const playedW6 = played.has(6);
     w6Credit = playedW6 ? 2 : 1;
     w6Cell = String(w6Credit);
-  }else{
-    w6Cell = "○";
-    w6Credit = 0;
   }
 
-  const baseSum = weekVals.reduce((s,c)=> s + (c==="1"?1:0), 0);
+  const baseSum = wCells.reduce((s,c)=> s + (c==="1"?1:0), 0);
   const total = baseSum + w6Credit;
   const joinedLabel = (team in LATE_JOINERS) ? `Late (W${LATE_JOINERS[team]})` : "On Time";
 
-  const dataAttrs = [
-    `data-team="${team}"`,
-    weekVals.map((v,i)=>`data-w${i}="${v}"`).join(" "),
-    `data-w6="${w6Cell}"`,
-    `data-total="${total}"`,
-    `data-joined="${joinedLabel}"`
-  ].join(" ");
-
   compBody.insertAdjacentHTML('beforeend', `
-    <tr class="teamRow" style="${style}" ${dataAttrs}>
+    <tr class="teamRow" style="${style}">
       <td class="sticky"><span class="teamTag" style="${style}">${team}</span></td>
-      ${weekVals.map(v=>`<td>${v}</td>`).join("")}
+      ${wCells.map(v=>`<td>${v}</td>`).join("")}
       <td>${w6Cell}</td>
       <td><strong>${total}</strong></td>
       <td>${joinedLabel}</td>
@@ -388,90 +402,39 @@ compHead.innerHTML = `
   `);
 });
 
-/* ========= Simple table sorter (click any header) ========= */
-(function enableSorting(){
-  const table = document.getElementById('compTable');
-  const thead = table.querySelector('thead');
-  const tbody = table.querySelector('tbody');
-  let lastKey=null, asc=true;
-
-  function valForType(v,type){
-    if(type==="num"){
-      if(v==="○") return -Infinity;
-      const n=parseFloat(v.replace(/[^0-9.-]/g,'')); // strip any non-numeric
-      return isNaN(n)?-Infinity:n;
-    }
-    // text
-    return String(v).toLowerCase();
-  }
-
-  function getCellValue(tr,key,type){
-    // read from data-* when possible for reliability
-    const ds = tr.dataset;
-    if(key in ds) return valForType(ds[key],type);
-    // fallback: find column index by header position
-    return valForType(tr.querySelector('td:nth-child(1)').textContent.trim(), type);
-  }
-
-  function sortBy(key,type){
+/* ========= Simple table sorting (both tables + grid) ========= */
+function makeSortable(table){
+  const thead=table.querySelector('thead');
+  if(!thead) return;
+  thead.addEventListener('click',e=>{
+    const th=e.target.closest('th'); if(!th) return;
+    [...thead.querySelectorAll('th')].forEach(x=>x.classList.remove('thActive'));
+    th.classList.add('thActive');
+    const idx=[...th.parentNode.children].indexOf(th);
+    const mode=th.dataset.sort||'str';
+    const tbody=table.querySelector('tbody');
     const rows=[...tbody.querySelectorAll('tr')];
-    rows.sort((a,b)=>{
-      const va=getCellValue(a,key,type);
-      const vb=getCellValue(b,key,type);
-      if(va<vb) return asc?-1:1;
-      if(va>vb) return asc?1:-1;
-      // stable tie-break: Team name asc
-      const ta=a.dataset.team.toLowerCase();
-      const tb=b.dataset.team.toLowerCase();
-      return ta.localeCompare(tb);
+    const dir=th.dataset.dir==='asc'?'desc':'asc';
+    th.dataset.dir=dir;
+
+    rows.sort((r1,r2)=>{
+      const a=r1.children[idx].innerText.trim();
+      const b=r2.children[idx].innerText.trim();
+      const toNum=v=>{
+        if(v==="○"||v==="–"||v==="—") return -1;
+        const n=parseFloat(v.replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n;
+      };
+      let cmp=0;
+      if(mode==='num'||mode==='wk'){ cmp = toNum(a)-toNum(b); }
+      else { cmp = a.localeCompare(b); }
+      return dir==='asc'?cmp:-cmp;
     });
     rows.forEach(r=>tbody.appendChild(r));
-  }
-
-  function clearHeaderStates(){
-    thead.querySelectorAll('th.sortable').forEach(th=>{
-      th.classList.remove('active');
-      const ind=th.querySelector('.sort-ind');
-      if(ind) ind.textContent='↕';
-    });
-  }
-
-  function setHeaderState(th){
-    th.classList.add('active');
-    const ind=th.querySelector('.sort-ind');
-    if(ind) ind.textContent = asc ? '↑' : '↓';
-  }
-
-  thead.addEventListener('click', (e)=>{
-    const th = e.target.closest('th.sortable');
-    if(!th) return;
-    const key = th.dataset.key;
-    const type = th.dataset.type||'text';
-    // toggle asc/desc if same column
-    if(lastKey===key) asc=!asc; else {asc=true; lastKey=key;}
-    sortBy(key,type);
-    clearHeaderStates();
-    setHeaderState(th);
   });
-
-  // keyboard accessibility (Enter/Space)
-  thead.addEventListener('keydown', (e)=>{
-    if(e.key!=='Enter' && e.key!==' ') return;
-    const th = e.target.closest('th.sortable');
-    if(!th) return;
-    e.preventDefault();
-    th.click();
-  });
-
-  // default sort: Total desc
-  const defaultTh = thead.querySelector('th[data-key="total"]');
-  if(defaultTh){
-    lastKey='total'; asc=false;
-    sortBy('total','num');
-    clearHeaderStates();
-    setHeaderState(defaultTh);
-  }
-})();
+}
+makeSortable(document.getElementById('uvuTable'));
+makeSortable(document.getElementById('uvcpuTable'));
+makeSortable(document.getElementById('compTable'));
 </script>
 </body>
 </html>
