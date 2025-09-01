@@ -141,7 +141,7 @@
     <div class="cta-rows" role="navigation" aria-label="Quick Links">
       <!-- Row 1: Latest (alone) -->
       <div class="row-btns">
-        <a class="cta-btn primary" id="readNow" href="issue03.html" title="Open Latest Issue (detected)">Open Latest Issue</a>
+        <a class="cta-btn primary" id="readNow" href="issue01.html" title="Open Latest Issue (detected)">Open Latest Issue</a>
       </div>
 
       <!-- Row 2: Polls + Standings -->
@@ -158,13 +158,8 @@
         <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
       </div>
 
-      <!-- Row 4: Past Issues (bottom, above Stay Here) -->
-      <div class="row-btns">
-        <a class="cta-btn" href="issue01.html" title="Open Issue 01">Issue 01</a>
-        <a class="cta-btn" href="issue02.html" title="Open Issue 02">Issue 02</a>
-        <a class="cta-btn" href="issue03.html" title="Open Issue 03">Issue 03</a>
-        <a class="cta-btn" href="issue04.html" title="Open Issue 04">Issue 04</a>
-      </div>
+      <!-- Row 4: Past Issues (auto-filled, above Stay Here) -->
+      <div class="row-btns" id="issuesRow" aria-label="Past Issues"></div>
 
       <!-- Row 5: Stay Here (alone) -->
       <div class="row-btns">
@@ -186,27 +181,45 @@
   <script>
     // ---------- Settings ----------
     const STAY_KEY = 'rl_splash_stay';
-    const DEFAULT_LATEST = 'issue03.html';     // Fallback if detection fails
-    const MAX_ISSUE_SCAN = 12;                 // Scan issue01 → issue12
+    const DEFAULT_LATEST = 'issue01.html';     // Safe fallback
+    const MAX_ISSUE_SCAN = 99;                 // Scan issue01 → issue99 for future-proofing
 
-    // ---------- Latest issue detection ----------
+    // ---------- Latest issue detection (contiguous scan) ----------
     async function detectLatestIssue(){
       let lastOk = null;
       for(let i = 1; i <= MAX_ISSUE_SCAN; i++){
         const n = String(i).padStart(2,'0');
         const href = `issue${n}.html`;
         try{
+          // GET with cache-bust — GitHub Pages sometimes caches aggressively
           const res = await fetch(href + '?chk=' + Date.now(), {cache:'no-store'});
-          if(res.ok) lastOk = href; else break;
+          if(res.ok) lastOk = href; else break;     // stop at first gap
         }catch(_e){ break; }
       }
       return lastOk || DEFAULT_LATEST;
     }
+
+    // Fill the "Past Issues" row dynamically from 01..latest
+    function renderIssuesRow(latestHref){
+      const row = document.getElementById('issuesRow');
+      if(!row) return;
+      const latestNum = +latestHref.match(/issue(\d+)\.html/i)[1];
+      let html = '';
+      for(let i = 1; i <= latestNum; i++){
+        const n = String(i).padStart(2,'0');
+        const href = `issue${n}.html`;
+        html += `<a class="cta-btn" href="${href}" title="Open Issue ${n}">Issue ${n}</a>`;
+      }
+      row.innerHTML = html;
+    }
+
+    // Update "Open Latest Issue" button + countdown target and issues list
     let LATEST_HREF = DEFAULT_LATEST;
     (async () => {
       LATEST_HREF = await detectLatestIssue();
       const readNow = document.getElementById('readNow');
       if(readNow) readNow.href = LATEST_HREF;
+      renderIssuesRow(LATEST_HREF);
     })();
 
     // ---------- Countdown ----------
@@ -242,11 +255,12 @@
 
     // ---------- Helpers to parse week arrays out of polls.html ----------
     function extractArray(name, html){
-      const rx = new RegExp(String.raw`const\s+${name}\s*=\s*$begin:math:display$([\\s\\S]*?)$end:math:display$;`);
+      // Find: const NAME = [ ... ];
+      const rx = new RegExp(String.raw`const\s+${name}\s*=\s*$begin:math:display$([\\\\s\\\\S]*?)$end:math:display$;`);
       const m = rx.exec(html);
       if(!m) return [];
       let js = `[${m[1]}]`;
-      // Quote object keys so we can JSON.parse
+      // Quote object keys so JSON.parse won't choke
       js = js.replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g, '$1"$2":');
       try { return JSON.parse(js); } catch { return []; }
     }
@@ -265,7 +279,6 @@
       };
 
       try{
-        // fetch polls.html and parse JSON export for ranks + user flags
         const res = await fetch('polls.html', {cache:'no-store'});
         if(!res.ok) throw new Error('polls fetch failed');
         const html = await res.text();
