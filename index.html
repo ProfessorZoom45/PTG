@@ -14,9 +14,8 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Perfect Timing Gaming">
   <meta property="og:title" content="Running Late Dynasty — D1SN">
-  <meta property="og:description" content="Live ticker with Top-5, recent results, and quick links to the latest issue.">
+  <meta property="og:description" content="Live ticker with Top-5, recent user-vs-user results, and quick links to the latest issue.">
   <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
-  <!-- Always point share art to Oh.PNG in the root -->
   <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.PNG">
   <meta property="og:image:secure_url" content="https://professorzoom45.github.io/PTG/Oh.PNG">
   <meta name="twitter:card" content="summary_large_image">
@@ -63,7 +62,7 @@
     .ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
     .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008;white-space:nowrap}
     .track{overflow:hidden;flex:1}
-    .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 30s linear infinite}
+    .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 28s linear infinite}
     .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
     .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
     .ticker:hover .row{animation-play-state:paused}
@@ -112,13 +111,12 @@
 </head>
 <body>
 
-  <!-- Ticker (auto-built from polls.json + recent results) -->
+  <!-- Ticker (auto-built from polls.html JSON + scraped week arrays) -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
       <a href="#top" class="logo-a" title="Home">D1SN</a>
       <div class="track" aria-live="polite">
         <div class="row" id="tickerRow">
-          <!-- Filled by JS; falls back if fetch fails -->
           <span>Loading ticker…</span>
           <span aria-hidden="true">Loading ticker…</span>
         </div>
@@ -242,15 +240,24 @@
       if (!canceled) setTimeout(tick, 1000);
     })();
 
-    // ---------- Ticker: Top-5 from polls + recent W5/W6 user results ----------
+    // ---------- Helpers to parse week arrays out of polls.html ----------
+    function extractArray(name, html){
+      const rx = new RegExp(String.raw`const\s+${name}\s*=\s*$begin:math:display$([\\s\\S]*?)$end:math:display$;`);
+      const m = rx.exec(html);
+      if(!m) return [];
+      let js = `[${m[1]}]`;
+      // Quote object keys so we can JSON.parse
+      js = js.replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g, '$1"$2":');
+      try { return JSON.parse(js); } catch { return []; }
+    }
+
+    // ---------- Ticker: Top-5 + recent UvU pulled from polls.html ----------
     async function buildTicker(){
       const row = document.getElementById('tickerRow');
 
-      // Fallback if fetch fails
       const fallback = [
         'Top-5 loading…',
-        'Recent W6: Washington 49–7 at Indiana; LSU 40–15 at Vanderbilt',
-        'Recent W5: North Carolina 45–20 at Notre Dame; BYU 63–7 vs Kansas State'
+        'Recent UvU loading…'
       ];
       const render = (items)=> {
         const mirror = items.concat(items.map(x=>x));
@@ -258,6 +265,7 @@
       };
 
       try{
+        // fetch polls.html and parse JSON export for ranks + user flags
         const res = await fetch('polls.html', {cache:'no-store'});
         if(!res.ok) throw new Error('polls fetch failed');
         const html = await res.text();
@@ -266,49 +274,33 @@
         if(!jsonEl || !jsonEl.textContent.trim()) throw new Error('polls json missing');
         const data = JSON.parse(jsonEl.textContent);
 
-        // Top-5 from combined poll
-        const top5 = (data.polls?.combined || []).slice(0,5).map(r => `#${r.rank} ${r.team}`);
+        const combined = data.polls?.combined || [];
+        const top5 = combined.slice(0,5).map(r => `#${r.rank} ${r.team}`);
         const top5Span = `Top-5 (Combined): ${top5.join(' • ')}`;
 
-        // Rank map + users for formatting
-        const rankMap = new Map((data.polls?.combined || []).map(r => [r.team, r.rank]));
-        const users   = new Set(data.flags?.active_users || []);
+        const rankMap = new Map(combined.map(r => [r.team, r.rank]));
+        const users   = new Set((data.flags && data.flags.active_users) || []);
+
+        // scrape week arrays directly from the polls.html source
+        const w6 = extractArray('WEEK6_RESULTS', html);
+        const w5 = extractArray('WEEK5_RESULTS', html);
+
+        const isUvU = g => users.has(g.away) && users.has(g.home);
+        const uvuRecent = []
+          .concat(w6.filter(isUvU).map(g => ({...g, wk:6})))
+          .concat(w5.filter(isUvU).map(g => ({...g, wk:5})));
+
         const rk = t => {
           const r = rankMap.get(t);
           return (r && r<=25) ? `#${r} ${t}` : t;
         };
+        const fmt = g => `W${g.wk}: ${rk(g.away)} ${g.a}–${g.h} at ${rk(g.home)}`;
 
-        // Recent Week 6 (user-involved)
-        const W6 = [
-          {away:'Washington', a:49, home:'Indiana', h:7},
-          {away:'North Carolina', a:42, home:'Virginia', h:35},
-          {away:'Texas Tech', a:35, home:'UCF', h:24},
-          {away:'Michigan', a:17, home:'Minnesota', h:11},
-          {away:'Miami', a:42, home:'Notre Dame', h:21},
-          {away:'LSU', a:40, home:'Vanderbilt', h:15},
-          {away:'Georgia Tech', a:34, home:'Duke', h:3},
-          {away:'Florida State', a:31, home:'Louisville', h:3},
-          {away:'Clemson', a:25, home:'California', h:20},
-          {away:'BYU', a:65, home:'Utah', h:2},
-          {away:'Arkansas', a:38, home:'Auburn', h:35}
-        ].filter(g => users.has(g.away) || users.has(g.home));
+        const uvuSpan = uvuRecent.length
+          ? `Recent UvU: ${uvuRecent.slice(0,4).map(fmt).join(' • ')}`
+          : 'Recent UvU: (none logged in W6/W5)';
 
-        // Recent Week 5 (user-involved)
-        const W5 = [
-          {away:'Purdue', a:0, home:'Washington', h:49},
-          {away:'North Carolina', a:45, home:'Notre Dame', h:20},
-          {away:'Oklahoma State', a:24, home:'Texas Tech', h:38},
-          {away:'SMU', a:41, home:'Louisville', h:10},
-          {away:'Georgia Tech', a:22, home:'Miami', h:48},
-          {away:'Tennessee', a:14, home:'Syracuse', h:21},
-          {away:'Kansas State', a:7, home:'BYU', h:63}
-        ].filter(g => users.has(g.away) || users.has(g.home));
-
-        const fmt = g => `${rk(g.away)} ${g.a}–${g.h} at ${rk(g.home)}`;
-        const w6Span = `W6 finals: ${W6.slice(0,5).map(fmt).join(' • ')}`;
-        const w5Span = `W5 finals: ${W5.slice(0,4).map(fmt).join(' • ')}`;
-
-        render([top5Span, w6Span, w5Span, 'See: Polls & Power Index →']);
+        render([top5Span, uvuSpan, 'See: Polls & Power Index →']);
       }catch(e){
         render(fallback);
       }
