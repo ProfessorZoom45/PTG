@@ -7,6 +7,7 @@
 <meta name="description" content="Conference standings at the start of Week 7 with user/former/cpu highlights and live ranks pulled from polls.html." />
 <meta name="color-scheme" content="dark" />
 <link rel="canonical" href="standings.html">
+<link rel="prefetch" href="polls.html" as="document" />
 
 <style>
 :root{
@@ -34,6 +35,7 @@ footer{max-width:1100px;margin:20px auto 40px;padding:0 14px;color:var(--muted);
 .ticker .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 28s linear infinite}
 .ticker .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
 .ticker .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:22px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+.ticker .row a{color:inherit}
 @keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
 @media (max-width:560px){ .ticker .row>*{padding-right:20px;margin-right:20px} }
 
@@ -70,7 +72,6 @@ tr.is-former{background:linear-gradient(90deg, #1a1410 0, transparent 18%)}
 <!-- Sticky header + Top-10 ticker -->
 <div class="ticker" role="region" aria-label="D1SN Top-10 Ticker">
   <div class="wrap">
-    <!-- Top left button back to index page -->
     <a href="index.html" class="logo-a" title="Back to Index">D1SN</a>
     <div class="track"><div class="row" id="tickerRow"></div></div>
   </div>
@@ -164,46 +165,61 @@ function tagFor(t){
   return '<span class="badge cpu">CPU</span>';
 }
 
-/* ===== Try to import ranks from polls.html (preferred) ===== */
-let POLL_COMBINED = []; // [{team, rank, medal}] when loaded
+/* ===== Load ranks from polls.html ===== */
+let POLL_COMBINED = []; // [{team, rank, medal}]
+
 async function loadPollData(){
+  let html = '';
   try{
     const res = await fetch('polls.html?x=' + Date.now(), {cache:'no-store'});
-    const html = await res.text();
-    // Extract the JSON inside <script id="d1sn-polls-data">
+    html = await res.text();
+  }catch(e){ /* network fail handled later */ }
+
+  // 1) Try the JSON export block (if polls.html pre-populated it)
+  try{
     const m = html.match(/<script[^>]+id="d1sn-polls-data"[^>]*>([\s\S]*?)<\/script>/i);
-    if(m && m[1].trim().length){
-      const data = JSON.parse(m[1]);
-      POLL_COMBINED = (data?.polls?.combined || []).map(x => ({team:x.team, rank:x.rank, medal:x.medal||null}));
-      return;
+    if(m){
+      const text = (m[1]||'{}').trim();
+      const data = JSON.parse(text.length ? text : '{}');
+      const combined = data?.polls?.combined;
+      if (Array.isArray(combined) && combined.length){
+        POLL_COMBINED = combined.map(x => ({team:x.team, rank:x.rank, medal:x.medal||null}));
+        return;
+      }
     }
-  }catch(e){ /* fall back below */ }
-  // ----- Fallback to your Week 7 arrays (same as polls.html you sent) -----
-  const MEDIA_POLL=[
-    [1,"Miami",1604],[2,"Penn State",1496],[3,"Alabama",1453],[4,"Ohio State",1357],[5,"Washington",1225],
-    [6,"Texas",1152],[7,"South Carolina",1101],[8,"LSU",1100],[9,"North Carolina",1049],[10,"Texas Tech",999],
-    [11,"Michigan",936],[12,"Delaware",854],[13,"BYU",812],[14,"SMU",712],[15,"Florida State",694],
-    [16,"Florida",528],[17,"Colorado",534],[18,"Georgia",522],[19,"Minnesota",483],[20,"Clemson",405],
-    [21,"Notre Dame",362],[22,"Arkansas",367],[23,"Louisiana",348],[24,"Cincinnati",261],[25,"Auburn",234]
-  ];
-  const COACHES_POLL=[
-    [1,"Miami",1518],[2,"Alabama",1361],[3,"Ohio State",1320],[4,"Penn State",1313],[5,"Texas",1109],
-    [6,"Washington",1093],[7,"South Carolina",1057],[8,"Michigan",1045],[9,"North Carolina",958],[10,"LSU",921],
-    [11,"Texas Tech",826],[12,"Delaware",723],[13,"SMU",676],[14,"Florida State",618],[15,"BYU",618],
-    [16,"Colorado",549],[17,"Florida",528],[18,"Georgia",482],[19,"Minnesota",469],[20,"Clemson",364],
-    [21,"Notre Dame",362],[22,"Arkansas",327],[23,"Louisiana",297],[24,"Florida Atlantic",217],[25,"Auburn",209]
-  ];
-  // Combine by average rank (NR=26)
-  const mRank=new Map(MEDIA_POLL.map(([rk,t])=>[t,rk]));
-  const cRank=new Map(COACHES_POLL.map(([rk,t])=>[t,rk]));
-  const teams = new Set([...mRank.keys(),...cRank.keys()]);
-  POLL_COMBINED = [...teams].map(t=>{
-    const mr=mRank.get(t)??26, cr=cRank.get(t)??26, avg=(mr+cr)/2;
-    return {team:t, rank:0, avg};
-  }).sort((a,b)=>a.avg-b.avg).map((x,i)=>({team:x.team, rank:i+1, medal: i? (i===1?'silver':i===2?'bronze':null) : 'gold'}));
+  }catch(_ignore){}
+
+  // 2) Parse MEDIA_POLL / COACHES_POLL arrays directly from polls.html source
+  let media = null, coaches = null;
+  try{
+    const grab = name => {
+      const re = new RegExp(`const\\s+${name}\\s*=\\s*(\$begin:math:display$[\\\\s\\\\S]*?\\$end:math:display$);`);
+      const mm = html.match(re);
+      if(!mm) return null;
+      // evaluate array literal safely
+      return (new Function('return ' + mm[1]))();
+    };
+    media = grab('MEDIA_POLL');
+    coaches = grab('COACHES_POLL');
+  }catch(_ignore){}
+
+  if(Array.isArray(media) && Array.isArray(coaches)){
+    const mRank=new Map(media.map(([rk,t])=>[t,rk]));
+    const cRank=new Map(coaches.map(([rk,t])=>[t,rk]));
+    const teams = new Set([...mRank.keys(),...cRank.keys()]);
+    POLL_COMBINED = [...teams].map(t=>{
+      const mr=mRank.get(t)??26, cr=cRank.get(t)??26, avg=(mr+cr)/2;
+      return {team:t, avg};
+    }).sort((a,b)=>a.avg-b.avg)
+      .map((x,i)=>({team:x.team, rank:i+1, medal: i===0?'gold':i===1?'silver':i===2?'bronze':null}));
+    return;
+  }
+
+  // 3) Final safety: empty -> no ranks (ticker will hide)
+  POLL_COMBINED = [];
 }
 
-/* ===== Quick accessor for rank/medal ===== */
+/* ===== Helpers for ranks/medals ===== */
 function rankFor(team){
   const r = POLL_COMBINED.find(x=>x.team===team);
   return r ? r.rank : null;
@@ -339,11 +355,15 @@ function renderConf(id, rows){
 }
 
 function renderTicker(){
-  if(!POLL_COMBINED.length) return;
+  if(!POLL_COMBINED.length){
+    document.getElementById('tickerRow').innerHTML = '';
+    return;
+  }
   const top10 = POLL_COMBINED.slice(0,10).map(r=>{
     const cls = medalSpan(r.rank);
-    const name = cls ? `<span class="${cls}">#${r.rank} ${r.team}</span>` : `#${r.rank} ${r.team}`;
-    return `<span>${name}</span>`;
+    const label = `#${r.rank} ${r.team}`;
+    const inner = cls ? `<span class="${cls}">${label}</span>` : label;
+    return `<a href="polls.html#combined" title="Open polls — combined Top-25">${inner}</a>`;
   }).join('');
   document.getElementById('tickerRow').innerHTML = top10 + top10;
 }
@@ -369,7 +389,7 @@ function setupTabs(){
 
 /* ===== Boot ===== */
 (async function init(){
-  await loadPollData();
+  await loadPollData();     // pulls data from polls.html (JSON first; arrays fallback)
   setupTabs();
   renderTicker();
   renderConf('tbody-sec', SEC);
