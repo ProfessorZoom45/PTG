@@ -14,7 +14,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Perfect Timing Gaming">
   <meta property="og:title" content="Running Late Dynasty — D1SN">
-  <meta property="og:description" content="Week 3 finals, quick links, and auto-redirect to the latest issue.">
+  <meta property="og:description" content="Live ticker with Top-5, recent results, and quick links to the latest issue.">
   <meta property="og:url" content="https://professorzoom45.github.io/PTG/">
   <!-- Always point share art to Oh.PNG in the root -->
   <meta property="og:image" content="https://professorzoom45.github.io/PTG/Oh.PNG">
@@ -28,6 +28,11 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.PNG">
   <link rel="manifest" href="assets/site.webmanifest">
 
+  <!-- Fonts (sporty display for headings) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
   <!-- Warm next pages -->
   <link rel="prefetch" href="issue03.html" as="document" />
   <link rel="prefetch" href="issue04.html" as="document" />
@@ -35,6 +40,8 @@
   <link rel="prefetch" href="coaches.html" as="document" />
   <link rel="prefetch" href="confbatt.html" as="document" />
   <link rel="prefetch" href="boost.html" as="document" />
+  <link rel="prefetch" href="polls.html" as="document" />
+  <link rel="prefetch" href="standings.html" as="document" />
   <link rel="preload" as="image" href="Oh.PNG" />
 
   <style>
@@ -48,6 +55,8 @@
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     a{color:var(--gold);text-decoration:none}
     a:focus-visible,.cta-btn:focus-visible,.stay-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+
+    h1,h2{font-family:"Anton",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; letter-spacing:.4px}
 
     /* Ticker */
     .ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
@@ -63,31 +72,55 @@
 
     /* Splash */
     .splash{min-height:66vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:var(--accent);position:relative;padding:18px 14px}
-    .splash h1{margin:0 0 8px;font-size:clamp(1.6rem,4.8vw,2.4rem);letter-spacing:.4px}
+    /* Vignette + subtle film grain */
+    .splash::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(0,0,0,.35) 100%);
+      mix-blend-mode:multiply;
+    }
+    .splash::after{
+      content:""; position:absolute; inset:0; pointer-events:none; opacity:.06;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      background-size:300px 300px; background-repeat:repeat;
+    }
+
+    .splash h1{margin:0 0 8px;font-size:clamp(1.8rem,5vw,3rem)}
     .splash-hero{width:min(100%,1100px);max-width:92vw;height:auto;margin:.75rem auto;border-radius:16px;border:1px solid #2a2a2a;box-shadow:0 10px 40px #000a}
     .note{max-width:1100px;margin:8px auto 0;color:var(--muted)}
     .cta-rows{display:grid;gap:10px;margin-top:10px}
     .row-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-    .cta-btn{border:1px solid #3c3c3c;padding:10px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+    .cta-btn{border:1px solid #3c3c3c;padding:10px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px;position:relative;overflow:hidden}
+    .cta-btn.primary{box-shadow:0 0 0 2px #000 inset, 0 0 26px var(--btn-glow)}
+    /* Animated gold underline on the primary button */
+    .cta-btn.primary::after{
+      content:""; position:absolute; left:12px; right:12px; bottom:8px; height:2px;
+      background:linear-gradient(90deg,transparent, var(--gold), transparent);
+      transform:scaleX(0); transform-origin:center; transition:transform .28s ease;
+      border-radius:2px;
+    }
+    .cta-btn.primary:hover::after,
+    .cta-btn.primary:focus-visible::after{ transform:scaleX(1); }
+
     .stay-btn{border:1px solid var(--chip-b);background:#101010;border-radius:12px;padding:10px 14px;color:#eaeaea;font-weight:800}
     .count{font-variant-numeric:tabular-nums}
+
+    /* Footer */
+    footer{max-width:1100px;margin:24px auto 40px;padding:0 14px;color:#bdbdbd;font-size:.95rem;display:grid;gap:8px;text-align:center}
+    footer .links{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    footer a{color:var(--accent)}
   </style>
 </head>
 <body>
 
-  <!-- Ticker: Week 3 user-vs-user FINALS -->
+  <!-- Ticker (auto-built from polls.json + recent results) -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
       <a href="#top" class="logo-a" title="Home">D1SN</a>
       <div class="track" aria-live="polite">
         <div class="row" id="tickerRow">
-          <!-- Live W3 finals (UVU only) -->
-          <span><strong>W3 FINAL:</strong> Utah 31–21 vs #1 Alabama — Salt Lake City shakes the poll</span>
-          <span><strong>W3 FINAL:</strong> #8 LSU 28–21 at #11 BYU — Tigers take Provo</span>
-
-          <!-- Mirror for seamless scroll -->
-          <span aria-hidden="true"><strong>W3 FINAL:</strong> Utah 31–21 vs #1 Alabama — Salt Lake City shakes the poll</span>
-          <span aria-hidden="true"><strong>W3 FINAL:</strong> #8 LSU 28–21 at #11 BYU — Tigers take Provo</span>
+          <!-- Filled by JS; falls back if fetch fails -->
+          <span>Loading ticker…</span>
+          <span aria-hidden="true">Loading ticker…</span>
         </div>
       </div>
     </div>
@@ -106,9 +139,28 @@
       Auto-redirecting to <strong>latest issue</strong> in <span id="count" class="count" aria-live="polite">9</span>s…
     </p>
 
-    <!-- Buttons (rows) -->
-    <div class="cta-rows">
-      <!-- Row 1: Issue 01–04 -->
+    <!-- Buttons (organized) -->
+    <div class="cta-rows" role="navigation" aria-label="Quick Links">
+      <!-- Row 1: Latest (alone) -->
+      <div class="row-btns">
+        <a class="cta-btn primary" id="readNow" href="issue03.html" title="Open Latest Issue (detected)">Open Latest Issue</a>
+      </div>
+
+      <!-- Row 2: Polls + Standings -->
+      <div class="row-btns">
+        <a class="cta-btn" href="polls.html" title="Polls & Power Index">Polls & Power Index</a>
+        <a class="cta-btn" href="standings.html" title="Standings">Standings</a>
+      </div>
+
+      <!-- Row 3: Directories / Events / Tools -->
+      <div class="row-btns">
+        <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
+        <a class="cta-btn" href="coaches.html" title="Schools Page">Schools</a>
+        <a class="cta-btn" href="confbatt.html" title="Conference Battle">Conference Battle</a>
+        <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
+      </div>
+
+      <!-- Row 4: Past Issues (bottom, above Stay Here) -->
       <div class="row-btns">
         <a class="cta-btn" href="issue01.html" title="Open Issue 01">Issue 01</a>
         <a class="cta-btn" href="issue02.html" title="Open Issue 02">Issue 02</a>
@@ -116,25 +168,22 @@
         <a class="cta-btn" href="issue04.html" title="Open Issue 04">Issue 04</a>
       </div>
 
-      <!-- Row 2: Team Pages – Schools – Conference Battle -->
-      <div class="row-btns">
-        <a class="cta-btn" href="teamhub.html" title="Browse Team Pages">Team Pages</a>
-        <a class="cta-btn" href="coaches.html" title="Schools Page">Schools</a>
-        <a class="cta-btn" href="confbatt.html" title="Conference Battle">Conference Battle</a>
-      </div>
-
-      <!-- Row 3: Dynasty Boost + Latest -->
-      <div class="row-btns">
-        <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
-        <a class="cta-btn" id="readNow" href="issue03.html" title="Open Latest Issue (detected)">Open Latest Issue</a>
-      </div>
-
-      <!-- Row 4: Stay Here (alone) -->
+      <!-- Row 5: Stay Here (alone) -->
       <div class="row-btns">
         <button class="stay-btn" id="stayBtn" type="button" title="Stay on the splash page">Stay Here</button>
       </div>
     </div>
   </section>
+
+  <!-- Compact footer -->
+  <footer>
+    <div>© D1SN — Running Late Dynasty</div>
+    <div class="links">
+      <a href="polls.html" title="See rankings and the user-only Power Index">About D1SN</a> •
+      <a href="mailto:changethewrldplz@gmail.com" title="Email D1SN">Contact</a> •
+      <a href="https://discord.gg/8GfXM4EWVX" target="_blank" rel="noopener" title="Join the league on Discord">How to join</a>
+    </div>
+  </footer>
 
   <script>
     // ---------- Settings ----------
@@ -142,7 +191,7 @@
     const DEFAULT_LATEST = 'issue03.html';     // Fallback if detection fails
     const MAX_ISSUE_SCAN = 12;                 // Scan issue01 → issue12
 
-    // Find the highest existing issueNN.html (up to MAX_ISSUE_SCAN)
+    // ---------- Latest issue detection ----------
     async function detectLatestIssue(){
       let lastOk = null;
       for(let i = 1; i <= MAX_ISSUE_SCAN; i++){
@@ -155,8 +204,6 @@
       }
       return lastOk || DEFAULT_LATEST;
     }
-
-    // Update "Open Latest Issue" button + countdown target
     let LATEST_HREF = DEFAULT_LATEST;
     (async () => {
       LATEST_HREF = await detectLatestIssue();
@@ -164,12 +211,11 @@
       if(readNow) readNow.href = LATEST_HREF;
     })();
 
-    // ---------- Countdown (9s default; ?t= for override; ?stay=1 persists staying) ----------
+    // ---------- Countdown ----------
     (function countdown(){
       const qs = new URLSearchParams(location.search);
       const tParam = parseInt(qs.get('t') || '', 10);
       let t = Number.isFinite(tParam) ? Math.max(0, tParam) : 9;
-
       if (qs.get('stay') === '1') localStorage.setItem(STAY_KEY, '1');
 
       const stayed  = localStorage.getItem(STAY_KEY) === '1';
@@ -185,22 +231,89 @@
         localStorage.setItem(STAY_KEY, '1');
         countEl.textContent = '—';
       });
-
       readNow.addEventListener('click', () => { canceled = true; });
 
-      const tick = async () => {
+      const tick = () => {
         if (canceled) return;
         countEl.textContent = t;
-        if (t <= 0) {
-          const target = LATEST_HREF || DEFAULT_LATEST;
-          location.href = target;
-        } else {
-          t -= 1;
-          setTimeout(tick, 1000);
-        }
+        if (t <= 0) location.href = LATEST_HREF || DEFAULT_LATEST;
+        else { t -= 1; setTimeout(tick, 1000); }
       };
       if (!canceled) setTimeout(tick, 1000);
     })();
+
+    // ---------- Ticker: Top-5 from polls + recent W5/W6 user results ----------
+    async function buildTicker(){
+      const row = document.getElementById('tickerRow');
+
+      // Fallback if fetch fails
+      const fallback = [
+        'Top-5 loading…',
+        'Recent W6: Washington 49–7 at Indiana; LSU 40–15 at Vanderbilt',
+        'Recent W5: North Carolina 45–20 at Notre Dame; BYU 63–7 vs Kansas State'
+      ];
+      const render = (items)=> {
+        const mirror = items.concat(items.map(x=>x));
+        row.innerHTML = mirror.map((t,i)=>`<span${i>=items.length?' aria-hidden="true"':''}>${t}</span>`).join('');
+      };
+
+      try{
+        const res = await fetch('polls.html', {cache:'no-store'});
+        if(!res.ok) throw new Error('polls fetch failed');
+        const html = await res.text();
+        const doc  = new DOMParser().parseFromString(html,'text/html');
+        const jsonEl = doc.querySelector('#d1sn-polls-data');
+        if(!jsonEl || !jsonEl.textContent.trim()) throw new Error('polls json missing');
+        const data = JSON.parse(jsonEl.textContent);
+
+        // Top-5 from combined poll
+        const top5 = (data.polls?.combined || []).slice(0,5).map(r => `#${r.rank} ${r.team}`);
+        const top5Span = `Top-5 (Combined): ${top5.join(' • ')}`;
+
+        // Rank map + users for formatting
+        const rankMap = new Map((data.polls?.combined || []).map(r => [r.team, r.rank]));
+        const users   = new Set(data.flags?.active_users || []);
+        const rk = t => {
+          const r = rankMap.get(t);
+          return (r && r<=25) ? `#${r} ${t}` : t;
+        };
+
+        // Recent Week 6 (user-involved)
+        const W6 = [
+          {away:'Washington', a:49, home:'Indiana', h:7},
+          {away:'North Carolina', a:42, home:'Virginia', h:35},
+          {away:'Texas Tech', a:35, home:'UCF', h:24},
+          {away:'Michigan', a:17, home:'Minnesota', h:11},
+          {away:'Miami', a:42, home:'Notre Dame', h:21},
+          {away:'LSU', a:40, home:'Vanderbilt', h:15},
+          {away:'Georgia Tech', a:34, home:'Duke', h:3},
+          {away:'Florida State', a:31, home:'Louisville', h:3},
+          {away:'Clemson', a:25, home:'California', h:20},
+          {away:'BYU', a:65, home:'Utah', h:2},
+          {away:'Arkansas', a:38, home:'Auburn', h:35}
+        ].filter(g => users.has(g.away) || users.has(g.home));
+
+        // Recent Week 5 (user-involved)
+        const W5 = [
+          {away:'Purdue', a:0, home:'Washington', h:49},
+          {away:'North Carolina', a:45, home:'Notre Dame', h:20},
+          {away:'Oklahoma State', a:24, home:'Texas Tech', h:38},
+          {away:'SMU', a:41, home:'Louisville', h:10},
+          {away:'Georgia Tech', a:22, home:'Miami', h:48},
+          {away:'Tennessee', a:14, home:'Syracuse', h:21},
+          {away:'Kansas State', a:7, home:'BYU', h:63}
+        ].filter(g => users.has(g.away) || users.has(g.home));
+
+        const fmt = g => `${rk(g.away)} ${g.a}–${g.h} at ${rk(g.home)}`;
+        const w6Span = `W6 finals: ${W6.slice(0,5).map(fmt).join(' • ')}`;
+        const w5Span = `W5 finals: ${W5.slice(0,4).map(fmt).join(' • ')}`;
+
+        render([top5Span, w6Span, w5Span, 'See: Polls & Power Index →']);
+      }catch(e){
+        render(fallback);
+      }
+    }
+    buildTicker();
 
     // ---------- Hero image fallback note ----------
     (function heroFallback(){
