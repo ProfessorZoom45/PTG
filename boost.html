@@ -38,6 +38,10 @@ a{color:var(--gold);text-decoration:none}
 .teamTag::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--tcol,#777)}
 .teamRow{border-left:6px solid var(--tcol,#555);background:linear-gradient(90deg,var(--tbg,transparent),transparent 55%)}
 
+/* Left dynasty icon */
+.leftIcon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;margin-left:8px;border:1px solid #6b592a;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:800;font-size:.72rem;line-height:1}
+.leftIcon[title]{cursor:help}
+
 /* Ticker */
 .ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
 .twrap{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
@@ -71,7 +75,7 @@ a{color:var(--gold);text-decoration:none}
 <!-- TICKER -->
 <div class="ticker">
   <div class="twrap">
-    <span class="tlogo">D1SN</span>
+    <a class="tlogo" href="index.html" title="Back to Home">D1SN</a>
     <div class="track"><div class="row" id="tickerRow"><span>Loading ranked finals…</span></div></div>
     <a class="cta" href="#grid">Completion Grid</a>
   </div>
@@ -82,7 +86,7 @@ a{color:var(--gold);text-decoration:none}
   <div class="card">
     <p>Tracks completed <strong>User vs User</strong> and <strong>User vs CPU</strong> games (Weeks 0–6). Week 6 is a <strong>BONUS week</strong> (played = 2 credits, missed = 1 credit). The ticker shows only <em>completed user games where both teams were ranked</em> at kickoff.</p>
     <p class="small muted">Bracket (Top 5 / 10 / 15 / 25) uses the worst of the two ranks (e.g., <strong>#6 Alabama @ #2 Ohio State</strong> ⇒ <strong>Top 10</strong>).</p>
-    <p class="small muted"><strong>Former users (effective Week 7):</strong> Oklahoma, USC.</p>
+    <p class="small muted"><strong>Former users (effective by Week):</strong> USC (W5), Oklahoma (W6), Minnesota (W3), Utah (W3).</p>
   </div>
 </section>
 
@@ -121,9 +125,10 @@ a{color:var(--gold);text-decoration:none}
   <h2>✅ User Completion Grid <span class="badge bonus">Week 6 = BONUS</span></h2>
   <div class="card comp-wrap">
     <div class="legend">
-      <span class="pill"><b>Cells:</b> 1 = completed • 0 = missed • ○ = not in league yet • – = former user</span>
+      <span class="pill"><b>Cells:</b> 1 = completed • 0 = missed • ○ = not in league yet • – = after user left</span>
       <span class="pill"><b>Week 6 Bonus:</b> Played = 2 credits • Missed = 1 credit</span>
       <span class="pill"><b>Joined:</b> “On Time” or “Late (W5)”</span>
+      <span class="pill"><b>Left Icon:</b> <span class="leftIcon" title="Former user">⟂</span> user left dynasty (hover shows week)</span>
     </div>
     <table class="comp" id="compTable">
       <thead id="compHead"></thead>
@@ -165,8 +170,9 @@ const TEAM_COLORS={
   "California":"#003262","Washington State":"#981E32","Syracuse":"#D44500","Pittsburgh":"#003594",
   "Texas State":"#6B2F2F","Central Michigan":"#6E1E3A","Utah State":"#0F2439","Kennesaw State":"#FFC425",
   "Marshall":"#00B140","NC State":"#CC0000","Army":"#232323","Temple":"#A41E35","Iowa":"#000000",
-  "Houston":"#C8102E","Vanderbilt":"#866D4B","Virginia":"#232D4B","UCF":"#BA9B37",
-  "Missouri":"#F1B82D","Minnesota":"#7A0019","Washington State":"#981E32"
+  "Houston":"#C8102E","Virginia":"#232D4B","UCF":"#BA9B37","Missouri":"#F1B82D",
+  "Georgia State":"#0039A6","Buffalo":"#003E7E","New Mexico":"#BA0C2F","Hawai'i":"#024731",
+  "Purdue":"#000000","Kansas State":"#512888"
 };
 function hexToRGBA(hex,a=.14){const m=hex.replace('#','');const n=parseInt(m,16);
   const r=(n>>16)&255,g=(n>>8)&255,b=n&255;return `rgba(${r},${g},${b},${a})`;}
@@ -182,10 +188,10 @@ const CORE_USERS=[
 ];
 // Late joiners: Week they joined
 const LATE_JOINERS={"Ole Miss":5,"Georgia Tech":5,"Oregon":5};
-// Former users: Week they left (active through week-1). Oklahoma + USC leave at Week 7.
-const FORMER_USERS={"Oklahoma":7,"USC":7};
+// Former users: Week they left (active through week-1)
+const FORMER_USERS={"USC":5,"Oklahoma":6,"Minnesota":3,"Utah":3};
 
-const ALL_USERS=[...CORE_USERS, ...Object.keys(LATE_JOINERS), ...Object.keys(FORMER_USERS)];
+const ALL_USERS=[...new Set([...CORE_USERS, ...Object.keys(LATE_JOINERS), ...Object.keys(FORMER_USERS)])];
 const joinedWeek = t => (t in LATE_JOINERS) ? LATE_JOINERS[t] : 0;
 const leftWeek   = t => (t in FORMER_USERS) ? FORMER_USERS[t] : Infinity;
 const activeAtWeek=(team,w)=> joinedWeek(team) <= w && w < leftWeek(team);
@@ -213,9 +219,8 @@ function bracketFrom(aRank,hRank){
   return null;
 }
 
-/* ========= Results ========= */
-/* Week 0–5 lists unchanged from prior page (trimmed here for brevity) */
-const WEEK0=[ // (UvU & UvCPU important games)
+/* ========= Results (Weeks 0–6) ========= */
+const WEEK0=[
   {away:"BYU",a:21,home:"Clemson",h:17},
   {away:"Florida",a:27,home:"Washington",h:42},
   {away:"USC",a:7,home:"Texas",h:40},
@@ -284,7 +289,6 @@ const WEEK5=[
   {away:"Tennessee",a:14,home:"Syracuse",h:21},
   {away:"Kansas State",a:7,home:"BYU",h:63}
 ];
-/* Week 6 — BONUS Week: results from your screenshot */
 const WEEK6=[
   {away:"Washington",a:49,home:"Indiana",h:7},
   {away:"Virginia",a:24,home:"North Carolina",h:42},
@@ -298,7 +302,6 @@ const WEEK6=[
   {away:"California",a:20,home:"Clemson",h:25},
   {away:"Utah",a:2,home:"BYU",h:65},
   {away:"Auburn",a:35,home:"Arkansas",h:38}
-  // Some lines on the board had no final yet (e.g., Air Force @ Utah State) – omitted.
 ];
 
 const WEEKS=[
@@ -308,7 +311,7 @@ const WEEKS=[
   {wk:"Week 3",poll:"now",games:WEEK3},
   {wk:"Week 4",poll:"now",games:WEEK4},
   {wk:"Week 5",poll:"now",games:WEEK5},
-  {wk:"Week 6",poll:"now",games:WEEK6} // BONUS week
+  {wk:"Week 6",poll:"now",games:WEEK6}
 ];
 
 /* ========= Build completed tables + ticker ========= */
@@ -323,7 +326,7 @@ WEEKS.forEach(({wk,poll,games})=>{
   games.forEach(g=>{
     const {away:A,home:H,a,h}=g;
     const Auser=activeAtWeek(A,wNum), Huser=activeAtWeek(H,wNum);
-    if(!(Auser||Huser)) return; // ignore CPU vs CPU
+    if(!(Auser||Huser)) return;
 
     const ar=rankAt(A,poll), br=rankAt(H,poll);
     const bracket=bracketFrom(ar,br);
@@ -337,9 +340,8 @@ WEEKS.forEach(({wk,poll,games})=>{
         <td>${wk}</td>
         <td>${bracket||'—'}</td>
       </tr>`;
-
-    if(Auser && Huser){ uvuBody.insertAdjacentHTML('beforeend',rowHtml); }
-    else { uvcpuBody.insertAdjacentHTML('beforeend',rowHtml); }
+    if(Auser && Huser) uvuBody.insertAdjacentHTML('beforeend',rowHtml);
+    else uvcpuBody.insertAdjacentHTML('beforeend',rowHtml);
 
     if(Auser) playedByTeam.get(A)?.add(wNum);
     if(Huser) playedByTeam.get(H)?.add(wNum);
@@ -359,41 +361,44 @@ const weekLabels = ["W0","W1","W2","W3","W4","W5","W6 (Bonus)"];
 compHead.innerHTML = `
   <tr>
     <th class="sticky" data-sort="str">Team</th>
-    ${weekLabels.map(w=>`<th data-sort="${w.startsWith('W')?'num':'num'}">${w}</th>`).join("")}
+    ${weekLabels.map(w=>`<th data-sort="num">${w}</th>`).join("")}
     <th data-sort="num">Total</th>
     <th data-sort="str">Joined</th>
   </tr>`;
 
 // Build per-team rows
-[...new Set(ALL_USERS)].sort().forEach(team=>{
+[...ALL_USERS].sort().forEach(team=>{
   const style = teamStyle(team);
   const played = playedByTeam.get(team) || new Set();
+
+  const jw = joinedWeek(team);
+  const lw = leftWeek(team);
+  const showLeft = Number.isFinite(lw) && lw !== Infinity;
 
   // cells for W0..W5
   const wCells = [];
   for(let n=0;n<=5;n++){
-    if(n < joinedWeek(team)) { wCells.push("○"); }       // not in league yet
-    else if(n >= leftWeek(team)) { wCells.push("–"); }   // former user
-    else { wCells.push( played.has(n) ? "1" : "0" ); }   // completed or missed
+    if(n < jw) wCells.push("○");            // not in league yet
+    else if(n >= lw) wCells.push("–");      // after user left
+    else wCells.push( played.has(n) ? "1" : "0" );
   }
 
   // Week 6 BONUS:
   let w6Cell, w6Credit=0;
-  if(6 < joinedWeek(team)) { w6Cell = "○"; w6Credit=0; }
-  else if(6 >= leftWeek(team)) { w6Cell = "–"; w6Credit=0; }
-  else {
-    const playedW6 = played.has(6);
-    w6Credit = playedW6 ? 2 : 1;
-    w6Cell = String(w6Credit);
-  }
+  if(6 < jw){ w6Cell = "○"; }
+  else if(6 >= lw){ w6Cell = "–"; }
+  else { w6Credit = played.has(6) ? 2 : 1; w6Cell = String(w6Credit); }
 
   const baseSum = wCells.reduce((s,c)=> s + (c==="1"?1:0), 0);
-  const total = baseSum + w6Credit;
-  const joinedLabel = (team in LATE_JOINERS) ? `Late (W${LATE_JOINERS[team]})` : "On Time";
+  const total = baseSum + (w6Cell==="2"?2:(w6Cell==="1"?1:0));
+  const joinedLabel = (team in LATE_JOINERS) ? `Late (W${jw})` : "On Time";
 
   compBody.insertAdjacentHTML('beforeend', `
     <tr class="teamRow" style="${style}">
-      <td class="sticky"><span class="teamTag" style="${style}">${team}</span></td>
+      <td class="sticky">
+        <span class="teamTag" style="${style}">${team}</span>
+        ${showLeft ? `<span class="leftIcon" title="Left after Week ${lw-1}">⟂</span>` : ``}
+      </td>
       ${wCells.map(v=>`<td>${v}</td>`).join("")}
       <td>${w6Cell}</td>
       <td><strong>${total}</strong></td>
@@ -402,7 +407,7 @@ compHead.innerHTML = `
   `);
 });
 
-/* ========= Simple table sorting (both tables + grid) ========= */
+/* ========= Simple table sorting (games tables + grid) ========= */
 function makeSortable(table){
   const thead=table.querySelector('thead');
   if(!thead) return;
@@ -424,9 +429,7 @@ function makeSortable(table){
         if(v==="○"||v==="–"||v==="—") return -1;
         const n=parseFloat(v.replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n;
       };
-      let cmp=0;
-      if(mode==='num'||mode==='wk'){ cmp = toNum(a)-toNum(b); }
-      else { cmp = a.localeCompare(b); }
+      let cmp = (mode==='num') ? (toNum(a)-toNum(b)) : a.localeCompare(b);
       return dir==='asc'?cmp:-cmp;
     });
     rows.forEach(r=>tbody.appendChild(r));
