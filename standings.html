@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>D1SN — Standings (Week 7 Start)</title>
+<meta name="description" content="Conference standings at the start of Week 7 with user/former/cpu highlights and live ranks pulled from polls.html." />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="standings.html">
+
+<style>
+:root{
+  --bg:#0b0b0b;--card:#141414;--line:#232323;--text:#e6e6e6;--muted:#a6a6a6;
+  --gold:#d5b15b;--silver:#c0c0c0;--bronze:#cd7f32;--accent:#f2d675;
+  --user:#66e3ff;--former:#ffb366;--cpu:#c8c8c8;
+  --win:#133a29;--loss:#3a1b1f;
+  --btn-a:#1a1a1a;--btn-b:#262626;--btn-glow:#f2d67566;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent);text-decoration:none}
+h1,h2{margin:.2rem 0 .6rem}
+.small{color:var(--muted);font-size:.92rem}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+footer{max-width:1100px;margin:20px auto 40px;padding:0 14px;color:var(--muted);font-size:.92rem}
+
+/* Ticker (Top-10 Combined) */
+.ticker{position:sticky;top:0;z-index:9;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
+.logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008;white-space:nowrap}
+.ticker .track{overflow:hidden;flex:1;min-width:260px}
+.ticker .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 28s linear infinite}
+.ticker .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
+.ticker .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:22px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+@keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+@media (max-width:560px){ .ticker .row>*{padding-right:20px;margin-right:20px} }
+
+/* Tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
+.tab{border:1px solid #3a3a3a;background:#0f0f0f;color:#fff;border-radius:999px;padding:7px 12px;font-weight:800;cursor:pointer}
+.tab[aria-selected="true"]{background:linear-gradient(180deg,#1a1a1a,#262626);box-shadow:0 0 0 2px #000 inset,0 0 18px var(--btn-glow)}
+
+/* Table */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left}
+.table thead th{position:sticky;top:52px;background:var(--card);z-index:2}
+.rank{opacity:.9}
+.badge{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:999px;border:1px solid #2b2b2b;background:#0e0e0e;font-size:.72rem;letter-spacing:.2px}
+.user{border-color:#2a3a44;color:var(--user)}
+.former{border-color:#4a3726;color:var(--former)}
+.cpu{border-color:#2b2b2b;color:var(--cpu)}
+.gold{color:var(--gold);font-weight:900}
+.silver{color:var(--silver);font-weight:900}
+.bronze{color:var(--bronze);font-weight:900}
+
+/* Row tint based on status */
+tr.is-user{background:linear-gradient(90deg, #0f1418 0, transparent 18%)}
+tr.is-former{background:linear-gradient(90deg, #1a1410 0, transparent 18%)}
+
+/* Utilities */
+.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.mono{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+
+<!-- Sticky header + Top-10 ticker -->
+<div class="ticker" role="region" aria-label="D1SN Top-10 Ticker">
+  <div class="wrap">
+    <!-- Top left button back to index page -->
+    <a href="index.html" class="logo-a" title="Back to Index">D1SN</a>
+    <div class="track"><div class="row" id="tickerRow"></div></div>
+  </div>
+</div>
+
+<section class="section">
+  <h1>Standings (Week 7 Start)</h1>
+  <p class="small legend">
+    <span><strong>Ranks</strong> come live from <a href="polls.html" title="Open polls">polls.html</a> when available.</span>
+    <span><span class="badge user">USER</span> active user</span>
+    <span><span class="badge former">FORMER Wk #</span> former user & week left</span>
+    <span><span class="badge cpu">CPU</span> cpu-controlled</span>
+  </p>
+
+  <div class="tabs" role="tablist" aria-label="Conferences">
+    <button class="tab" role="tab" id="tab-sec" aria-controls="panel-sec" aria-selected="true">SEC</button>
+    <button class="tab" role="tab" id="tab-acc" aria-controls="panel-acc" aria-selected="false">ACC</button>
+    <button class="tab" role="tab" id="tab-b1g" aria-controls="panel-b1g" aria-selected="false">BIG TEN</button>
+    <button class="tab" role="tab" id="tab-b12" aria-controls="panel-b12" aria-selected="false">BIG 12</button>
+  </div>
+
+  <!-- Panels -->
+  <div id="panel-sec" role="tabpanel" aria-labelledby="tab-sec">
+    <div class="card">
+      <table class="table mono">
+        <thead><tr>
+          <th>#</th><th>Team</th><th>W-L</th><th>PCT</th><th>CONF</th><th>PF</th><th>PA</th><th>DIFF</th><th>MOV</th><th>HOME</th><th>AWAY</th><th>STK</th>
+        </tr></thead>
+        <tbody id="tbody-sec"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-acc" role="tabpanel" aria-labelledby="tab-acc" hidden>
+    <div class="card">
+      <table class="table mono">
+        <thead><tr>
+          <th>#</th><th>Team</th><th>W-L</th><th>PCT</th><th>CONF</th><th>PF</th><th>PA</th><th>DIFF</th><th>MOV</th><th>HOME</th><th>AWAY</th><th>STK</th>
+        </tr></thead>
+        <tbody id="tbody-acc"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-b1g" role="tabpanel" aria-labelledby="tab-b1g" hidden>
+    <div class="card">
+      <table class="table mono">
+        <thead><tr>
+          <th>#</th><th>Team</th><th>W-L</th><th>PCT</th><th>CONF</th><th>PF</th><th>PA</th><th>DIFF</th><th>MOV</th><th>HOME</th><th>AWAY</th><th>STK</th>
+        </tr></thead>
+        <tbody id="tbody-b1g"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-b12" role="tabpanel" aria-labelledby="tab-b12" hidden>
+    <div class="card">
+      <table class="table mono">
+        <thead><tr>
+          <th>#</th><th>Team</th><th>W-L</th><th>PCT</th><th>CONF</th><th>PF</th><th>PA</th><th>DIFF</th><th>MOV</th><th>HOME</th><th>AWAY</th><th>STK</th>
+        </tr></thead>
+        <tbody id="tbody-b12"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>© D1SN — Running Late Dynasty</footer>
+
+<!-- ===================== DATA & LOGIC ===================== -->
+<script>
+/* ===== USER / FORMER flags (same as in polls.html) ===== */
+const ACTIVE_USERS = new Set([
+  "Alabama","Arizona State","Arkansas","Auburn","BYU","Clemson","Colorado","Delaware","Florida","Florida State",
+  "Georgia","Georgia Tech","Illinois","LSU","Michigan","Miami","North Carolina","Notre Dame","Ohio State",
+  "Oregon","Ole Miss","Penn State","SMU","South Carolina","Tennessee","Texas",
+  "Texas A&M","Texas Tech","UCLA","Washington"
+]);
+const FORMER_USERS_WITH_WEEK = new Map([
+  ["Minnesota",3],["Utah",3],["USC",5],["Oklahoma",6]
+]);
+
+/* ===== Helper: slugs to link into coaches page ===== */
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+const teamLink = t => `coaches.html#team-${slug(t)}`;
+
+function tagFor(t){
+  if(ACTIVE_USERS.has(t)) return '<span class="badge user">USER</span>';
+  const wk = FORMER_USERS_WITH_WEEK.get(t);
+  if(wk) return `<span class="badge former">FORMER Wk ${wk}</span>`;
+  return '<span class="badge cpu">CPU</span>';
+}
+
+/* ===== Try to import ranks from polls.html (preferred) ===== */
+let POLL_COMBINED = []; // [{team, rank, medal}] when loaded
+async function loadPollData(){
+  try{
+    const res = await fetch('polls.html?x=' + Date.now(), {cache:'no-store'});
+    const html = await res.text();
+    // Extract the JSON inside <script id="d1sn-polls-data">
+    const m = html.match(/<script[^>]+id="d1sn-polls-data"[^>]*>([\s\S]*?)<\/script>/i);
+    if(m && m[1].trim().length){
+      const data = JSON.parse(m[1]);
+      POLL_COMBINED = (data?.polls?.combined || []).map(x => ({team:x.team, rank:x.rank, medal:x.medal||null}));
+      return;
+    }
+  }catch(e){ /* fall back below */ }
+  // ----- Fallback to your Week 7 arrays (same as polls.html you sent) -----
+  const MEDIA_POLL=[
+    [1,"Miami",1604],[2,"Penn State",1496],[3,"Alabama",1453],[4,"Ohio State",1357],[5,"Washington",1225],
+    [6,"Texas",1152],[7,"South Carolina",1101],[8,"LSU",1100],[9,"North Carolina",1049],[10,"Texas Tech",999],
+    [11,"Michigan",936],[12,"Delaware",854],[13,"BYU",812],[14,"SMU",712],[15,"Florida State",694],
+    [16,"Florida",528],[17,"Colorado",534],[18,"Georgia",522],[19,"Minnesota",483],[20,"Clemson",405],
+    [21,"Notre Dame",362],[22,"Arkansas",367],[23,"Louisiana",348],[24,"Cincinnati",261],[25,"Auburn",234]
+  ];
+  const COACHES_POLL=[
+    [1,"Miami",1518],[2,"Alabama",1361],[3,"Ohio State",1320],[4,"Penn State",1313],[5,"Texas",1109],
+    [6,"Washington",1093],[7,"South Carolina",1057],[8,"Michigan",1045],[9,"North Carolina",958],[10,"LSU",921],
+    [11,"Texas Tech",826],[12,"Delaware",723],[13,"SMU",676],[14,"Florida State",618],[15,"BYU",618],
+    [16,"Colorado",549],[17,"Florida",528],[18,"Georgia",482],[19,"Minnesota",469],[20,"Clemson",364],
+    [21,"Notre Dame",362],[22,"Arkansas",327],[23,"Louisiana",297],[24,"Florida Atlantic",217],[25,"Auburn",209]
+  ];
+  // Combine by average rank (NR=26)
+  const mRank=new Map(MEDIA_POLL.map(([rk,t])=>[t,rk]));
+  const cRank=new Map(COACHES_POLL.map(([rk,t])=>[t,rk]));
+  const teams = new Set([...mRank.keys(),...cRank.keys()]);
+  POLL_COMBINED = [...teams].map(t=>{
+    const mr=mRank.get(t)??26, cr=cRank.get(t)??26, avg=(mr+cr)/2;
+    return {team:t, rank:0, avg};
+  }).sort((a,b)=>a.avg-b.avg).map((x,i)=>({team:x.team, rank:i+1, medal: i? (i===1?'silver':i===2?'bronze':null) : 'gold'}));
+}
+
+/* ===== Quick accessor for rank/medal ===== */
+function rankFor(team){
+  const r = POLL_COMBINED.find(x=>x.team===team);
+  return r ? r.rank : null;
+}
+function medalSpan(rank){
+  if(rank===1) return 'gold';
+  if(rank===2) return 'silver';
+  if(rank===3) return 'bronze';
+  return '';
+}
+
+/* ===== DATA: Conference tables (from screenshots, Week 7 start) ===== */
+/*  Each row: {team,w,l,pct,conf, pf,pa,diff,mov,home,away,stk}  */
+/*  ---- SEC ---- */
+const SEC = [
+  {team:"Alabama", w:5,l:1, pct:.833, conf:"3-0", pf:191, pa:128, diff:63, mov:10.5, home:"1-0", away:"4-1", stk:"W2"},
+  {team:"Texas", w:5,l:1, pct:.833, conf:"3-0", pf:203, pa:96,  diff:107, mov:17.8, home:"2-1", away:"2-0", stk:"W3"},
+  {team:"South Carolina", w:5,l:1, pct:.833, conf:"2-1", pf:281, pa:87, diff:194, mov:32.3, home:"3-0", away:"1-1", stk:"L1"},
+  {team:"LSU", w:5,l:1, pct:.833, conf:"1-1", pf:191, pa:115, diff:76, mov:12.7, home:"2-1", away:"3-0", stk:"W1"},
+  {team:"Auburn", w:5,l:1, pct:.833, conf:"1-1", pf:224, pa:97, diff:127, mov:21.2, home:"4-0", away:"1-1", stk:"L1"},
+  {team:"Florida", w:4,l:1, pct:.800, conf:"3-0", pf:187, pa:125, diff:62, mov:12.4, home:"2-1", away:"2-0", stk:"W4"},
+  {team:"Georgia", w:4,l:2, pct:.667, conf:"2-1", pf:260, pa:125, diff:135, mov:22.5, home:"2-1", away:"2-1", stk:"W1"},
+  {team:"Ole Miss", w:4,l:2, pct:.667, conf:"2-1", pf:199, pa:131, diff:68, mov:11.3, home:"2-1", away:"2-1", stk:"W1"},
+  {team:"Arkansas", w:3,l:2, pct:.600, conf:"1-1", pf:157, pa:139, diff:18, mov:3.6, home:"3-0", away:"0-2", stk:"W1"},
+  {team:"Kentucky", w:3,l:2, pct:.600, conf:"1-1", pf:135, pa:164, diff:-29, mov:-5.8, home:"2-0", away:"1-2", stk:"W2"},
+  {team:"Texas A&M", w:3,l:3, pct:.500, conf:"1-2", pf:144, pa:127, diff:17, mov:2.8, home:"0-2", away:"3-1", stk:"L2"},
+  {team:"Oklahoma", w:3,l:3, pct:.500, conf:"1-2", pf:110, pa:123, diff:-13, mov:-2.2, home:"3-0", away:"0-2", stk:"L1"},
+  {team:"Tennessee", w:2,l:3, pct:.400, conf:"1-1", pf:161, pa:133, diff:28, mov:5.6, home:"2-0", away:"0-3", stk:"L2"},
+  {team:"Mississippi State", w:2,l:3, pct:.400, conf:"0-1", pf:135, pa:144, diff:-9, mov:-1.8, home:"1-3", away:"1-0", stk:"L1"},
+  {team:"Baylor", w:2,l:4, pct:.333, conf:"0-3", pf:142, pa:214, diff:-72, mov:-12.0, home:"1-2", away:"1-2", stk:"L3"},
+  {team:"Missouri", w:2,l:4, pct:.333, conf:"0-3", pf:151, pa:177, diff:-26, mov:-4.3, home:"1-2", away:"1-2", stk:"L3"},
+  {team:"Vanderbilt", w:1,l:5, pct:.167, conf:"0-3", pf:139, pa:200, diff:-61, mov:-10.2, home:"1-3", away:"0-2", stk:"L5"}
+];
+
+/*  ---- ACC ---- */
+const ACC = [
+  {team:"Florida State", w:5,l:0, pct:1.000, conf:"3-0", pf:148, pa:87,  diff:61,  mov:12.2, home:"2-0", away:"3-0", stk:"W5"},
+  {team:"Miami", w:6,l:0, pct:1.000, conf:"4-0", pf:312, pa:96,  diff:216, mov:36.0, home:"4-0", away:"2-0", stk:"W6"},
+  {team:"North Carolina", w:5,l:1, pct:.833, conf:"2-1", pf:250, pa:135, diff:115, mov:19.2, home:"3-0", away:"2-1", stk:"W3"},
+  {team:"SMU", w:4,l:1, pct:.800, conf:"3-0", pf:186, pa:139, diff:47,  mov:9.4,  home:"3-1", away:"1-0", stk:"W4"},
+  {team:"Notre Dame", w:5,l:2, pct:.714, conf:"4-2", pf:194, pa:170, diff:24,  mov:3.4,  home:"3-1", away:"2-1", stk:"L2"},
+  {team:"Clemson", w:4,l:2, pct:.667, conf:"2-1", pf:152, pa:102, diff:50,  mov:8.3,  home:"2-1", away:"2-1", stk:"W1"},
+  {team:"Virginia", w:4,l:2, pct:.667, conf:"2-1", pf:214, pa:147, diff:67,  mov:11.2, home:"3-1", away:"0-1", stk:"L1"},
+  {team:"Virginia Tech", w:4,l:2, pct:.667, conf:"2-1", pf:219, pa:146, diff:73,  mov:12.2, home:"2-2", away:"2-0", stk:"W1"},
+  {team:"Wake Forest", w:4,l:3, pct:.571, conf:"2-2", pf:197, pa:208, diff:-11, mov:-1.6, home:"2-1", away:"2-2", stk:"L2"},
+  {team:"Boston College", w:3,l:3, pct:.500, conf:"2-2", pf:159, pa:152, diff:7,   mov:1.2,  home:"3-0", away:"0-3", stk:"W1"},
+  {team:"Duke", w:3,l:4, pct:.429, conf:"2-3", pf:153, pa:187, diff:-34, mov:-4.8, home:"2-3", away:"1-1", stk:"L2"},
+  {team:"California", w:3,l:4, pct:.429, conf:"2-2", pf:193, pa:193, diff:0,   mov:0.0,  home:"2-1", away:"1-3", stk:"L1"},
+  {team:"Syracuse", w:2,l:4, pct:.400, conf:"0-3", pf:104, pa:177, diff:-73, mov:-14.6, home:"2-2", away:"0-1", stk:"L1"},
+  {team:"NC State", w:2,l:4, pct:.333, conf:"0-3", pf:123, pa:214, diff:-91, mov:-15.2, home:"1-2", away:"1-2", stk:"L2"},
+  {team:"Georgia Tech", w:2,l:4, pct:.333, conf:"0-2", pf:136, pa:139, diff:-3,  mov:-0.5, home:"0-3", away:"2-1", stk:"W1"},
+  {team:"Pittsburgh", w:2,l:4, pct:.333, conf:"0-4", pf:168, pa:165, diff:3,   mov:0.5,  home:"2-2", away:"0-2", stk:"L3"},
+  {team:"Louisville", w:1,l:4, pct:.200, conf:"1-2", pf:88,  pa:133, diff:-45, mov:-9.0, home:"0-2", away:"1-2", stk:"L3"},
+  {team:"Stanford", w:1,l:4, pct:.200, conf:"0-3", pf:104, pa:159, diff:-55, mov:-11.0, home:"1-2", away:"0-2", stk:"L4"}
+];
+
+/*  ---- Big Ten ---- */
+const BIG_TEN = [
+  {team:"Michigan", w:5,l:0, pct:1.000, conf:"2-0", pf:138, pa:65,  diff:73,  mov:14.6, home:"2-0", away:"3-0", stk:"W5"},
+  {team:"Penn State", w:5,l:0, pct:1.000, conf:"2-0", pf:263, pa:68,  diff:195, mov:39.0, home:"2-0", away:"3-0", stk:"W5"},
+  {team:"Washington", w:5,l:0, pct:1.000, conf:"3-0", pf:215, pa:67,  diff:148, mov:29.6, home:"2-0", away:"3-0", stk:"W5"},
+  {team:"Ohio State", w:5,l:1, pct:.833, conf:"2-0", pf:227, pa:161, diff:66,  mov:11.0, home:"2-1", away:"3-0", stk:"W4"},
+  {team:"Minnesota", w:4,l:2, pct:.667, conf:"1-2", pf:182, pa:137, diff:45,  mov:7.5,  home:"2-1", away:"2-1", stk:"L2"},
+  {team:"UCLA", w:4,l:2, pct:.667, conf:"2-1", pf:189, pa:94,  diff:95,  mov:15.8, home:"2-0", away:"2-2", stk:"L1"},
+  {team:"Nebraska", w:3,l:2, pct:.600, conf:"2-1", pf:150, pa:121, diff:29,  mov:5.8,  home:"2-1", away:"1-1", stk:"W1"},
+  {team:"Northwestern", w:3,l:2, pct:.600, conf:"1-1", pf:154, pa:109, diff:45,  mov:9.0,  home:"3-1", away:"0-1", stk:"L1"},
+  {team:"Wisconsin", w:4,l:3, pct:.571, conf:"2-2", pf:187, pa:201, diff:-14, mov:-2.0, home:"1-2", away:"3-1", stk:"W1"},
+  {team:"Indiana", w:3,l:3, pct:.500, conf:"1-2", pf:175, pa:185, diff:-10, mov:-1.7, home:"2-2", away:"1-1", stk:"L2"},
+  {team:"Illinois", w:3,l:3, pct:.500, conf:"3-0", pf:135, pa:175, diff:-40, mov:-6.7, home:"1-3", away:"2-0", stk:"L2"},
+  {team:"Iowa", w:3,l:3, pct:.500, conf:"2-1", pf:192, pa:161, diff:31,  mov:5.2,  home:"1-3", away:"2-0", stk:"W1"},
+  {team:"Oregon", w:3,l:3, pct:.500, conf:"1-3", pf:180, pa:187, diff:-7,  mov:-1.2, home:"1-2", away:"2-1", stk:"W1"},
+  {team:"Michigan State", w:2,l:4, pct:.333, conf:"1-2", pf:172, pa:189, diff:-17, mov:-2.8, home:"1-2", away:"1-2", stk:"L1"},
+  {team:"Rutgers", w:2,l:4, pct:.333, conf:"0-4", pf:154, pa:218, diff:-64, mov:-10.7, home:"2-2", away:"0-2", stk:"L2"},
+  {team:"Purdue", w:1,l:4, pct:.200, conf:"0-3", pf:93,  pa:145, diff:-52, mov:-10.4, home:"1-2", away:"0-2", stk:"L3"},
+  {team:"USC", w:1,l:4, pct:.200, conf:"1-2", pf:103, pa:168, diff:-65, mov:-13.0, home:"1-2", away:"0-2", stk:"L2"},
+  {team:"Maryland", w:1,l:5, pct:.167, conf:"0-3", pf:114, pa:202, diff:-88, mov:-14.7, home:"1-3", away:"0-2", stk:"L5"}
+];
+
+/*  ---- Big 12 ---- */
+const BIG_12 = [
+  {team:"Delaware", w:5,l:0, pct:1.000, conf:"3-0", pf:127, pa:106, diff:21,  mov:4.2,  home:"2-0", away:"3-0", stk:"W5"},
+  {team:"Texas Tech", w:5,l:0, pct:1.000, conf:"2-0", pf:221, pa:71,  diff:150, mov:30.0, home:"2-0", away:"3-0", stk:"W5"},
+  {team:"Cincinnati", w:5,l:1, pct:.833, conf:"2-1", pf:136, pa:100, diff:36,  mov:6.0,  home:"2-1", away:"3-0", stk:"W3"},
+  {team:"Colorado", w:5,l:1, pct:.833, conf:"2-1", pf:194, pa:157, diff:37,  mov:6.2,  home:"2-1", away:"3-0", stk:"W1"},
+  {team:"BYU", w:4,l:1, pct:.800, conf:"2-0", pf:236, pa:57,  diff:179, mov:35.8, home:"2-1", away:"2-0", stk:"W2"},
+  {team:"UCF", w:4,l:1, pct:.800, conf:"2-1", pf:164, pa:90,  diff:74,  mov:14.8, home:"3-1", away:"1-0", stk:"L1"},
+  {team:"West Virginia", w:4,l:2, pct:.667, conf:"3-0", pf:189, pa:135, diff:54,  mov:9.0,  home:"2-0", away:"2-1", stk:"W2"},
+  {team:"Arizona", w:3,l:2, pct:.600, conf:"2-2", pf:179, pa:142, diff:37,  mov:7.4,  home:"2-0", away:"1-2", stk:"W1"},
+  {team:"Arizona State", w:3,l:2, pct:.600, conf:"1-1", pf:133, pa:101, diff:32,  mov:6.4,  home:"2-0", away:"1-1", stk:"W1"},
+  {team:"Kansas State", w:3,l:2, pct:.600, conf:"1-2", pf:117, pa:146, diff:-29, mov:-5.8, home:"2-0", away:"1-2", stk:"L2"},
+  {team:"TCU", w:3,l:2, pct:.600, conf:"1-1", pf:141, pa:151, diff:-10, mov:-2.0, home:"1-2", away:"2-0", stk:"L1"},
+  {team:"Iowa State", w:4,l:3, pct:.571, conf:"1-3", pf:187, pa:162, diff:25,  mov:3.6,  home:"3-1", away:"1-2", stk:"W1"},
+  {team:"Utah", w:3,l:3, pct:.500, conf:"0-3", pf:161, pa:219, diff:-58, mov:-9.7, home:"2-1", away:"1-2", stk:"L3"},
+  {team:"Oklahoma State", w:3,l:4, pct:.429, conf:"2-3", pf:239, pa:186, diff:53,  mov:7.6,  home:"2-2", away:"1-2", stk:"W1"},
+  {team:"Houston", w:1,l:5, pct:.167, conf:"1-2", pf:99,  pa:170, diff:-71, mov:-11.8, home:"1-4", away:"0-1", stk:"L1"},
+  {team:"Kansas", w:1,l:5, pct:.167, conf:"1-4", pf:144, pa:208, diff:-64, mov:-10.7, home:"1-3", away:"0-2", stk:"L5"}
+];
+
+/* ===== Utilities ===== */
+function decorateName(team){
+  const r = rankFor(team);
+  const medal = medalSpan(r);
+  const name = r ? `<span class="rank ${medal?medal:''}">#${r}</span> <a href="${teamLink(team)}">${team}</a>` 
+                 : `<a href="${teamLink(team)}">${team}</a>`;
+  const tag = tagFor(team);
+  return `${name} ${tag}`;
+}
+function rowFlagClass(team){
+  if(ACTIVE_USERS.has(team)) return 'is-user';
+  if(FORMER_USERS_WITH_WEEK.has(team)) return 'is-former';
+  return '';
+}
+
+/* ===== Renderers ===== */
+function renderConf(id, rows){
+  const tbody = document.getElementById(id);
+  tbody.innerHTML = rows.map((r,i)=>`
+    <tr class="${rowFlagClass(r.team)}">
+      <td>${i+1}</td>
+      <td>${decorateName(r.team)}</td>
+      <td>${r.w}-${r.l}</td>
+      <td>${r.pct.toFixed(3).slice(1)}</td>
+      <td>${r.conf}</td>
+      <td>${r.pf}</td>
+      <td>${r.pa}</td>
+      <td>${r.diff>=0?'+':''}${r.diff}</td>
+      <td>${r.mov>=0?'+':''}${r.mov.toFixed(1)}</td>
+      <td>${r.home}</td>
+      <td>${r.away}</td>
+      <td>${r.stk}</td>
+    </tr>
+  `).join('');
+}
+
+function renderTicker(){
+  if(!POLL_COMBINED.length) return;
+  const top10 = POLL_COMBINED.slice(0,10).map(r=>{
+    const cls = medalSpan(r.rank);
+    const name = cls ? `<span class="${cls}">#${r.rank} ${r.team}</span>` : `#${r.rank} ${r.team}`;
+    return `<span>${name}</span>`;
+  }).join('');
+  document.getElementById('tickerRow').innerHTML = top10 + top10;
+}
+
+/* ===== Tabs behavior ===== */
+function setupTabs(){
+  const tabs = [
+    {btn:document.getElementById('tab-sec'), panel:document.getElementById('panel-sec')},
+    {btn:document.getElementById('tab-acc'), panel:document.getElementById('panel-acc')},
+    {btn:document.getElementById('tab-b1g'), panel:document.getElementById('panel-b1g')},
+    {btn:document.getElementById('tab-b12'), panel:document.getElementById('panel-b12')}
+  ];
+  tabs.forEach(({btn,panel},idx)=>{
+    btn.addEventListener('click', ()=>{
+      tabs.forEach(({btn,panel})=>{
+        btn.setAttribute('aria-selected','false'); panel.hidden = true;
+      });
+      btn.setAttribute('aria-selected','true'); panel.hidden = false;
+    });
+    if(idx===0){ btn.setAttribute('aria-selected','true'); panel.hidden=false; }
+  });
+}
+
+/* ===== Boot ===== */
+(async function init(){
+  await loadPollData();
+  setupTabs();
+  renderTicker();
+  renderConf('tbody-sec', SEC);
+  renderConf('tbody-acc', ACC);
+  renderConf('tbody-b1g', BIG_TEN);
+  renderConf('tbody-b12', BIG_12);
+})();
+</script>
+
+<!-- Hidden hook in case you ever want to inline data from polls.html here, too -->
+<script type="application/json" id="d1sn-standings-note">{"snapshot":"Week 7 start","source":"coach/standing screenshots provided + live ranks from polls.html"}</script>
+</body>
+</html>
