@@ -4,9 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>D1SN — Polls & Power Index (Top-25 as of Week 7 start)</title>
-<meta name="description" content="Media & Coaches Top-25 at the start of Week 7 (after Week 6 results). Power Index (users only). Former users labeled with the week they left. Includes a JSON export block for team pages." />
+<meta name="description" content="Media & Coaches Top-25 at the start of Week 7 (after Week 6 results). Power Index (users only). Former users labeled separately. Constants are exported for index.html." />
 <meta name="color-scheme" content="dark" />
-<link rel="canonical" href="index.html">
+<link rel="canonical" href="index.html" />
 
 <style>
 :root{
@@ -30,7 +30,6 @@ h1,h2{margin:.2rem 0 .6rem}
 .badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.78rem;margin-left:8px}
 .ubadge{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:999px;border:1px solid #2b2b2b;background:#0e0e0e;font-size:.72rem;letter-spacing:.2px}
 .ubadge.user{border-color:#2a3a44;color:var(--user)}
-.ubadge.former{border-color:#4a3726;color:var(--former)}
 .legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 
@@ -51,7 +50,7 @@ h1,h2{margin:.2rem 0 .6rem}
 <!-- Sticky header + Top-10 ticker -->
 <div class="ticker" role="region" aria-label="D1SN Top-10 Ticker">
   <div class="wrap">
-    <!-- Top left button back to index page -->
+    <!-- Back to index page (top-left) -->
     <a href="index.html" class="logo-a" title="Back to Index">D1SN</a>
     <div class="track"><div class="row" id="tickerRow"></div></div>
   </div>
@@ -60,10 +59,8 @@ h1,h2{margin:.2rem 0 .6rem}
 <section class="section">
   <h1>Polls & Power Index</h1>
   <p class="small legend">
-    <span><strong>Medals:</strong> <span class="gold">1st</span>, <span class="silver">2nd</span>, <span class="bronze">3rd</span></span>
+    <span><strong>Snapshot:</strong> Top-25 polls are from <strong>start of Week 7</strong> (after Week 6 results).</span>
     <span><span class="ubadge user">USER</span> = active user team</span>
-    <span><span class="ubadge former">FORMER Wk #</span> = former user + week left</span>
-    <span>Top-25 snapshot: <strong>start of Week 7</strong> (after Week 6 results).</span>
   </p>
 </section>
 
@@ -80,7 +77,7 @@ h1,h2{margin:.2rem 0 .6rem}
 <section class="section" id="combined">
   <h2>Top-25 — Combined (Media + Coaches)</h2>
   <div class="card">
-    <p class="small">Ranks shown are each poll’s slot; NR = 26. This page reflects <strong>Week 7 start</strong> polls.</p>
+    <p class="small">Ranks shown are each poll’s slot; NR = 26. This page reflects the polls listed above.</p>
     <table class="table" id="comboTable">
       <thead>
         <tr><th>#</th><th>Team</th><th>Media</th><th>Coaches</th><th>Record</th></tr>
@@ -92,105 +89,35 @@ h1,h2{margin:.2rem 0 .6rem}
 
 <footer>© D1SN — Running Late Dynasty</footer>
 
-<!-- ===================== DATA & LOGIC ===================== -->
+<!-- ===================== REQUIRED CONSTANTS (do not rename) ===================== -->
 <script>
-/* ===== USER FLAGS (current) =====
-   New/active users include Ole Miss, Georgia Tech, Oregon.
-   Former users (left week): Minnesota (W3), Utah (W3), USC (W5), Oklahoma (W6).
-*/
+/* Active users: add Ole Miss, Georgia Tech, Oregon. Former users (left): Minnesota & Utah (W3), USC (W5), Oklahoma (W6). */
 const ACTIVE_USERS = new Set([
   "Alabama","Arizona State","Arkansas","Auburn","BYU","Clemson","Colorado","Delaware","Florida","Florida State",
   "Georgia","Georgia Tech","Illinois","LSU","Michigan","Miami","North Carolina","Notre Dame","Ohio State",
-  /* Oklahoma moved to former W6 */ "Oregon","Ole Miss","Penn State","SMU","South Carolina","Tennessee","Texas",
-  "Texas A&M","Texas Tech","UCLA","Washington"
+  "Oregon","Ole Miss","Penn State","SMU","South Carolina","Tennessee","Texas","Texas A&M","Texas Tech","UCLA","Washington"
 ]);
 
-// team -> week left
-const FORMER_USERS_WITH_WEEK = new Map([
-  ["Minnesota",3],["Utah",3],["USC",5],["Oklahoma",6]
-]);
+/* Week 7 start — MEDIA poll: [rank, "Team", points] */
+const MEDIA_POLL = [
+  [1,"Miami",1604],[2,"Penn State",1496],[3,"Alabama",1453],[4,"Ohio State",1357],[5,"Washington",1225],
+  [6,"Texas",1152],[7,"South Carolina",1101],[8,"LSU",1100],[9,"North Carolina",1049],[10,"Texas Tech",999],
+  [11,"Michigan",936],[12,"Delaware",854],[13,"BYU",812],[14,"SMU",712],[15,"Florida State",694],
+  [16,"Florida",528],[17,"Colorado",534],[18,"Georgia",522],[19,"Minnesota",483],[20,"Clemson",405],
+  [21,"Notre Dame",362],[22,"Arkansas",367],[23,"Louisiana",348],[24,"Cincinnati",261],[25,"Auburn",234]
+];
 
-function labelTeam(t){
-  const isActive = ACTIVE_USERS.has(t);
-  const left = FORMER_USERS_WITH_WEEK.get(t);
-  const name = isActive ? `<strong>${t}</strong>` : t;
-  const tag = isActive ? `<span class="ubadge user">USER</span>`
-             : left ? `<span class="ubadge former">FORMER Wk ${left}</span>` : "";
-  return `${name}${tag}`;
-}
+/* Week 7 start — COACHES poll: [rank, "Team", points] */
+const COACHES_POLL = [
+  [1,"Miami",1518],[2,"Alabama",1361],[3,"Ohio State",1320],[4,"Penn State",1313],[5,"Texas",1109],
+  [6,"Washington",1093],[7,"South Carolina",1057],[8,"Michigan",1045],[9,"North Carolina",958],[10,"LSU",921],
+  [11,"Texas Tech",826],[12,"Delaware",723],[13,"SMU",676],[14,"Florida State",618],[15,"BYU",618],
+  [16,"Colorado",549],[17,"Florida",528],[18,"Georgia",482],[19,"Minnesota",469],[20,"Clemson",364],
+  [21,"Notre Dame",362],[22,"Arkansas",327],[23,"Louisiana",297],[24,"Florida Atlantic",217],[25,"Auburn",209]
+];
 
-/* ===== Results for records (Weeks 0–6 + partial 5) ===== */
-const WEEK0_RESULTS=[
-  {away:"Florida",a:27,home:"Washington",h:42},
-  {away:"USC",a:7,home:"Texas",h:40},
-  {away:"Ohio",a:3,home:"Ohio State",h:28},
-  {away:"Illinois",a:0,home:"Texas Tech",h:28},
-  {away:"Temple",a:20,home:"Penn State",h:57},
-  {away:"Iowa",a:7,home:"Alabama",h:42},
-  {away:"Indiana",a:24,home:"LSU",h:26},
-  {away:"UCLA",a:10,home:"California",h:14},
-  {away:"Michigan",a:20,home:"Houston",h:0},
-  {away:"Utah",a:56,home:"Utah State",h:31},
-  {away:"SMU",a:14,home:"Baylor",h:37},
-  {away:"BYU",a:21,home:"Clemson",h:17},
-  {away:"Miami",a:63,home:"Central Michigan",h:3}
-];
-const WEEK1_RESULTS=[
-  {away:"Clemson",a:14,home:"LSU",h:31},
-  {away:"Texas A&M",a:38,home:"Missouri State",h:3},
-  {away:"Texas",a:48,home:"Texas State",h:3},
-  {away:"California",a:44,home:"Tennessee",h:47},
-  {away:"Arizona State",a:7,home:"South Carolina",h:20},
-  {away:"Marshall",a:3,home:"Penn State",h:70},
-  {away:"Michigan",a:35,home:"NC State",h:20},
-  {away:"Georgia",a:26,home:"Miami",h:38},
-  {away:"Florida State",a:38,home:"Ole Miss",h:24},
-  {away:"Alabama",a:21,home:"Ohio State",h:14}
-];
-const WEEK2_RESULTS=[
-  {away:"Maryland",a:13,home:"Washington",h:19},
-  {away:"UCLA",a:31,home:"Kennesaw State",h:7},
-  {away:"Texas Tech",a:43,home:"Oregon State",h:17},
-  {away:"Wisconsin",a:9,home:"South Carolina",h:77},
-  {away:"Oklahoma",a:10,home:"Michigan",h:24},
-  {away:"NC State",a:7,home:"Miami",h:58},
-  {away:"USC",a:13,home:"LSU",h:42},
-  {away:"BYU",a:66,home:"Utah State",h:3},
-  {away:"Auburn",a:17,home:"Army",h:7},
-  {away:"Arizona State",a:31,home:"Texas A&M",h:13},
-  {away:"Florida State",a:24,home:"Texas",h:21},
-  {away:"Tennessee",a:28,home:"Indiana",h:35},
-  {away:"Alabama",a:42,home:"California",h:17}
-];
-const WEEK3_RESULTS=[
-  {away:"Washington",a:56,home:"Washington State",h:20},
-  {away:"Alabama",a:21,home:"Utah",h:31},
-  {away:"Georgia State",a:21,home:"Georgia",h:56},
-  {away:"South Carolina",a:41,home:"Missouri",h:10},
-  {away:"Buffalo",a:7,home:"Penn State",h:63},
-  {away:"Baylor",a:35,home:"Ohio State",h:41},
-  {away:"Oregon",a:23,home:"Oregon State",h:10},
-  {away:"New Mexico",a:21,home:"Oklahoma",h:28},
-  {away:"Miami",a:63,home:"Syracuse",h:17},
-  {away:"LSU",a:28,home:"BYU",h:21},
-  {away:"Delaware",a:13,home:"Georgia Tech",h:10},
-  {away:"Boston College",a:13,home:"Clemson",h:24},
-  {away:"Hawai'i",a:14,home:"Arizona State",h:35}
-];
-const WEEK4_RESULTS=[
-  {away:"Illinois",a:0,home:"North Carolina",h:38},
-  {away:"Sam Houston",a:6,home:"Texas Tech",h:77},
-  {away:"Vanderbilt",a:26,home:"Texas",h:44},
-  {away:"Texas A&M",a:0,home:"Tennessee",h:49},
-  {away:"Rice",a:14,home:"South Carolina",h:73},
-  {away:"Oklahoma",a:0,home:"Ole Miss",h:24},
-  {away:"Michigan",a:42,home:"Oregon",h:24},
-  {away:"Georgia Tech",a:28,home:"NC State",h:7},
-  {away:"Florida State",a:24,home:"Pittsburgh",h:14},
-  {away:"Alabama",a:28,home:"LSU",h:24},
-  {away:"Houston",a:13,home:"Arizona State",h:21}
-];
-const WEEK5_RESULTS=[
+/* Required game result constants (names + shapes must match) */
+const WEEK5_RESULTS = [
   {away:"Purdue",a:0,home:"Washington",h:49},
   {away:"North Carolina",a:45,home:"Notre Dame",h:20},
   {away:"Oklahoma State",a:24,home:"Texas Tech",h:38},
@@ -199,8 +126,8 @@ const WEEK5_RESULTS=[
   {away:"Tennessee",a:14,home:"Syracuse",h:21},
   {away:"Kansas State",a:7,home:"BYU",h:63}
 ];
-/* Week 6 — transcribed from screenshot */
-const WEEK6_RESULTS=[
+
+const WEEK6_RESULTS = [
   {away:"Washington",a:49,home:"Indiana",h:7},
   {away:"Virginia",a:42,home:"North Carolina",h:35},
   {away:"Tennessee",a:23,home:"Kentucky",h:33},
@@ -214,119 +141,87 @@ const WEEK6_RESULTS=[
   {away:"Utah",a:2,home:"BYU",h:65},
   {away:"Auburn",a:35,home:"Arkansas",h:38}
 ];
-
-/* ===== POLLS (Week 7 start) ===== */
-const MEDIA_POLL=[
-  [1,"Miami",1604],[2,"Penn State",1496],[3,"Alabama",1453],[4,"Ohio State",1357],[5,"Washington",1225],
-  [6,"Texas",1152],[7,"South Carolina",1101],[8,"LSU",1100],[9,"North Carolina",1049],[10,"Texas Tech",999],
-  [11,"Michigan",936],[12,"Delaware",854],[13,"BYU",812],[14,"SMU",712],[15,"Florida State",694],
-  [16,"Florida",528],[17,"Colorado",534],[18,"Georgia",522],[19,"Minnesota",483],[20,"Clemson",405],
-  [21,"Notre Dame",362],[22,"Arkansas",367],[23,"Louisiana",348],[24,"Cincinnati",261],[25,"Auburn",234]
-];
-const COACHES_POLL=[
-  [1,"Miami",1518],[2,"Alabama",1361],[3,"Ohio State",1320],[4,"Penn State",1313],[5,"Texas",1109],
-  [6,"Washington",1093],[7,"South Carolina",1057],[8,"Michigan",1045],[9,"North Carolina",958],[10,"LSU",921],
-  [11,"Texas Tech",826],[12,"Delaware",723],[13,"SMU",676],[14,"Florida State",618],[15,"BYU",618],
-  [16,"Colorado",549],[17,"Florida",528],[18,"Georgia",482],[19,"Minnesota",469],[20,"Clemson",364],
-  [21,"Notre Dame",362],[22,"Arkansas",327],[23,"Louisiana",297],[24,"Florida Atlantic",217],[25,"Auburn",209]
-];
-
-/* ===== Records & helpers ===== */
-const allResults = ()=>[]
-  .concat(WEEK0_RESULTS,WEEK1_RESULTS,WEEK2_RESULTS,WEEK3_RESULTS,WEEK4_RESULTS,WEEK5_RESULTS,WEEK6_RESULTS);
-const recordMap = (()=>{ const m=new Map(); const add=(t,w)=>{const r=m.get(t)||{w:0,l:0}; r[w?'w':'l']++; m.set(t,r);};
-  allResults().forEach(g=>{ const w=g.a>g.h?g.away:g.home; const l=g.a>g.h?g.home:g.away; add(w,true); add(l,false); }); return m; })();
-
-/* ===== Power Index (Elo-style with margin, users only) ===== */
-const USER_TEAMS_FOR_ELO = Array.from(ACTIVE_USERS);
-function computeElo(){
-  const K=24, R=new Map(), getR=t=>R.has(t)?R.get(t):1500, setR=(t,v)=>R.set(t,v);
-  USER_TEAMS_FOR_ELO.forEach(t=>setR(t,1500));
-  allResults().forEach(g=>{ setR(g.away,getR(g.away)); setR(g.home,getR(g.home)); });
-  allResults().forEach(g=>{
-    const Ra=getR(g.away), Rb=getR(g.home), Sa=g.a>g.h?1:0, Sb=1-Sa;
-    const Ea=1/(1+Math.pow(10,(Rb-Ra)/400)), Eb=1-Ea;
-    const margin=Math.max(1, Math.log1p(Math.abs(g.a-g.h))/0.7);
-    setR(g.away, Ra + K*margin*(Sa-Ea)); setR(g.home, Rb + K*margin*(Sb-Eb));
-  });
-  return USER_TEAMS_FOR_ELO.map(t=>{
-    const r=Math.round(getR(t)); const rr=recordMap.get(t)||{w:0,l:0};
-    return {team:t, rating:r, record:{w:rr.w||0,l:rr.l||0}};
-  }).sort((a,b)=> b.rating-a.rating)
-    .map((x,i)=>({rank:i+1, ...x, medal: i===0?'gold':i===1?'silver':i===2?'bronze':null}));
-}
-
-/* ===== Combined poll (Media + Coaches avg; NR=26) ===== */
-function computeCombined(){
-  const rec=(t)=>{const r=recordMap.get(t)||{w:0,l:0}; return `${r.w||0}-${r.l||0}`;};
-  const mRank=new Map(MEDIA_POLL.map(([rk,t,pts])=>[t,{rk,pts}]));
-  const cRank=new Map(COACHES_POLL.map(([rk,t,pts])=>[t,{rk,pts}]));
-  const teams=new Set([...mRank.keys(),...cRank.keys()]);
-  const combined=[...teams].map(t=>{
-    const mr=mRank.get(t)?.rk ?? 26, cr=cRank.get(t)?.rk ?? 26;
-    const mp=mRank.get(t)?.pts ?? 0,  cp=cRank.get(t)?.pts ?? 0;
-    const avg=(mr+cr)/2;
-    return {team:t, media:{rank:mr,pts:mp}, coaches:{rank:cr,pts:cp}, avg, record:rec(t)};
-  }).sort((a,b)=> a.avg-b.avg || (b.media.pts+b.coaches.pts)-(a.media.pts+a.coaches.pts))
-    .map((x,i)=>({rank:i+1, ...x, medal: i===0?'gold':i===1?'silver':i===2?'bronze':null}));
-  return combined;
-}
-
-/* ===== Ticker render (Top-10 Combined) ===== */
-function renderTicker(){
-  const items = computeCombined().slice(0,10).map(r=>{
-    const tag = r.rank===1?'gold':r.rank===2?'silver':r.rank===3?'bronze':'';
-    const name = tag ? `<span class="${tag}">#${r.rank} ${r.team}</span>` : `#${r.rank} ${r.team}`;
-    return `<span>${name}</span>`;
-  }).join('');
-  document.getElementById('tickerRow').innerHTML = items + items; // loop seamlessly
-}
-
-/* ===== Page render ===== */
-function renderPage(){
-  const pi = computeElo();
-  const combo = computeCombined();
-
-  // Power Index table
-  document.getElementById('powerBody').innerHTML = pi.map(r=>{
-    const decorated = r.medal ? `<span class="${r.medal}">${labelTeam(r.team)}</span>` : labelTeam(r.team);
-    return `<tr><td>${r.rank}</td><td>${decorated}</td><td>${r.rating}</td><td>${r.record.w}-${r.record.l}</td></tr>`;
-  }).join('');
-
-  // Combined poll table
-  document.getElementById('comboBody').innerHTML = combo.map(r=>{
-    const name = r.medal ? `<span class="${r.medal}">${labelTeam(r.team)}</span>` : labelTeam(r.team);
-    const mTxt = r.media.rank<=25?`#${r.media.rank} (${r.media.pts})`:'NR';
-    const cTxt = r.coaches.rank<=25?`#${r.coaches.rank} (${r.coaches.pts})`:'NR';
-    return `<tr><td>${r.rank}</td><td>${name}</td><td>${mTxt}</td><td>${cTxt}</td><td>${r.record}</td></tr>`;
-  }).join('');
-
-  // Export JSON for team pages
-  const exported = {
-    updated: new Date().toISOString().slice(0,10),
-    snapshot_note: "Top-25 at start of Week 7 (after Week 6 results).",
-    flags: {
-      active_users: Array.from(ACTIVE_USERS),
-      former_users_with_week: Array.from(FORMER_USERS_WITH_WEEK.entries())
-    },
-    power_index: pi,
-    polls: {
-      media: MEDIA_POLL.map(([rank,team,points])=>({rank,team,points})),
-      coaches: COACHES_POLL.map(([rank,team,points])=>({rank,team,points})),
-      combined: combo.map(r=>({
-        rank:r.rank, team:r.team, medal:r.medal,
-        media:r.media, coaches:r.coaches, record:r.record
-      }))
-    }
-  };
-  document.getElementById('d1sn-polls-data').textContent = JSON.stringify(exported);
-  window.D1SN_POLLS_LIVE = { data: exported };
-  renderTicker();
-}
-document.addEventListener('DOMContentLoaded', renderPage);
 </script>
+<!-- ===================== PAGE LOGIC (safe to change) ===================== -->
+<script>
+/* If index.html needs only the constants above, it can ignore everything below.
+   We still render a simple view (and a Top-10 ticker) for convenience.
+*/
 
-<!-- Hidden JSON block for other pages to fetch -->
-<script type="application/json" id="d1sn-polls-data">{}</script>
+/* Minimal prior weeks for records/PI (Weeks 0–4) — already defined in index.html;
+   we only compute records from Week5 & Week6 here to avoid duplication. */
+function computeRecordsFromProvidedWeeks(){
+  const m=new Map();
+  function add(team,win){ const r=m.get(team)||{w:0,l:0}; win? r.w++ : r.l++; m.set(team,r); }
+  const games=[...WEEK5_RESULTS,...WEEK6_RESULTS];
+  games.forEach(g=>{
+    const awayWon = g.a>g.h;
+    add(g.away, awayWon);
+    add(g.home, !awayWon);
+  });
+  return m;
+}
+
+/* Simple Elo using only provided weeks (index.html can override with full history) */
+function computePowerIndex(){
+  const K=24, R=new Map(), rec=computeRecordsFromProvidedWeeks();
+  const teams = Array.from(ACTIVE_USERS);
+  teams.forEach(t=>R.set(t,1500));
+  const games=[...WEEK5_RESULTS,...WEEK6_RESULTS];
+  games.forEach(g=>{
+    const Ra=R.get(g.away)??1500, Rb=R.get(g.home)??1500, Sa=g.a>g.h?1:0, Sb=1-Sa;
+    const Ea=1/(1+10**((Rb-Ra)/400)), Eb=1-Ea;
+    const margin=Math.max(1, Math.log1p(Math.abs(g.a-g.h))/0.7);
+    R.set(g.away, Ra + K*margin*(Sa-Ea));
+    R.set(g.home, Rb + K*margin*(Sb-Eb));
+  });
+  return teams.map(t=>({
+    t, r:Math.round(R.get(t)??1500), w:(rec.get(t)?.w||0), l:(rec.get(t)?.l||0)
+  })).sort((a,b)=>b.r-a.r);
+}
+
+/* Combine polls for display + ticker */
+function computeCombined(){
+  const m=new Map(MEDIA_POLL.map(([rk,t,pts])=>[t,{rk,pts}]));
+  const c=new Map(COACHES_POLL.map(([rk,t,pts])=>[t,{rk,pts}]));
+  const teams=new Set([...m.keys(),...c.keys()]);
+  const rec=computeRecordsFromProvidedWeeks();
+  return [...teams].map(t=>{
+    const mr=m.get(t)?.rk??26, cr=c.get(t)?.rk??26;
+    const mp=m.get(t)?.pts??0,  cp=c.get(t)?.pts??0;
+    const avg=(mr+cr)/2;
+    return {t, mr, cr, mp, cp, avg, rec:`${rec.get(t)?.w||0}-${rec.get(t)?.l||0}`};
+  }).sort((a,b)=>a.avg-b.avg || (b.mp+b.cp)-(a.mp+a.cp));
+}
+
+/* Render tables */
+function render(){
+  // ticker
+  const top10=computeCombined().slice(0,10).map((x,i)=>{
+    const cls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    return `<span class="${cls}">#${i+1} ${x.t}</span>`;
+  }).join('');
+  document.getElementById('tickerRow').innerHTML = top10 + top10;
+
+  // power index
+  const pi=computePowerIndex();
+  document.getElementById('powerBody').innerHTML = pi.map((x,i)=>{
+    const cls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const name = ACTIVE_USERS.has(x.t) ? `<strong>${x.t}</strong>` : x.t;
+    return `<tr><td>${i+1}</td><td class="${cls}">${name}</td><td>${x.r}</td><td>${x.w}-${x.l}</td></tr>`;
+  }).join('');
+
+  // combined
+  const combo=computeCombined();
+  document.getElementById('comboBody').innerHTML = combo.map((x,i)=>{
+    const cls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const name = ACTIVE_USERS.has(x.t) ? `<strong>${x.t}</strong>` : x.t;
+    const mTxt=x.mr<=25?`#${x.mr} (${x.mp})`:'NR';
+    const cTxt=x.cr<=25?`#${x.cr} (${x.cp})`:'NR';
+    return `<tr><td>${i+1}</td><td class="${cls}">${name}</td><td>${mTxt}</td><td>${cTxt}</td><td>${x.rec}</td></tr>`;
+  }).join('');
+}
+document.addEventListener('DOMContentLoaded', render);
+</script>
 </body>
 </html>
