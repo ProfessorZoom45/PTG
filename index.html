@@ -61,11 +61,11 @@
     .ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
     .ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
     .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008;white-space:nowrap}
-    .track{overflow:hidden;flex:1}
+    .track{overflow:hidden;flex:1;min-width:280px}
     .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 28s linear infinite}
+    .row.paused{animation-play-state:paused}
     .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
     .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
-    .ticker:hover .row{animation-play-state:paused}
     @keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
     @media (prefers-reduced-motion:reduce){ .row{animation:none !important} }
 
@@ -111,7 +111,7 @@
 </head>
 <body>
 
-  <!-- Ticker (auto-built from polls.html JSON + scraped week arrays) -->
+  <!-- Ticker (auto-built from polls.html JSON + week arrays) -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
       <a href="#top" class="logo-a" title="Home">D1SN</a>
@@ -158,8 +158,10 @@
         <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
       </div>
 
-      <!-- Row 4: Past Issues (auto-filled, above Stay Here) -->
-      <div class="row-btns" id="issuesRow" aria-label="Past Issues"></div>
+      <!-- Row 4: Past Issues (auto-filled, above Stay Here). Includes explicit Issue 04 link as fallback. -->
+      <div class="row-btns" id="issuesRow" aria-label="Past Issues">
+        <a class="cta-btn" href="issue04.html" title="Open Issue 04">Issue 04</a>
+      </div>
 
       <!-- Row 5: Stay Here (alone) -->
       <div class="row-btns">
@@ -184,6 +186,18 @@
     const DEFAULT_LATEST = 'issue01.html';     // Safe fallback
     const MAX_ISSUE_SCAN = 99;                 // Scan issue01 → issue99 for future-proofing
 
+    // Pause ticker on hover/focus for better interaction
+    (function setupTickerPause(){
+      const row = document.getElementById('tickerRow');
+      if(!row) return;
+      const on = ()=> row.classList.add('paused');
+      const off= ()=> row.classList.remove('paused');
+      row.addEventListener('mouseenter', on);
+      row.addEventListener('mouseleave', off);
+      row.addEventListener('focusin', on);
+      row.addEventListener('focusout', off);
+    })();
+
     // ---------- Latest issue detection (contiguous scan) ----------
     async function detectLatestIssue(){
       let lastOk = null;
@@ -191,9 +205,8 @@
         const n = String(i).padStart(2,'0');
         const href = `issue${n}.html`;
         try{
-          // GET with cache-bust — GitHub Pages sometimes caches aggressively
           const res = await fetch(href + '?chk=' + Date.now(), {cache:'no-store'});
-          if(res.ok) lastOk = href; else break;     // stop at first gap
+          if(res.ok) lastOk = href; else break;  // stop at first gap
         }catch(_e){ break; }
       }
       return lastOk || DEFAULT_LATEST;
@@ -207,8 +220,7 @@
       let html = '';
       for(let i = 1; i <= latestNum; i++){
         const n = String(i).padStart(2,'0');
-        const href = `issue${n}.html`;
-        html += `<a class="cta-btn" href="${href}" title="Open Issue ${n}">Issue ${n}</a>`;
+        html += `<a class="cta-btn" href="issue${n}.html" title="Open Issue ${n}">Issue ${n}</a>`;
       }
       row.innerHTML = html;
     }
@@ -255,13 +267,12 @@
 
     // ---------- Helpers to parse week arrays out of polls.html ----------
     function extractArray(name, html){
-      // Find: const NAME = [ ... ];
-      const rx = new RegExp(String.raw`const\s+${name}\s*=\s*$begin:math:display$([\\\\s\\\\S]*?)$end:math:display$;`);
+      // Correct regex: matches "const NAME = [ ... ];"
+      const rx = new RegExp(String.raw`const\\s+${name}\\s*=\\s*\$begin:math:display$([\\\\s\\\\S]*?)\\$end:math:display$;`);
       const m = rx.exec(html);
       if(!m) return [];
-      let js = `[${m[1]}]`;
-      // Quote object keys so JSON.parse won't choke
-      js = js.replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g, '$1"$2":');
+      // Make it valid JSON by quoting object keys if needed
+      let js = `[${m[1]}]`.replace(/([{,]\\s*)([A-Za-z_]\\w*)\\s*:/g, '$1"$2":');
       try { return JSON.parse(js); } catch { return []; }
     }
 
@@ -274,14 +285,17 @@
         'Recent UvU loading…'
       ];
       const render = (items)=> {
-        const mirror = items.concat(items.map(x=>x));
-        row.innerHTML = mirror.map((t,i)=>`<span${i>=items.length?' aria-hidden="true"':''}>${t}</span>`).join('');
+        // Duplicate 3x for smoother loop
+        const triple = items.concat(items).concat(items);
+        row.innerHTML = triple.map((t,i)=>`<span${i>=items.length?' aria-hidden="true"':''}>${t}</span>`).join('');
       };
 
       try{
         const res = await fetch('polls.html', {cache:'no-store'});
         if(!res.ok) throw new Error('polls fetch failed');
         const html = await res.text();
+
+        // grab exported JSON (authoritative for ranks + user flags)
         const doc  = new DOMParser().parseFromString(html,'text/html');
         const jsonEl = doc.querySelector('#d1sn-polls-data');
         if(!jsonEl || !jsonEl.textContent.trim()) throw new Error('polls json missing');
@@ -291,14 +305,17 @@
         const top5 = combined.slice(0,5).map(r => `#${r.rank} ${r.team}`);
         const top5Span = `Top-5 (Combined): ${top5.join(' • ')}`;
 
+        // Build rank + user sets (count both active and former as 'user-like' for UvU)
         const rankMap = new Map(combined.map(r => [r.team, r.rank]));
-        const users   = new Set((data.flags && data.flags.active_users) || []);
+        const active  = new Set((data.flags && data.flags.active_users) || []);
+        const former  = new Set((data.flags && data.flags.former_users_with_week ? data.flags.former_users_with_week.map(x=>x[0]) : []));
+        const userLike = new Set([...active, ...former]);
 
-        // scrape week arrays directly from the polls.html source
+        // Scrape week arrays from the same file
         const w6 = extractArray('WEEK6_RESULTS', html);
         const w5 = extractArray('WEEK5_RESULTS', html);
 
-        const isUvU = g => users.has(g.away) && users.has(g.home);
+        const isUvU = g => userLike.has(g.away) && userLike.has(g.home);
         const uvuRecent = []
           .concat(w6.filter(isUvU).map(g => ({...g, wk:6})))
           .concat(w5.filter(isUvU).map(g => ({...g, wk:5})));
