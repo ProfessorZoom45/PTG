@@ -61,11 +61,11 @@
     .ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
     .ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
     .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008;white-space:nowrap}
-    .track{overflow:hidden;flex:1;min-width:280px}
+    .track{overflow:hidden;flex:1}
     .row{display:inline-flex;gap:28px;align-items:center;white-space:nowrap;animation:marquee 28s linear infinite}
-    .row.paused{animation-play-state:paused}
     .row>*{font-weight:900;letter-spacing:.3px;position:relative;padding-right:36px;margin-right:36px}
     .row>*::after{content:"";position:absolute;right:8px;top:50%;transform:translateY(-50%);width:6px;height:24px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+    .ticker:hover .row{animation-play-state:paused}
     @keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
     @media (prefers-reduced-motion:reduce){ .row{animation:none !important} }
 
@@ -90,7 +90,6 @@
     .row-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
     .cta-btn{border:1px solid #3c3c3c;padding:10px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px;position:relative;overflow:hidden}
     .cta-btn.primary{box-shadow:0 0 0 2px #000 inset, 0 0 26px var(--btn-glow)}
-    /* Animated gold underline on the primary button */
     .cta-btn.primary::after{
       content:""; position:absolute; left:12px; right:12px; bottom:8px; height:2px;
       background:linear-gradient(90deg,transparent, var(--gold), transparent);
@@ -111,7 +110,7 @@
 </head>
 <body>
 
-  <!-- Ticker (auto-built from polls.html JSON + week arrays) -->
+  <!-- Ticker (auto-built from polls.html arrays) -->
   <div class="ticker" role="region" aria-label="D1SN headlines">
     <div class="wrap">
       <a href="#top" class="logo-a" title="Home">D1SN</a>
@@ -128,7 +127,6 @@
   <section class="splash" aria-label="cover">
     <h1>Running Late Dynasty</h1>
 
-    <!-- Hero image: ALWAYS link to Oh.PNG in the root -->
     <a href="Oh.PNG" target="_blank" title="Open cover (Oh.PNG)">
       <img class="splash-hero" src="Oh.PNG" alt="Running Late hero cover" width="1600" height="900" fetchpriority="high" />
     </a>
@@ -158,10 +156,8 @@
         <a class="cta-btn" href="boost.html" title="Dynasty Boost Tracker">Dynasty Boost</a>
       </div>
 
-      <!-- Row 4: Past Issues (auto-filled, above Stay Here). Includes explicit Issue 04 link as fallback. -->
-      <div class="row-btns" id="issuesRow" aria-label="Past Issues">
-        <a class="cta-btn" href="issue04.html" title="Open Issue 04">Issue 04</a>
-      </div>
+      <!-- Row 4: Past Issues (auto-filled, above Stay Here) -->
+      <div class="row-btns" id="issuesRow" aria-label="Past Issues"></div>
 
       <!-- Row 5: Stay Here (alone) -->
       <div class="row-btns">
@@ -183,20 +179,8 @@
   <script>
     // ---------- Settings ----------
     const STAY_KEY = 'rl_splash_stay';
-    const DEFAULT_LATEST = 'issue01.html';     // Safe fallback
-    const MAX_ISSUE_SCAN = 99;                 // Scan issue01 → issue99 for future-proofing
-
-    // Pause ticker on hover/focus for better interaction
-    (function setupTickerPause(){
-      const row = document.getElementById('tickerRow');
-      if(!row) return;
-      const on = ()=> row.classList.add('paused');
-      const off= ()=> row.classList.remove('paused');
-      row.addEventListener('mouseenter', on);
-      row.addEventListener('mouseleave', off);
-      row.addEventListener('focusin', on);
-      row.addEventListener('focusout', off);
-    })();
+    const DEFAULT_LATEST = 'issue01.html';
+    const MAX_ISSUE_SCAN = 99;
 
     // ---------- Latest issue detection (contiguous scan) ----------
     async function detectLatestIssue(){
@@ -206,13 +190,12 @@
         const href = `issue${n}.html`;
         try{
           const res = await fetch(href + '?chk=' + Date.now(), {cache:'no-store'});
-          if(res.ok) lastOk = href; else break;  // stop at first gap
+          if(res.ok) lastOk = href; else break;
         }catch(_e){ break; }
       }
       return lastOk || DEFAULT_LATEST;
     }
 
-    // Fill the "Past Issues" row dynamically from 01..latest
     function renderIssuesRow(latestHref){
       const row = document.getElementById('issuesRow');
       if(!row) return;
@@ -220,12 +203,12 @@
       let html = '';
       for(let i = 1; i <= latestNum; i++){
         const n = String(i).padStart(2,'0');
-        html += `<a class="cta-btn" href="issue${n}.html" title="Open Issue ${n}">Issue ${n}</a>`;
+        const href = `issue${n}.html`;
+        html += `<a class="cta-btn" href="${href}" title="Open Issue ${n}">Issue ${n}</a>`;
       }
       row.innerHTML = html;
     }
 
-    // Update "Open Latest Issue" button + countdown target and issues list
     let LATEST_HREF = DEFAULT_LATEST;
     (async () => {
       LATEST_HREF = await detectLatestIssue();
@@ -265,18 +248,44 @@
       if (!canceled) setTimeout(tick, 1000);
     })();
 
-    // ---------- Helpers to parse week arrays out of polls.html ----------
-    function extractArray(name, html){
-      // Correct regex: matches "const NAME = [ ... ];"
-      const rx = new RegExp(String.raw`const\\s+${name}\\s*=\\s*\$begin:math:display$([\\\\s\\\\S]*?)\\$end:math:display$;`);
-      const m = rx.exec(html);
+    // ---------- Robust constant extractor from polls.html ----------
+    // Slices a balanced [...] array literal starting at the index of '['
+    function sliceBalancedArray(source, startIdx){
+      let i = startIdx, depth = 0;
+      for(; i < source.length; i++){
+        const ch = source[i];
+        if(ch === '[') depth++;
+        else if(ch === ']'){
+          depth--;
+          if(depth === 0) return source.slice(startIdx, i+1);
+        }
+      }
+      return null;
+    }
+    // Find "const NAME = [ ... ];" and return the literal string "[ ... ]"
+    function extractArrayLiteral(name, html){
+      const re = new RegExp(`const\\s+${name}\\s*=\\s*\\[`, 'm');
+      const m = re.exec(html);
+      if(!m) return null;
+      const start = m.index + m[0].length - 1; // at the '['
+      return sliceBalancedArray(html, start);
+    }
+    // ACTIVE_USERS is "const ACTIVE_USERS = new Set([ ... ]);"
+    function extractActiveUsers(html){
+      const re = /const\\s+ACTIVE_USERS\\s*=\\s*new\\s+Set\\s*\\(\\s*\\[/m;
+      const m = re.exec(html);
       if(!m) return [];
-      // Make it valid JSON by quoting object keys if needed
-      let js = `[${m[1]}]`.replace(/([{,]\\s*)([A-Za-z_]\\w*)\\s*:/g, '$1"$2":');
-      try { return JSON.parse(js); } catch { return []; }
+      const start = m.index + m[0].length - 1; // at '['
+      const arrLit = sliceBalancedArray(html, start);
+      if(!arrLit) return [];
+      try { return Function('return ' + arrLit)(); } catch { return []; }
+    }
+    // Safe-ish parser for array/object literals from the page (no code paths)
+    function parseArrayLiteral(lit){
+      try { return Function('return ' + lit)(); } catch { return []; }
     }
 
-    // ---------- Ticker: Top-5 + recent UvU pulled from polls.html ----------
+    // ---------- Build combined poll + recent UvU from polls.html ----------
     async function buildTicker(){
       const row = document.getElementById('tickerRow');
 
@@ -285,9 +294,8 @@
         'Recent UvU loading…'
       ];
       const render = (items)=> {
-        // Duplicate 3x for smoother loop
-        const triple = items.concat(items).concat(items);
-        row.innerHTML = triple.map((t,i)=>`<span${i>=items.length?' aria-hidden="true"':''}>${t}</span>`).join('');
+        const mirror = items.concat(items.map(x=>x));
+        row.innerHTML = mirror.map((t,i)=>`<span${i>=items.length?' aria-hidden="true"':''}>${t}</span>`).join('');
       };
 
       try{
@@ -295,49 +303,55 @@
         if(!res.ok) throw new Error('polls fetch failed');
         const html = await res.text();
 
-        // grab exported JSON (authoritative for ranks + user flags)
-        const doc  = new DOMParser().parseFromString(html,'text/html');
-        const jsonEl = doc.querySelector('#d1sn-polls-data');
-        if(!jsonEl || !jsonEl.textContent.trim()) throw new Error('polls json missing');
-        const data = JSON.parse(jsonEl.textContent);
+        // Extract needed arrays
+        const MEDIA_POLL = parseArrayLiteral(extractArrayLiteral('MEDIA_POLL', html) || '[]');
+        const COACHES_POLL = parseArrayLiteral(extractArrayLiteral('COACHES_POLL', html) || '[]');
+        const WEEK5 = parseArrayLiteral(extractArrayLiteral('WEEK5_RESULTS', html) || '[]');
+        const WEEK6 = parseArrayLiteral(extractArrayLiteral('WEEK6_RESULTS', html) || '[]');
+        const ACTIVE_USERS = new Set(extractActiveUsers(html));
 
-        const combined = data.polls?.combined || [];
-        const top5 = combined.slice(0,5).map(r => `#${r.rank} ${r.team}`);
-        const top5Span = `Top-5 (Combined): ${top5.join(' • ')}`;
+        // Compute Combined (avg rank; NR=26)
+        const mMap = new Map(MEDIA_POLL.map(([rk,t,pts]) => [t, {rk, pts:pts??0}]));
+        const cMap = new Map(COACHES_POLL.map(([rk,t,pts]) => [t, {rk, pts:pts??0}]));
+        const teams = new Set([...mMap.keys(), ...cMap.keys()]);
+        const combined = [...teams].map(t=>{
+          const mr = mMap.get(t)?.rk ?? 26, cr = cMap.get(t)?.rk ?? 26;
+          const mp = mMap.get(t)?.pts ?? 0,  cp = cMap.get(t)?.pts ?? 0;
+          const avg = (mr + cr) / 2;
+          return {team:t, avg, media:mr, coaches:cr, points:(mp+cp)};
+        }).sort((a,b)=> a.avg-b.avg || b.points-a.points)
+          .map((x,i)=>({rank:i+1, team:x.team}));
 
-        // Build rank + user sets (count both active and former as 'user-like' for UvU)
+        // Top-5
+        const top5Span = `Top-5 (Combined): ${combined.slice(0,5).map(r=>`#${r.rank} ${r.team}`).join(' • ')}`;
+
+        // Rank lookup for prettified game lines
         const rankMap = new Map(combined.map(r => [r.team, r.rank]));
-        const active  = new Set((data.flags && data.flags.active_users) || []);
-        const former  = new Set((data.flags && data.flags.former_users_with_week ? data.flags.former_users_with_week.map(x=>x[0]) : []));
-        const userLike = new Set([...active, ...former]);
-
-        // Scrape week arrays from the same file
-        const w6 = extractArray('WEEK6_RESULTS', html);
-        const w5 = extractArray('WEEK5_RESULTS', html);
-
-        const isUvU = g => userLike.has(g.away) && userLike.has(g.home);
-        const uvuRecent = []
-          .concat(w6.filter(isUvU).map(g => ({...g, wk:6})))
-          .concat(w5.filter(isUvU).map(g => ({...g, wk:5})));
-
         const rk = t => {
           const r = rankMap.get(t);
           return (r && r<=25) ? `#${r} ${t}` : t;
         };
-        const fmt = g => `W${g.wk}: ${rk(g.away)} ${g.a}–${g.h} at ${rk(g.home)}`;
 
-        const uvuSpan = uvuRecent.length
-          ? `Recent UvU: ${uvuRecent.slice(0,4).map(fmt).join(' • ')}`
+        // User vs User filter
+        const isUvU = g => ACTIVE_USERS.has(g.away) && ACTIVE_USERS.has(g.home);
+
+        const w6UvU = WEEK6.filter(isUvU).map(g=>({wk:6, ...g}));
+        const w5UvU = WEEK5.filter(isUvU).map(g=>({wk:5, ...g}));
+        const recent = [...w6UvU, ...w5UvU];
+
+        const fmt = g => `W${g.wk}: ${rk(g.away)} ${g.a}–${g.h} at ${rk(g.home)}`;
+        const uvuSpan = recent.length
+          ? `Recent UvU: ${recent.slice(0,4).map(fmt).join(' • ')}`
           : 'Recent UvU: (none logged in W6/W5)';
 
         render([top5Span, uvuSpan, 'See: Polls & Power Index →']);
-      }catch(e){
+      }catch(err){
         render(fallback);
       }
     }
     buildTicker();
 
-    // ---------- Hero image fallback note ----------
+    // ---------- Hero image fallback ----------
     (function heroFallback(){
       const hero = document.querySelector('.splash-hero');
       if(!hero) return;
@@ -350,4 +364,4 @@
     })();
   </script>
 </body>
-</html>
+  </html>
