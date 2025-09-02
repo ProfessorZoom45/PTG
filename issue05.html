@@ -285,7 +285,25 @@ function makeSortable(table){
   });
 }
 
-/* ===== Image fallback (slate) ===== */
+/* ===== Global PNG case-insensitive fallback =====
+   If any <img> ends with .png/.PNG and fails, we flip the case.
+   (This runs for ALL images, not just the slate.) */
+function enablePngCaseFallback(){
+  document.querySelectorAll('img').forEach(img=>{
+    img.addEventListener('error', function onErr(){
+      const src = img.getAttribute('src') || '';
+      const tried = img.getAttribute('data-case-tried') || '';
+      if (/\.png$/i.test(src) && tried !== 'swapped'){
+        const swapped = src.replace(/\.png$/i, (m)=> m === '.png' ? '.PNG' : '.png');
+        img.setAttribute('data-case-tried','swapped');
+        img.src = swapped;
+        return;
+      }
+    });
+  });
+}
+
+/* ===== Image fallback (slate) – filename variants ===== */
 (function slateFallback(){
   const img=document.getElementById('wk8Img');
   const msg=document.getElementById('wk8Fallback');
@@ -319,7 +337,7 @@ function renderTicker(){
 }
 
 /* ===== Boot ===== */
-function boot(){ renderTicker(); renderUVU(); }
+function boot(){ renderTicker(); renderUVU(); enablePngCaseFallback(); }
 document.addEventListener('DOMContentLoaded', boot);
 </script>
 </body>
