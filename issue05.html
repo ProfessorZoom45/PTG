@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>D1SN — Running Late Dynasty (Issue 05 • Week 8)</title>
+<meta name="description" content="Issue 05 — Cover Story: Washington at Ohio State. Key UvU matchups through the lens of the Top-25 polls, standings-verified records, and the full Week 8 slate." />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="index.html">
+
+<!-- Social -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Digital ONE Sports Network">
+<meta property="og:title" content="Running Late Dynasty — Issue 05 (Week 8)" />
+<meta property="og:description" content="Cover Story: Washington at Ohio State. Key UvU matchups, polls, standings, and the Week 8 slate." />
+<meta property="og:url" content="https://professorzoom45.github.io/PTG/issue05.html">
+
+<style>
+:root{
+  --bg:#0b0b0b;--card:#141414;--line:#232323;--text:#e6e6e6;--muted:#a6a6a6;
+  --gold:#d5b15b;--silver:#c0c0c0;--bronze:#cd7f32;--accent:#f2d675;
+  --cpu:#ff6b6b;--uvu:#8ab4ff;
+  --btn-a:#1a1a1a;--btn-b:#262626;--btn-glow:#f2d67566;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--gold);text-decoration:none}
+a:focus-visible,.cta-btn:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px}
+h1,h2{margin:0 0 .6rem}
+p{margin:.4rem 0 .8rem}
+.small{font-size:.92rem;color:#b0b0b0}
+.muted{color:var(--muted)}
+.section{max-width:1100px;margin:0 auto;padding:18px 14px;scroll-margin-top:72px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.hidden{display:none!important}
+footer{max-width:1100px;margin:18px auto 44px;padding:0 14px;color:#aaa;font-size:.9rem}
+
+/* Ticker */
+.ticker{position:sticky;top:0;z-index:999;background:linear-gradient(90deg,#121212,#181818);border-bottom:1px solid #1f1f1f}
+.ticker .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+.ticker .logo-a{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);color:#111;font-weight:900;letter-spacing:.6px;border:1px solid #caae51;box-shadow:0 0 0 2px #3c3210 inset, 0 2px 10px #0008}
+.cta-btn{margin-left:8px;border:1px solid #3c3c3c;padding:8px 14px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--btn-a),var(--btn-b));box-shadow:0 0 0 2px #000 inset, 0 0 18px var(--btn-glow);font-weight:800;letter-spacing:.2px}
+.cta-btn:hover{filter:brightness(1.08);box-shadow:0 0 0 2px #000 inset,0 0 22px var(--btn-glow)}
+.ticker .track{overflow:hidden;flex:1;min-width:280px}
+.ticker .row{display:inline-flex;gap:26px;align-items:center;white-space:nowrap;animation:marquee 28s linear infinite}
+.ticker:hover .row{animation-play-state:paused}
+.ticker .row>span{font-weight:900;letter-spacing:.3px;position:relative;padding-right:30px;margin-right:30px}
+.ticker .row>span::after{content:"";position:absolute;right:4px;top:50%;transform:translateY(-50%);width:6px;height:20px;background:linear-gradient(180deg,#f7e8a5,#d6b458 60%,#a3832c);border-radius:3px}
+@keyframes marquee{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+
+/* Chips */
+.chips{max-width:1100px;margin:10px auto 6px;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-block;padding:8px 12px;border-radius:999px;background:#121212;border:1px solid #2a2a2a;color:#eaeaea;font-weight:600}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Splash */
+.splash{min-height:38vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:var(--accent);position:relative}
+.splash h1{font-size:clamp(2rem,4.6vw,3rem)}
+.splash-hero{width:min(100%,1100px);max-width:92vw;height:auto;margin:.75rem auto 0;border-radius:16px;border:1px solid #2a2a2a;box-shadow:0 10px 40px #000a}
+
+/* Tables */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #2a2a2a;padding:8px 10px;text-align:left;vertical-align:top}
+.table th{user-select:none;cursor:pointer}
+.table th[aria-sort="ascending"],.table th[aria-sort="descending"]{color:var(--accent)}
+.badge{display:inline-block;border:1px solid #3a3a3a;background:#111;padding:2px 8px;border-radius:999px;font-size:.8rem;margin-left:8px}
+.badge-uvu{border-color:#4a64a6;color:#a9c5ff}
+.badge-top{border-color:#a3832c;color:#f7e8a5}
+
+/* Icon grid */
+.icon4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;align-items:center}
+.icon4 .ic{display:flex;align-items:center;gap:10px;border:1px solid #2a2a2a;background:#101010;border-radius:12px;padding:10px}
+.icon4 img{width:40px;height:40px;object-fit:contain}
+@media (max-width:560px){ .ticker .row>span{padding-right:18px;margin-right:18px} }
+</style>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker" role="region" aria-label="D1SN Headlines">
+  <div class="wrap">
+    <a href="index.html" class="logo-a" title="Back to Index">D1SN</a>
+    <div class="track"><div class="row" id="tickerRow"></div></div>
+    <a class="cta-btn" href="teams.html" title="Teams & Coaches">Teams</a>
+    <a class="cta-btn" href="coaches.html" title="Owners Directory">Coaches</a>
+    <a class="cta-btn" href="mailto:changethewrldplz@gmail.com?subject=DM%20D1SN&body=Hey%20D1SN%2C%20" title="Email D1SN">DM D1SN</a>
+  </div>
+</div>
+
+<!-- Chips -->
+<div class="chips">
+  <a class="chip" href="#headline">Cover Story</a>
+  <a class="chip" href="#uvukey">Key UvU — Week 8</a>
+  <a class="chip" href="#slate">Week 8 Slate</a>
+  <a class="chip" href="#polls">Top-25 Snapshots</a>
+  <a class="chip" href="#standings">Standings (Snaps)</a>
+  <a class="chip" href="#mail">Mailbag</a>
+</div>
+
+<!-- Splash -->
+<section class="splash">
+  <h1>Issue 05 — Week 8</h1>
+  <!-- Week 8 custom cover -->
+  <img src="week8cover.PNG" alt="Week 8 Cover" class="splash-hero" />
+</section>
+
+<!-- Headline -->
+<section id="headline" class="section">
+  <h2>Cover Story: <strong>#5 Washington</strong> at <strong>#3 Ohio State</strong> <span class="badge badge-top">Top-5</span></h2>
+  <div class="card">
+    <p><strong>Statement Saturday in Columbus.</strong> Washington enters unbeaten (5-0) behind a ruthless defense and balanced offense, while Ohio State (5-1) has stabilized after the early stumble and is hunting a playoff seed. Polls agree this is elite vs. elite — Washington sits <em>best of #5</em>, the Buckeyes <em>best of #3</em>. Winner grabs the inside lane in the Big Ten race and national seeding.</p>
+    <p class="small muted">Records and ranks pulled from your Week 8 screenshots; user teams are bolded across the site.</p>
+  </div>
+</section>
+
+<!-- Key UvU — Week 8 -->
+<section id="uvukey" class="section">
+  <h2>Key User-vs-User Matchups (Week 8 Lens)</h2>
+  <div class="card">
+    <table class="table" id="uvutable">
+      <thead>
+        <tr>
+          <th data-type="str">Matchup</th>
+          <th data-type="str">Poll Rank</th>
+          <th data-type="str">Record (W-L)</th>
+          <th data-type="str">Kick</th>
+          <th data-type="str">Notes</th>
+        </tr>
+      </thead>
+      <tbody id="uvuBody"></tbody>
+    </table>
+    <p class="small muted">“Poll Rank” shows the better (lower) of the Media/Coaches values. NR = Not ranked in either poll.</p>
+  </div>
+</section>
+
+<!-- Week 8 Slate -->
+<section id="slate" class="section">
+  <h2>Week 8 — Full User Games Slate</h2>
+  <div class="card">
+    <p class="small"><strong>Highlights:</strong> Washington–Ohio State headlines nationally; BYU–Texas Tech and SMU–Notre Dame shape ACC/Big-12 races; Miami visits rival Florida; Arkansas heads “Between the Hedges.”</p>
+    <a href="week8slate.PNG" target="_blank" rel="noopener">
+      <img id="wk8Img" class="splash-hero" loading="lazy" src="week8slate.PNG" alt="Week 8 User Games Slate">
+    </a>
+    <p id="wk8Fallback" class="small muted hidden">Trying alternate image name…</p>
+  </div>
+</section>
+
+<!-- Top-25 Screens (snapshots) -->
+<section id="polls" class="section">
+  <h2>Top-25 — Media & Coaches (Snapshots)</h2>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr;gap:10px">
+      <img src="9E6A5C7A-98A1-4367-ACDE-4229BFDFE0E6.jpeg" alt="Coaches Top 25 (Week 8 snapshot)" style="width:100%;border-radius:12px;border:1px solid #2a2a2a" />
+      <img src="895D02B4-D598-4FFC-86DE-8E1C02A5C61F.jpeg" alt="Media Top 25 (Week 8 snapshot)" style="width:100%;border-radius:12px;border:1px solid #2a2a2a" />
+    </div>
+    <p class="small muted" style="margin-top:8px">These images are preserved as-is for accuracy. Combined tables will return when full OCR is finished.</p>
+  </div>
+</section>
+
+<!-- Standings snapshots -->
+<section id="standings" class="section">
+  <h2>Standings — Conference Snapshots</h2>
+  <div class="card">
+    <div class="icon4">
+      <div class="ic"><img src="big_ten.png" alt="Big Ten"><div><strong>Big Ten</strong><br><span class="small">Top: Michigan 5-0, Penn State 5-0, <strong>Washington 5-0</strong>, <strong>Ohio State 5-1</strong>.</span></div></div>
+      <div class="ic"><img src="acc.png" alt="ACC"><div><strong>ACC</strong><br><span class="small"><strong>Miami 6-0</strong>, <strong>FSU 5-0</strong>, <strong>SMU 4-1</strong>, <strong>Notre Dame 5-2</strong>.</span></div></div>
+      <div class="ic"><img src="big_12.png" alt="Big 12"><div><strong>Big 12</strong><br><span class="small"><strong>Delaware 5-0</strong>, <strong>Texas Tech 5-0</strong>, <strong>BYU 4-1</strong>, Colorado 5-1.</span></div></div>
+      <div class="ic"><img src="sec.png" alt="SEC"><div><strong>SEC</strong><br><span class="small"><strong>Alabama 5-1</strong>, <strong>Texas 5-1</strong>, <strong>South Carolina 5-1</strong>, <strong>LSU 5-1</strong>, <strong>Georgia 4-2</strong>, Arkansas 3-2.</span></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px">
+      <img src="sb10.PNG" alt="Big Ten standings snap" style="width:100%;border-radius:12px;border:1px solid #2a2a2a" />
+      <img src="sb12.PNG" alt="Big 12 standings snap" style="width:100%;border-radius:12px;border:1px solid #2a2a2a" />
+      <img src="ssec.PNG" alt="SEC standings snap" style="width:100%;border-radius:12px;border:1px solid #2a2a2a" />
+      <img src="sacc.PNG" alt="ACC standings snap" style="width:100%;border-radius:12px;border:1px solid #2a2a2a" />
+    </div>
+  </div>
+</section>
+
+<!-- Mailbag -->
+<section id="mail" class="section">
+  <h2>Mailbag & Submissions</h2>
+  <div class="card">
+    <p>Email <a href="mailto:changethewrldplz@gmail.com">changethewrldplz@gmail.com</a>, post in <a href="https://discord.com/channels/1382826467683205180/1382826468622467133" target="_blank" rel="noopener">Discord #general</a>, or click <a href="mailto:changethewrldplz@gmail.com">DM D1SN</a>.</p>
+    <p class="muted small">Send top stat lines, highlights, or chaos moments; we’ll include the best in next issue.</p>
+  </div>
+</section>
+
+<footer>© D1SN — Running Late Dynasty. Tip: press <kbd>Enter</kbd> on a table header to sort.</footer>
+
+<script>
+/* ===== User Teams (CFB26) ===== */
+const USER_TEAMS=["LSU","Clemson","Arkansas","Michigan","Texas","Ohio State","Miami","Delaware","Georgia","Arizona State","Florida","Washington","Alabama","BYU","Oklahoma","Florida State","Notre Dame","South Carolina","Illinois","USC","Texas Tech","Baylor","Colorado","Texas A&M","Penn State","Tennessee","North Carolina","Utah","Auburn","Minnesota","SMU","UCLA"];
+
+/* ===== Week 8 slate parsed from image text ===== */
+const WK8 = [
+  {away:"SMU",home:"Notre Dame",time:"Oct 24 | 7:00 PM",site:"South Bend, IN"},
+  {away:"Delaware",home:"Arizona State",time:"Oct 24 | 2:30 PM",site:"Tempe, AZ"},
+  {away:"Miami",home:"Florida",time:"Oct 24 | 3:30 PM",site:"Gainesville, FL"},
+  {away:"Georgia Tech",home:"Florida State",time:"Oct 24 | 6:45 PM",site:"Tallahassee, FL"},
+  {away:"Tennessee",home:"Texas",time:"Oct 24 | 4:00 PM",site:"Austin, TX"},
+  {away:"Arkansas",home:"Georgia",time:"Oct 24 | 1:00 PM",site:"Athens, GA"},
+  {away:"BYU",home:"Texas Tech",time:"Oct 24 | 3:30 PM",site:"Lubbock, TX"},
+  {away:"Washington",home:"Ohio State",time:"Oct 24 | 2:15 PM",site:"Columbus, OH"}
+];
+
+/* ===== Poll ranks (Media / Coaches) for teams in these matchups (from screenshots) ===== */
+const RANKS = {
+  "SMU":{media:14,coaches:13}, "Notre Dame":{media:21,coaches:21},
+  "Delaware":{media:12,coaches:12}, "Arizona State":{media:"NR",coaches:"NR"},
+  "Miami":{media:1,coaches:1}, "Florida":{media:16,coaches:17},
+  "Georgia Tech":{media:"NR",coaches:"NR"}, "Florida State":{media:15,coaches:14},
+  "Tennessee":{media:"NR",coaches:"NR"}, "Texas":{media:6,coaches:5},
+  "Arkansas":{media:22,coaches:22}, "Georgia":{media:18,coaches:18},
+  "BYU":{media:13,coaches:15}, "Texas Tech":{media:10,coaches:11},
+  "Washington":{media:5,coaches:6}, "Ohio State":{media:4,coaches:3}
+};
+
+/* ===== Records pulled from standings screenshots (W-L) ===== */
+const RECORDS = {
+  "SMU":"4-1","Notre Dame":"5-2",
+  "Delaware":"5-0","Arizona State":"3-2",
+  "Miami":"6-0","Florida":"4-1",
+  "Georgia Tech":"2-4","Florida State":"5-0",
+  "Tennessee":"2-3","Texas":"5-1",
+  "Arkansas":"3-2","Georgia":"4-2",
+  "BYU":"4-1","Texas Tech":"5-0",
+  "Washington":"5-0","Ohio State":"5-1"
+};
+
+/* ===== Helpers ===== */
+const isUser = t => USER_TEAMS.includes(t);
+const best = (x) => {
+  const m = typeof x.media === 'number' ? x.media : Infinity;
+  const c = typeof x.coaches === 'number' ? x.coaches : Infinity;
+  const v = Math.min(m,c);
+  return v === Infinity ? 'NR' : v;
+};
+
+/* ===== Render Key UvU table ===== */
+function renderUVU(){
+  const tb=document.getElementById('uvuBody');
+  const rows=WK8.map(g=>{
+    const a=g.away, h=g.home;
+    const aR=best(RANKS[a]||{media:'NR',coaches:'NR'});
+    const hR=best(RANKS[h]||{media:'NR',coaches:'NR'});
+    const rankTxt = `${aR==='NR'?'NR':('#'+aR)} @ ${hR==='NR'?'NR':('#'+hR)}`;
+    const recTxt = `${a} ${RECORDS[a]||'—'} • ${h} ${RECORDS[h]||'—'}`;
+    const uvu=isUser(a)&&isUser(h);
+    const notes=[];
+    if(uvu) notes.push('User vs User');
+    if(aR!=='NR' && hR!=='NR') notes.push('Top-25 Lens');
+    const cover = ( (a==="Washington"&&h==="Ohio State") || (a==="Ohio State"&&h==="Washington") );
+    if(cover) notes.push('Cover Story');
+    const n = `<span class="badge ${uvu?'badge-uvu':''}">${notes.join(' • ')||'—'}</span>`;
+    return `<tr>
+      <td>${isUser(a)?`<strong>${a}</strong>`:a} @ ${isUser(h)?`<strong>${h}</strong>`:h} ${n}</td>
+      <td>${rankTxt}</td>
+      <td>${recTxt}</td>
+      <td>${g.time}</td>
+      <td>${g.site}</td>
+    </tr>`;
+  }).join('');
+  tb.innerHTML=rows;
+  makeSortable(document.getElementById('uvutable'));
+}
+
+/* ===== Simple sorter ===== */
+function makeSortable(table){
+  const ths=[...table.querySelectorAll('thead th')];
+  ths.forEach((th,i)=>{
+    th.setAttribute('aria-sort','none'); th.tabIndex=0;
+    th.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); th.click(); }});
+    th.addEventListener('click',()=>{
+      const type=th.dataset.type||'str',tbody=table.tBodies[0],rows=[...tbody.rows];
+      const dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
+      ths.forEach(x=>x.setAttribute('aria-sort','none')); th.setAttribute('aria-sort',dir);
+      const parse=td=>{
+        const v=td.textContent.trim();
+        if(type==='num') return +v.replace(/[^0-9.-]/g,'')||0;
+        return v.toLowerCase();
+      };
+      rows.sort((a,b)=>{const A=parse(a.cells[i]),B=parse(b.cells[i]); return (A<B? -1: A>B? 1: 0)*(dir==='ascending'?1:-1);});
+      rows.forEach(r=>tbody.appendChild(r));
+    });
+  });
+}
+
+/* ===== Image fallback (slate) ===== */
+(function slateFallback(){
+  const img=document.getElementById('wk8Img');
+  const msg=document.getElementById('wk8Fallback');
+  if(!img) return;
+  img.addEventListener('error',()=>{
+    const tried=img.getAttribute('data-tried')||'';
+    let next=null;
+    if(tried===''){ next='week8slate.png'; img.setAttribute('data-tried','png'); }
+    else if(tried==='png'){ next='week8slate.jpg'; img.setAttribute('data-tried','jpg'); }
+    else if(tried==='jpg'){ next='week8slate.jpeg'; img.setAttribute('data-tried','jpeg'); }
+    else { msg?.classList.remove('hidden'); msg.textContent='Couldn’t load Week 8 slate image.'; return; }
+    msg?.classList.remove('hidden'); msg.textContent='Trying alternate image name…';
+    img.src=next;
+  });
+})();
+
+/* ===== Ticker ===== */
+function renderTicker(){
+  const row=document.getElementById('tickerRow');
+  const items=[
+    "Cover Story: #5 Washington @ #3 Ohio State",
+    "BYU @ #10 Texas Tech",
+    "#14 SMU @ #21 Notre Dame",
+    "#12 Delaware @ Arizona State",
+    "#1 Miami @ #16 Florida",
+    "Arkansas @ #18 Georgia",
+    "Tennessee @ #5 Texas",
+    "Georgia Tech @ #14 Florida State"
+  ];
+  row.innerHTML=items.map(t=>`<span>${t}</span>`).join('');
+}
+
+/* ===== Boot ===== */
+function boot(){ renderTicker(); renderUVU(); }
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>
